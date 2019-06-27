@@ -19,10 +19,12 @@
 </head>
 
 <body>
-  <div class="headerBox" id="form">
-    <button id="signOutButton" type="button" class="btn btn-primary" onclick="signout()">Sign Out</button>
+  <div class="row justify-content-end">
+    <div class="col-lg-12 col-md-12 col-sm-12" id="signedInInfo"><button id="signOutButton" type="button" class="btn btn-primary" onclick="signout()">Sign Out</button></div>
   </div>
-  <div class="headerBox" id="formHeader"></div>
+  <div class="row justify-content-center">
+      <div class="col-lg-12 col-md-12 col-sm-12" id="titleHolder"><h1 id="title">Tournaments</h1></div>
+  </div>
 </body>
 
 <script>
@@ -30,7 +32,7 @@
     try {
       firebase.auth().onAuthStateChanged(function (user) {
         if (user) {
-          document.getElementById("formHeader").innerHTML = "<p id='signedInEmail'>Signed in as: " + user.email + "</p>";
+          document.getElementById("signedInInfo").innerHTML += "<p id='signedInEmail'>Signed in as: " + user.email + "</p>";
         } else {
           window.location.replace("/")
         }
@@ -55,21 +57,19 @@
     padding: 0;
   }
 
-  .headerBox {
-    float: right;
-    margin: 16px 12px 16px;
-    vertical-align: middle;
-    text-align: center
-  }
-
   #signOutButton {
-    font-size: 14px;
-    padding: 4px 6px;
-    margin-right: 8px;
+    margin: 5px 15px 0px 0px;
+    float: right;
+    font-size: 0.8em;
   }
 
   #signedInEmail {
-    margin-top: 2px;
+    margin: 10px 15px 0px 0px;
+    float: right;
+  }
+
+  #titleHolder {
+    text-align:center;
   }
 </style>
 
