@@ -6,8 +6,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Welcome to Firebase Hosting</title>
 
-  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
-    integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
   <!-- update the version number as needed -->
   <script defer src="/__/firebase/6.0.4/firebase-app.js"></script>
   <!-- include only the Firebase features as you need -->
@@ -15,15 +16,56 @@
   <script defer src="/__/firebase/6.0.4/firebase-database.js"></script>
   <!-- initialize the SDK after all desired features are loaded -->
   <script defer src="/__/firebase/init.js"></script>
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
+  
 </head>
 
 <body>
   <div class="row justify-content-end">
-    <div class="col-lg-12 col-md-12 col-sm-12" id="signedInInfo"><button id="signOutButton" type="button" class="btn btn-primary" onclick="signout()">Sign Out</button></div>
+    <div class="col-lg-12 col-md-12 col-sm-12" id="signedInInfo"><button id="signOutButton" type="button" class="btn btn-danger" onclick="signout()">Sign Out</button></div>
   </div>
   <div class="row justify-content-center">
       <div class="col-lg-12 col-md-12 col-sm-12" id="titleHolder"><h1 id="title">Tournaments</h1></div>
+  </div>
+  <div class="row justify-content-end">
+    <div class="col-lg-12 col-md-12 col-sm-12" id="newTournamentHolder">
+      <button id="newTournament" type="button" class="btn btn-primary" data-toggle="modal" data-target="#createTournamentModal">Create Tournament</button>
+    </div>
+
+    <div class="modal fade" id="createTournamentModal" tabindex="-1" role="dialog" aria-labelledby="createTournamentModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="createTournamentModalLabel">New Tournament</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <form>
+                  <div class="form-group">
+                      <p id="error"></p>
+                      <label for="tournamentName">Tournament Name</label>
+                      <input type="text" class="form-control" id="tournamentName" aria-describedby="emailHelp" placeholder="Tournament Name">
+                  </div>
+                  <div class="form-group">
+                      <div class="tournamentDateHolder">
+                        <label for="tournamentStartDate">Start Date</label>
+                        <input type="date" class="form-control" id="tournamentStartDate">
+                      </div>
+                      <div class="tournamentDateHolder">
+                        <label for="tournamentEndDate">End Date</label>
+                        <input type="date" class="form-control" id="tournamentEndDate">
+                      </div>
+                  </div>
+              </form>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+              <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="createTournament()">Create</button>
+            </div>
+          </div>
+        </div>
+      </div>
   </div>
 </body>
 
@@ -45,6 +87,37 @@
   function signout() {
     firebase.auth().signOut();
     window.location.replace("/")
+  }
+
+  function createTournament() {
+    var rootRef = firebase.database().ref();
+    var userRef = rootRef.child("users");
+    var tournamentsRef = rootRef.child("tournaments");
+    var user = firebase.auth().currentUser;
+    var fbEmail = user.email.toLowerCase().replace(".",",");
+
+    var tournamentName = document.getElementById("tournamentName").value;
+    var tournamentStartDate = document.getElementById("tournamentStartDate").value;
+    var tournamentEndDate = document.getElementById("tournamentEndDate").value;
+    var result = tournamentsRef.push({
+      admin: fbEmail,
+      name: tournamentName,
+      startDate: tournamentStartDate,
+      endDate: tournamentEndDate
+    });
+    var tournamentId = result.path.pieces_[1];
+    userRef
+        .child(fbEmail)
+        .child("tournaments")
+        .once("value")
+        .then(ss => {
+          var tmp = [];
+          if (ss.exists()) {
+            tmp = ss.val();
+          }
+          tmp.push(tournamentId);
+          userRef.child(fbEmail).update({ tournaments: tmp });
+        });
   }
 </script>
 
@@ -70,6 +143,15 @@
 
   #titleHolder {
     text-align:center;
+  }
+
+  #newTournamentHolder {
+    margin: 10px 0px 0px 0px;
+    text-align:center;
+  }
+
+  .tournamentDateHolder {
+    display:inline-block;
   }
 </style>
 
