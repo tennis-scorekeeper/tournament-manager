@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Welcome to Firebase Hosting</title>
+
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+      integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
+      crossorigin="anonymous"
+    />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
+    <script
+      src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+      integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+      crossorigin="anonymous"
+    ></script>
+    <!-- update the version number as needed -->
+    <script defer src="/__/firebase/6.0.4/firebase-app.js"></script>
+    <!-- include only the Firebase features as you need -->
+    <script defer src="/__/firebase/6.0.4/firebase-auth.js"></script>
+    <script defer src="/__/firebase/6.0.4/firebase-database.js"></script>
+    <!--<script defer src="/__/ firebase/6.0.4/firebase-messaging.js"></script>-->
+    <script defer src="/__/firebase/6.0.4/firebase-storage.js"></script>
+    <!-- initialize the SDK after all desired features are loaded -->
+    <script defer src="/__/firebase/init.js"></script>
+  </head>
+  <body></body>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", function() {
+      console.log(
+        window.location.href.substring(window.location.href.indexOf("?"))
+      );
+      var url = window.location.href.substring(
+        window.location.href.indexOf("?")
+      );
+      var params = new URLSearchParams(url);
+      if (params.has("tournamentId") && params.get("tournamentId").length > 0) {
+        console.log(params.get("tournamentId"));
+      } else {
+        window.location.replace("/tournaments.html");
+      }
+    });
+  </script>
+
+  <style media="screen"></style>
+</html>

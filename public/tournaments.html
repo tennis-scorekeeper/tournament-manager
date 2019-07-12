@@ -2,13 +2,16 @@
 <html>
 
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Welcome to Firebase Hosting</title>
 
-  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+    integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous" />
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
-  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+    integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+    crossorigin="anonymous"></script>
   <!-- update the version number as needed -->
   <script defer src="/__/firebase/6.0.4/firebase-app.js"></script>
   <!-- include only the Firebase features as you need -->
@@ -16,67 +19,86 @@
   <script defer src="/__/firebase/6.0.4/firebase-database.js"></script>
   <!-- initialize the SDK after all desired features are loaded -->
   <script defer src="/__/firebase/init.js"></script>
-  
 </head>
 
 <body>
   <div class="row justify-content-end">
-    <div class="col-lg-12 col-md-12 col-sm-12" id="signedInInfo"><button id="signOutButton" type="button" class="btn btn-danger" onclick="signout()">Sign Out</button></div>
+    <div class="col-lg-12 col-md-12 col-sm-12" id="signedInInfo">
+      <button id="signOutButton" type="button" class="btn btn-danger" onclick="signout()">
+        Sign Out
+      </button>
+    </div>
   </div>
   <div class="row justify-content-center">
-      <div class="col-lg-12 col-md-12 col-sm-12" id="titleHolder"><h1 id="title">Tournaments</h1></div>
+    <div class="col-lg-12 col-md-12 col-sm-12" id="titleHolder">
+      <h1 id="title">Tournaments</h1>
+    </div>
   </div>
   <div class="row justify-content-end">
     <div class="col-lg-12 col-md-12 col-sm-12" id="newTournamentHolder">
-      <button id="newTournament" type="button" class="btn btn-primary" data-toggle="modal" data-target="#createTournamentModal">Create Tournament</button>
+      <button id="newTournament" type="button" class="btn btn-primary" data-toggle="modal"
+        data-target="#createTournamentModal">
+        Create Tournament
+      </button>
     </div>
 
-    <div class="modal fade" id="createTournamentModal" tabindex="-1" role="dialog" aria-labelledby="createTournamentModalLabel" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h5 class="modal-title" id="createTournamentModalLabel">New Tournament</h5>
-              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-              </button>
-            </div>
-            <div class="modal-body">
-              <form>
-                  <div class="form-group">
-                      <p id="error"></p>
-                      <label for="tournamentName">Tournament Name</label>
-                      <input type="text" class="form-control" id="tournamentName" aria-describedby="emailHelp" placeholder="Tournament Name">
-                  </div>
-                  <div class="form-group">
-                      <div class="tournamentDateHolder">
-                        <label for="tournamentStartDate">Start Date</label>
-                        <input type="date" class="form-control" id="tournamentStartDate">
-                      </div>
-                      <div class="tournamentDateHolder">
-                        <label for="tournamentEndDate">End Date</label>
-                        <input type="date" class="form-control" id="tournamentEndDate">
-                      </div>
-                  </div>
-              </form>
-            </div>
-            <div class="modal-footer">
-              <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-              <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="createTournament()">Create</button>
-            </div>
+    <div class="modal fade" id="createTournamentModal" tabindex="-1" role="dialog"
+      aria-labelledby="createTournamentModalLabel" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="createTournamentModalLabel">
+              New Tournament
+            </h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <form>
+              <div class="form-group">
+                <p id="error"></p>
+                <label for="tournamentName">Tournament Name</label>
+                <input type="text" class="form-control" id="tournamentName" aria-describedby="emailHelp"
+                  placeholder="Tournament Name" />
+              </div>
+              <div class="form-group">
+                <div class="tournamentDateHolder">
+                  <label for="tournamentStartDate">Start Date</label>
+                  <input type="date" class="form-control" id="tournamentStartDate" />
+                </div>
+                <div class="tournamentDateHolder">
+                  <label for="tournamentEndDate">End Date</label>
+                  <input type="date" class="form-control" id="tournamentEndDate" />
+                </div>
+              </div>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">
+              Close
+            </button>
+            <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="createTournament()">
+              Create
+            </button>
           </div>
         </div>
       </div>
+    </div>
   </div>
+  <div id="tournamentList"></div>
 </body>
 
 <script>
-  document.addEventListener('DOMContentLoaded', function () {
+  document.addEventListener("DOMContentLoaded", function () {
     try {
       firebase.auth().onAuthStateChanged(function (user) {
         if (user) {
-          document.getElementById("signedInInfo").innerHTML += "<p id='signedInEmail'>Signed in as: " + user.email + "</p>";
+          document.getElementById("signedInInfo").innerHTML +=
+            "<p id='signedInEmail'>Signed in as: " + user.email + "</p>";
+          loadTournaments();
         } else {
-          window.location.replace("/")
+          window.location.replace("/");
         }
       });
     } catch (e) {
@@ -86,7 +108,66 @@
 
   function signout() {
     firebase.auth().signOut();
-    window.location.replace("/")
+    window.location.replace("/");
+  }
+
+  function loadTournaments() {
+    var rootRef = firebase.database().ref();
+    var userRef = rootRef.child("users");
+    var tournamentsRef = rootRef.child("tournaments");
+    var user = firebase.auth().currentUser;
+    var fbEmail = user.email.toLowerCase().replace(".", ",");
+
+    userRef
+      .child(fbEmail)
+      .once("value")
+      .then(ss => {
+        tournamentsRef.once("value").then(tss => {
+          if (ss.val().tournaments != null) {
+            ss.val().tournaments.forEach(id => {
+              var startDate = new Date(tss.child(id).val().startDate);
+              var endDate = new Date(tss.child(id).val().endDate);
+              var startDateString =
+                startDate.getMonth() +
+                1 +
+                "/" +
+                startDate.getDate() +
+                "/" +
+                startDate.getFullYear();
+              var endDateString =
+                endDate.getMonth() +
+                1 +
+                "/" +
+                endDate.getDate() +
+                "/" +
+                endDate.getFullYear();
+
+              var div = document.createElement("div");
+              div.setAttribute("class", "tournamentHolder");
+
+              var p1 = document.createElement("span");
+              p1.textContent = tss.child(id).val().name;
+              var linebreak = document.createElement("br");
+              var p2 = document.createElement("span");
+              p2.textContent = startDateString + "-" + endDateString;
+
+              div.appendChild(p1);
+              div.appendChild(linebreak);
+              div.appendChild(p2);
+
+              var a = document.createElement("a");
+              a.setAttribute("class", "tournament");
+              a.setAttribute(
+                "href",
+                "/viewTournament.html?tournamentId=" + id
+              );
+              a.appendChild(div);
+
+              document.getElementById("tournamentList").appendChild(a);
+            });
+          }
+        });
+      });
   }
 
   function createTournament() {
@@ -94,11 +175,13 @@
     var userRef = rootRef.child("users");
     var tournamentsRef = rootRef.child("tournaments");
     var user = firebase.auth().currentUser;
-    var fbEmail = user.email.toLowerCase().replace(".",",");
+    var fbEmail = user.email.toLowerCase().replace(".", ",");
 
     var tournamentName = document.getElementById("tournamentName").value;
-    var tournamentStartDate = document.getElementById("tournamentStartDate").value;
-    var tournamentEndDate = document.getElementById("tournamentEndDate").value;
+    var tournamentStartDate = document.getElementById("tournamentStartDate")
+      .value;
+    var tournamentEndDate = document.getElementById("tournamentEndDate")
+      .value;
     var result = tournamentsRef.push({
       admin: fbEmail,
       name: tournamentName,
@@ -107,17 +190,18 @@
     });
     var tournamentId = result.path.pieces_[1];
     userRef
-        .child(fbEmail)
-        .child("tournaments")
-        .once("value")
-        .then(ss => {
-          var tmp = [];
-          if (ss.exists()) {
-            tmp = ss.val();
-          }
-          tmp.push(tournamentId);
-          userRef.child(fbEmail).update({ tournaments: tmp });
-        });
+      .child(fbEmail)
+      .child("tournaments")
+      .once("value")
+      .then(ss => {
+        var tmp = [];
+        if (ss.exists()) {
+          tmp = ss.val();
+        }
+        tmp.push(tournamentId);
+        userRef.child(fbEmail).update({ tournaments: tmp });
+        window.location.reload();
+      });
   }
 </script>
 
@@ -142,16 +226,44 @@
   }
 
   #titleHolder {
-    text-align:center;
+    text-align: center;
   }
 
   #newTournamentHolder {
     margin: 10px 0px 0px 0px;
-    text-align:center;
+    text-align: center;
   }
 
   .tournamentDateHolder {
-    display:inline-block;
+    display: inline-block;
+  }
+
+  #tournamentList {
+    margin: 15px 0px 0px 0px;
+  }
+
+  .tournamentHolder {
+    background-color: #e9eef7;
+    border-top: 2px solid black;
+    border-bottom: 2px solid black;
+    padding-left: 20px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    margin-top: 2px;
+  }
+
+  div.tournamentHolder:hover {
+    background-color: #d2e0fc;
+  }
+
+  .tournament {
+    font-size: 2em;
+    color: black;
+  }
+
+  a.tournament:hover {
+    color: black;
+    text-decoration: none;
   }
 </style>
 
