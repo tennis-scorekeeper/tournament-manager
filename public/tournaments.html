@@ -125,22 +125,11 @@
         tournamentsRef.once("value").then(tss => {
           if (ss.val().tournaments != null) {
             ss.val().tournaments.forEach(id => {
-              var startDate = new Date(tss.child(id).val().startDate);
-              var endDate = new Date(tss.child(id).val().endDate);
-              var startDateString =
-                startDate.getMonth() +
-                1 +
-                "/" +
-                startDate.getDate() +
-                "/" +
-                startDate.getFullYear();
-              var endDateString =
-                endDate.getMonth() +
-                1 +
-                "/" +
-                endDate.getDate() +
-                "/" +
-                endDate.getFullYear();
+              console.log(tss.child(id).val().startDate);
+              var startDate = tss.child(id).val().startDate;
+              var endDate = tss.child(id).val().endDate;
+              var startDateString = startDate.substring(5,7) + "/" + startDate.substring(8) + "/" + startDate.substring(0,4);
+              var endDateString = endDate.substring(5,7) + "/" + endDate.substring(8) + "/" + endDate.substring(0,4);
 
               var div = document.createElement("div");
               div.setAttribute("class", "tournamentHolder");

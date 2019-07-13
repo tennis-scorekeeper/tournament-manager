@@ -40,13 +40,74 @@
   </div>
   <div class="row justify-content-end">
     <div class="col-lg-12 col-md-12 col-sm-12" id="signedInInfo">
+      <label id="divisionSelectLabel" for="divisionSelect">Select Division:</label>
+      <select id="divisionSelect">
+        <option value="0">Choose a division</option>
+      </select>
+      <button id="manageDivisionsButton" type="button" class="btn btn-success" data-toggle="modal"
+        data-target="#manageDivisionsModal">
+        Manage Divisions
+      </button>
       <button id="manageUmpiresButton" type="button" class="btn btn-success" data-toggle="modal"
         data-target="#manageUmpiresModal">
         Manage Umpires
       </button>
-      <button id="editTournamentButton" type="button" class="btn btn-success" onclick="">
+      <button id="editTournamentButton" type="button" class="btn btn-success" data-toggle="modal"
+      data-target="#editTournamentModal" onclick="prefillEditModal()">
         Edit Tournament
       </button>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-lg-4 displayTab">
+      <h4 class="tabText" onclick="openPlayersTab()">Players</h4>
+    </div>
+    <div class="col-lg-4 displayTab">
+      <h4 class="tabText" onclick="openDrawsTab()">Draws</h4>
+    </div>
+    <div class="col-lg-4 displayTab">
+      <h4 class="tabText" onclick="openScheduleTab()">Schedule of Play</h4>
+    </div>
+  </div>
+
+  <div id="tabContent"></div>
+
+  <div class="modal fade" id="manageDivisionsModal" tabindex="-1" role="dialog" aria-labelledby="manageDivisionsModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="manageDivisionsModalLabel">
+            Manage Divisions
+          </h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <form>
+            <div style="display:inline-block" class="form-group">
+              <p id="addDivisionError"></p>
+              <label for="newDivision">New Division</label>
+              <input type="text" class="form-control" id="newDivision" aria-describedby="emailHelp"
+                placeholder="New Division" />
+            </div>
+            <div style="display:inline-block">
+              <button type="button" class="btn btn-primary" onclick="addDivision()">
+                Add
+              </button>
+            </div>
+          </form>
+          <h5>Current Divisions (click to remove):</h5>
+          <div id="currentDivisionsList"></div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">
+            Close
+          </button>
+        </div>
+      </div>
     </div>
   </div>
 
@@ -87,6 +148,50 @@
       </div>
     </div>
   </div>
+
+  <div class="modal fade" id="editTournamentModal" tabindex="-1" role="dialog" aria-labelledby="editTournamentModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="editTournamentModalLabel">
+            Edit Tournament
+          </h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <form>
+            <div class="form-group">
+              <p id="addUmpireError"></p>
+              <label for="newTournamentName">Tournament Name</label>
+              <input type="text" class="form-control" id="newTournamentName" aria-describedby="emailHelp"
+                placeholder="" />
+            </div>
+            <div class="form-group">
+              <div class="tournamentDateHolder">
+                <label for="newTournamentStartDate">Start Date</label>
+                <input type="date" class="form-control" id="newTournamentStartDate" />
+              </div>
+              <div class="tournamentDateHolder">
+                <label for="newTournamentEndDate">End Date</label>
+                <input type="date" class="form-control" id="newTournamentEndDate" />
+              </div>
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">
+            Close
+          </button>
+          <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="updateTournament()">
+            Update
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
 </body>
 
 <script>
@@ -122,6 +227,7 @@
             document.getElementById("hostedBy").textContent =
               "Hosted By: " + tournamentAdmin.replace(",", ".");
             fillCurrentUmpiresList();
+            fillCurrentDivisionsList();
           });
         } else {
           window.location.replace("/");
@@ -289,6 +395,176 @@
         });
       });
   }
+
+  function addDivision() {
+    var url = window.location.href.substring(
+      window.location.href.indexOf("?")
+    );
+    var params = new URLSearchParams(url);
+    var rootRef = firebase.database().ref();
+    var tournamentsRef = rootRef.child("tournaments");
+    var tournamentId = params.get("tournamentId");
+
+    var newDivision = document
+      .getElementById("newDivision")
+      .value.toLowerCase()
+      .replace(".", ",");
+    var tournamentRef = tournamentsRef.child(tournamentId);
+
+    if (newDivision.length <= 0) {
+      // check for invalid input
+      document.getElementById("addDivisionError").textContent =
+        "Invalid division format!";
+    } else {
+      tournamentRef
+        .child("divisions")
+        .once("value")
+        .then(tDivisions => {
+          var tdivs = [];
+          if (tDivisions.exists()) {
+            tdivs = tDivisions.val();
+          }
+          var alreadyAdded = false;
+          tdivs.forEach(existingDivision => {
+            if (existingDivision == newDivision) {
+              document.getElementById("addDivisionError").textContent =
+                "Division already exists!";
+              alreadyAdded = true;
+            }
+          });
+          if (!alreadyAdded) {
+            tdivs.push(newDivision);
+            tournamentRef.update({ divisions: tdivs });
+
+            document.getElementById("addDivisionError").textContent = "";
+            tournamentRef.once("value").then(tss => {
+              fillCurrentDivisionsList();
+            });
+          }
+        });
+    }
+  }
+
+  function fillCurrentDivisionsList() {
+    var url = window.location.href.substring(
+      window.location.href.indexOf("?")
+    );
+    var params = new URLSearchParams(url);
+    var rootRef = firebase.database().ref();
+    var tournamentsRef = rootRef.child("tournaments");
+    var tournamentId = params.get("tournamentId");
+    var tournamentRef = tournamentsRef.child(tournamentId);
+
+    tournamentRef
+      .child("divisions")
+      .once("value")
+      .then(tDivisions => {
+        var tdivs = [];
+        if (tDivisions.exists()) {
+          tdivs = tDivisions.val();
+        }
+        document.getElementById("currentDivisionsList").innerHTML = "";
+        document.getElementById("divisionSelect").innerHTML = "<option value='0'>Choose a division</option>";
+        tdivs.forEach(existingDivision => {
+          var divElement = document.createElement("p");
+          divElement.textContent = existingDivision.replace(",", ".");
+          divElement.setAttribute("class", "currentUmpire");
+          divElement.addEventListener("click", function () {
+            deleteDivision(existingDivision);
+          });
+          document
+            .getElementById("currentDivisionsList")
+            .appendChild(divElement);
+          
+          var optElement = document.createElement("option");
+          optElement.textContent = existingDivision.replace(",", ".");
+          optElement.setAttribute("value", existingDivision);
+          document.getElementById("divisionSelect").appendChild(optElement);
+        });
+      });
+  }
+
+  function deleteDivision(division) {
+    var url = window.location.href.substring(
+      window.location.href.indexOf("?")
+    );
+    var params = new URLSearchParams(url);
+    var rootRef = firebase.database().ref();
+    var tournamentsRef = rootRef.child("tournaments");
+    var tournamentId = params.get("tournamentId");
+    var tournamentRef = tournamentsRef.child(tournamentId);
+
+    tournamentRef.once("value").then(tss => {
+      var tournamentDivisions = tss.child("divisions").val();
+      for (var i = 0; i < tournamentDivisions.length; i++) {
+        if (tournamentDivisions[i] == division) {
+          tournamentDivisions.splice(i, 1);
+        }
+      }
+      tournamentRef.update({ divisions: tournamentDivisions });
+      document.getElementById("addDivisionError").textContent =
+        "Division: " + division.replace(",", ".") + " has been removed.";
+      //fillCurrentDivisionsList();
+      window.location.reload();
+    });
+  }
+
+  function prefillEditModal() {
+    var url = window.location.href.substring(
+      window.location.href.indexOf("?")
+    );
+    var params = new URLSearchParams(url);
+    var rootRef = firebase.database().ref();
+    var tournamentsRef = rootRef.child("tournaments");
+    var tournamentId = params.get("tournamentId");
+    var tournamentRef = tournamentsRef.child(tournamentId);
+
+    tournamentRef.once("value").then(tss => {
+      document.getElementById("newTournamentName").value = tss.val().name
+      document.getElementById("newTournamentStartDate").value = tss.val().startDate
+      document.getElementById("newTournamentEndDate").value = tss.val().endDate
+    });
+  }
+
+  function updateTournament() {
+    var url = window.location.href.substring(
+      window.location.href.indexOf("?")
+    );
+    var params = new URLSearchParams(url);
+    var rootRef = firebase.database().ref();
+    var tournamentsRef = rootRef.child("tournaments");
+    var tournamentId = params.get("tournamentId");
+    var tournamentRef = tournamentsRef.child(tournamentId);
+
+    tournamentRef.update({
+      name: document.getElementById("newTournamentName").value, 
+      startDate: document.getElementById("newTournamentStartDate").value,
+      endDate: document.getElementById("newTournamentEndDate").value
+    }).then(t => {
+      window.location.reload();
+    });
+  }
+
+  function openPlayersTab() {
+    $("#tabContent").load("playersTabContent.html");
+  }
+  
+  function updateTournamentPlayers() {
+    var url = window.location.href.substring(
+      window.location.href.indexOf("?")
+    );
+    var params = new URLSearchParams(url);
+    var rootRef = firebase.database().ref();
+    var tournamentsRef = rootRef.child("tournaments");
+    var tournamentId = params.get("tournamentId");
+    var tournamentRef = tournamentsRef.child(tournamentId);
+
+    var fullListString = document.getElementById("playersListInput").value;
+    var playerList = fullListString.split("\n");
+    playerList.forEach(function (line) {
+      console.log(line.split(","));
+    })
+  }
 </script>
 
 <style media="screen">
@@ -321,6 +597,18 @@
     margin-top: 25px;
   }
 
+  #divisionSelectLabel {
+    margin-left: 20px;
+  }
+
+  #divisionSelect {
+    margin: 10px 0px 0px 5px;
+  }
+  
+  #manageDivisionsButton {
+    margin: 10px 0px 0px 10px;
+  }
+
   #manageUmpiresButton {
     float: right;
     margin: 10px 10px 0px 0px;
@@ -335,10 +623,37 @@
     color: red;
   }
 
+  #addDivisionError {
+    color: red;
+  }
+
   p.currentUmpire:hover {
     text-decoration: line-through;
     color: red;
     cursor: pointer;
+  }
+
+  .tournamentDateHolder {
+    display: inline-block;
+  }
+
+  .displayTab {
+    margin-top: 25px;
+    text-align: center;
+  }
+  
+  .tabText {
+    padding-top: 1.5em;
+    padding-bottom: 1.5em;
+    margin-left: 5em;
+    margin-right: 5em;
+    background-color: #cfe2f3;
+    border: 2px solid black;
+  }
+
+  h4.tabText:hover {
+    cursor:pointer;
+    background-color: #b2d1ed;
   }
 </style>
 
