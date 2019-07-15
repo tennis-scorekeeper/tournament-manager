@@ -87,19 +87,31 @@
         </div>
         <div class="modal-body">
           <form>
-            <div style="display:inline-block" class="form-group">
+            <div class="form-group">
               <p id="addDivisionError"></p>
               <label for="newDivision">New Division</label>
               <input type="text" class="form-control" id="newDivision" aria-describedby="emailHelp"
                 placeholder="New Division" />
             </div>
-            <div style="display:inline-block">
+            <div class="form-group">
+              <label for="drawSizeSelect">Draw Size</label>
+              <select class="form-control" id="drawSizeSelect">
+                <option value='4'>4</option>
+                <option value='8'>8</option>
+                <option value='16'>16</option>
+                <option value='32'>32</option>
+                <option value='64'>64</option>
+                <option value='128'>128</option>
+                <option value='256'>256</option>
+              </select>
+          </div>
+            <div>
               <button type="button" class="btn btn-primary" onclick="addDivision()">
                 Add
               </button>
             </div>
           </form>
-          <h5>Current Divisions (click to remove):</h5>
+          <h5 style="margin-top:10px">Current Divisions (click to remove):</h5>
           <div id="currentDivisionsList"></div>
         </div>
         <div class="modal-footer">
@@ -409,6 +421,7 @@
       .getElementById("newDivision")
       .value.toLowerCase()
       .replace(".", ",");
+    var drawSize = document.getElementById("drawSizeSelect").value;
     var tournamentRef = tournamentsRef.child(tournamentId);
 
     if (newDivision.length <= 0) {
@@ -416,32 +429,15 @@
       document.getElementById("addDivisionError").textContent =
         "Invalid division format!";
     } else {
-      tournamentRef
-        .child("divisions")
-        .once("value")
-        .then(tDivisions => {
-          var tdivs = [];
-          if (tDivisions.exists()) {
-            tdivs = tDivisions.val();
-          }
-          var alreadyAdded = false;
-          tdivs.forEach(existingDivision => {
-            if (existingDivision == newDivision) {
-              document.getElementById("addDivisionError").textContent =
-                "Division already exists!";
-              alreadyAdded = true;
-            }
-          });
-          if (!alreadyAdded) {
-            tdivs.push(newDivision);
-            tournamentRef.update({ divisions: tdivs });
-
-            document.getElementById("addDivisionError").textContent = "";
-            tournamentRef.once("value").then(tss => {
-              fillCurrentDivisionsList();
-            });
-          }
-        });
+      tournamentRef.child("divisions").child(newDivision).once("value").then(divss => {
+        if (divss.exists()) {
+          document.getElementById("addDivisionError").textContent =
+            "Division already exists!";
+        } else {
+          tournamentRef.child("divisions").child(newDivision).set({drawSize: drawSize});
+          fillCurrentDivisionsList();
+        }
+      });
     }
   }
 
@@ -459,26 +455,22 @@
       .child("divisions")
       .once("value")
       .then(tDivisions => {
-        var tdivs = [];
-        if (tDivisions.exists()) {
-          tdivs = tDivisions.val();
-        }
         document.getElementById("currentDivisionsList").innerHTML = "";
         document.getElementById("divisionSelect").innerHTML = "<option value='0'>Choose a division</option>";
-        tdivs.forEach(existingDivision => {
+        tDivisions.forEach(div => {
           var divElement = document.createElement("p");
-          divElement.textContent = existingDivision.replace(",", ".");
+          divElement.textContent = div.key.replace(",", ".");
           divElement.setAttribute("class", "currentUmpire");
           divElement.addEventListener("click", function () {
-            deleteDivision(existingDivision);
+            deleteDivision(div.key);
           });
           document
             .getElementById("currentDivisionsList")
             .appendChild(divElement);
           
           var optElement = document.createElement("option");
-          optElement.textContent = existingDivision.replace(",", ".");
-          optElement.setAttribute("value", existingDivision);
+          optElement.textContent = div.key.replace(",", ".");
+          optElement.setAttribute("value", div.key);
           document.getElementById("divisionSelect").appendChild(optElement);
         });
       });
@@ -493,18 +485,7 @@
     var tournamentsRef = rootRef.child("tournaments");
     var tournamentId = params.get("tournamentId");
     var tournamentRef = tournamentsRef.child(tournamentId);
-
-    tournamentRef.once("value").then(tss => {
-      var tournamentDivisions = tss.child("divisions").val();
-      for (var i = 0; i < tournamentDivisions.length; i++) {
-        if (tournamentDivisions[i] == division) {
-          tournamentDivisions.splice(i, 1);
-        }
-      }
-      tournamentRef.update({ divisions: tournamentDivisions });
-      document.getElementById("addDivisionError").textContent =
-        "Division: " + division.replace(",", ".") + " has been removed.";
-      //fillCurrentDivisionsList();
+    tournamentRef.child("divisions").child(division).remove().then(tmp => {
       window.location.reload();
     });
   }
