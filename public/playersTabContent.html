@@ -1,7 +1,15 @@
+<div class="row justify-content-end">
 <button id="editTournamentButton" type="button" class="btn btn-success" data-toggle="modal"
     data-target="#editPlayersModal" onclick="prefillEditModal()">
     Edit Players
 </button>
+</div>
+
+<div class="row justify-content-center">
+<div class="col-4" id="playerNames"><h5>Name</h5></div>
+<div class="col-4" id="playerTeams"><h5>School/Team</h5></div>
+<div class="col-4" id="playerSeeds"><h5>Seed</h5></div>
+</div>
 
 <div class="modal fade" id="editPlayersModal" tabindex="-1" role="dialog" aria-labelledby="editPlayersModalLabel"
     aria-hidden="true">
@@ -17,14 +25,14 @@
         </div>
         <div class="modal-body">
             <p id="addUmpireError"></p>
-            <label for="playersListInput">1 PLAYER PER LINE: Name,Team/School,Division,Seed</label>
+            <label for="playersListInput">1 PLAYER PER LINE: Name,Team/School,Seed - (SEED IS OPTIONAL)</label>
             <textarea rows="4" cols="92" id="playersListInput"></textarea>
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-dismiss="modal">
             Close
           </button>
-          <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="updateTournamentPlayers()">
+          <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="updateDivisionPlayers()">
             Update
           </button>
         </div>

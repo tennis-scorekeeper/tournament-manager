@@ -36,12 +36,13 @@
     <div class="col-lg-12 col-md-12 col-sm-12" id="titleHolder">
       <h1 id="title"></h1>
       <h4 id="hostedBy"></h4>
+      <p id="divisionSelectError"></p>
     </div>
   </div>
   <div class="row justify-content-end">
     <div class="col-lg-12 col-md-12 col-sm-12" id="signedInInfo">
       <label id="divisionSelectLabel" for="divisionSelect">Select Division:</label>
-      <select id="divisionSelect">
+      <select id="divisionSelect" onchange="divisionSelectChange()">
         <option value="0">Choose a division</option>
       </select>
       <button id="manageDivisionsButton" type="button" class="btn btn-success" data-toggle="modal"
@@ -436,6 +437,7 @@
         } else {
           tournamentRef.child("divisions").child(newDivision).set({drawSize: drawSize});
           fillCurrentDivisionsList();
+          closeTab();
         }
       });
     }
@@ -486,7 +488,8 @@
     var tournamentId = params.get("tournamentId");
     var tournamentRef = tournamentsRef.child(tournamentId);
     tournamentRef.child("divisions").child(division).remove().then(tmp => {
-      window.location.reload();
+      fillCurrentDivisionsList();
+      closeTab();
     });
   }
 
@@ -526,24 +529,91 @@
     });
   }
 
+  function divisionSelectChange() {
+    closeTab();
+  }
+
+  function closeTab() {
+    document.getElementById("tabContent").innerHTML="";
+  }
+
   function openPlayersTab() {
-    $("#tabContent").load("playersTabContent.html");
+    if (document.getElementById("divisionSelect").value == '0') {
+      document.getElementById("divisionSelectError").innerHTML = "Please select a division first!";
+    } else {
+      var url = window.location.href.substring(
+        window.location.href.indexOf("?")
+      );
+      var divName = document.getElementById("divisionSelect").value;
+      var params = new URLSearchParams(url);
+      var rootRef = firebase.database().ref();
+      var tournamentsRef = rootRef.child("tournaments");
+      var tournamentId = params.get("tournamentId");
+      var divRef = tournamentsRef.child(tournamentId).child("divisions").child(divName);
+
+      divRef.once("value").then(ss => {
+        var playersList = ss.child("players").val();
+        fillPlayersList(playersList);
+        var playerListString = "";
+        
+        playersList.forEach(player => {
+          playerListString += player + "\n";
+        })
+        document.getElementById("playersListInput").value=playerListString;
+      })
+
+      document.getElementById("divisionSelectError").innerHTML = "";
+      $("#tabContent").load("playersTabContent.html");
+    }
   }
   
-  function updateTournamentPlayers() {
+  function updateDivisionPlayers() {
     var url = window.location.href.substring(
       window.location.href.indexOf("?")
     );
+    var divName = document.getElementById("divisionSelect").value;
     var params = new URLSearchParams(url);
     var rootRef = firebase.database().ref();
     var tournamentsRef = rootRef.child("tournaments");
     var tournamentId = params.get("tournamentId");
-    var tournamentRef = tournamentsRef.child(tournamentId);
+    var divRef = tournamentsRef.child(tournamentId).child("divisions").child(divName);
 
     var fullListString = document.getElementById("playersListInput").value;
     var playerList = fullListString.split("\n");
-    playerList.forEach(function (line) {
-      console.log(line.split(","));
+
+    var checkedPlayerList = [];
+    playerList.forEach(line => {
+      if (line.indexOf(",") != -1 && line.length > 2) { //Length 2 to make sure atleast some text and not just comma
+        checkedPlayerList.push(line);
+      }
+    })
+    divRef.child("players").set(checkedPlayerList).then(tmp => {
+      fillPlayersList(checkedPlayerList);
+    });
+  }
+
+  function fillPlayersList(list) {
+    document.getElementById("playerNames").innerHTML = "<h5>Name</h5>"
+    document.getElementById("playerTeams").innerHTML = "<h5>School/Team</h5>"
+    document.getElementById("playerSeeds").innerHTML = "<h5>Seed</h5>"
+
+    list.forEach(player => {
+      console.log(player);
+      var playerInfo = player.split(",");
+      var nameElement = document.createElement("p");
+      nameElement.textContent = playerInfo[0];
+      var teamElement = document.createElement("p");
+      teamElement.textContent = playerInfo[1];
+      var seedElement = document.createElement("p");
+      if (playerInfo.length == 3) {
+        seedElement.textContent = playerInfo[2];
+      } else {
+        seedElement.textContent = "X";
+      }
+
+      document.getElementById("playerNames").appendChild(nameElement);
+      document.getElementById("playerTeams").appendChild(teamElement);
+      document.getElementById("playerSeeds").appendChild(seedElement);
     })
   }
 </script>
@@ -597,7 +667,7 @@
 
   #editTournamentButton {
     float: right;
-    margin: 10px 10px 0px 0px;
+    margin: 10px 30px 0px 0px;
   }
 
   #addUmpireError {
