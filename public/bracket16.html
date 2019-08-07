@@ -40,6 +40,7 @@
       <select id="m0b">
           <option>Bye</option>
       </select>
+      <button id="m0" class="editMatch" onclick="editMatch('m0')"></button>
 
       <select id="m1a">
           <option>Bye</option>
@@ -47,6 +48,7 @@
       <select id="m1b">
           <option>Bye</option>
       </select>
+      <button id="m1" class="editMatch" onclick="editMatch('m1')"></button>
 
       <select id="m2a">
           <option>Bye</option>
@@ -54,6 +56,7 @@
       <select id="m2b">
           <option>Bye</option>
       </select>
+      <button id="m2" class="editMatch" onclick="editMatch('m2')"></button>
 
       <select id="m3a">
           <option>Bye</option>
@@ -61,6 +64,7 @@
       <select id="m3b">
           <option>Bye</option>
       </select>
+      <button id="m3" class="editMatch" onclick="editMatch('m3')"></button>
 
       <select id="m4a">
           <option>Bye</option>
@@ -68,6 +72,7 @@
       <select id="m4b">
           <option>Bye</option>
       </select>
+      <button id="m4" class="editMatch" onclick="editMatch('m4')"></button>
 
       <select id="m5a">
           <option>Bye</option>
@@ -75,6 +80,7 @@
       <select id="m5b">
           <option>Bye</option>
       </select>
+      <button id="m5" class="editMatch" onclick="editMatch('m5')"></button>
 
       <select id="m6a">
           <option>Bye</option>
@@ -82,6 +88,7 @@
       <select id="m6b">
           <option>Bye</option>
       </select>
+      <button id="m6" class="editMatch" onclick="editMatch('m6')"></button>
 
       <select id="m7a">
           <option>Bye</option>
@@ -89,55 +96,49 @@
       <select id="m7b">
           <option>Bye</option>
       </select>
+      <button id="m7" class="editMatch" onclick="editMatch('m7')"></button>
 
-      <select id="m8a">
-          <option>Bye</option>
-      </select>
-      <select id="m8b">
-          <option>Bye</option>
-      </select>
+      <p id="m8a">Bye
+      </p>
+      <p id="m8b">Bye
+      </p>
+      <button id="m8" class="editMatch" onclick="editMatch('m8')"></button>
 
-      <select id="m9a">
-          <option>Bye</option>
-      </select>
-      <select id="m9b">
-          <option>Bye</option>
-      </select>
+      <p id="m9a">Bye
+      </p>
+      <p id="m9b">Bye
+      </p>
+      <button id="m9" class="editMatch" onclick="editMatch('m9')"></button>
 
-      <select id="m10a">
-          <option>Bye</option>
-      </select>
-      <select id="m10b">
-          <option>Bye</option>
-      </select>
+      <p id="m10a">Bye
+      </p>
+      <p id="m10b">Bye
+      </p>
+      <button id="m10" class="editMatch" onclick="editMatch('m10')"></button>
 
-      <select id="m11a">
-          <option>Bye</option>
-      </select>
-      <select id="m11b">
-          <option>Bye</option>
-      </select>
+      <p id="m11a">Bye
+      </p>
+      <p id="m11b">Bye
+      </p>
+      <button id="m11" class="editMatch" onclick="editMatch('m11')"></button>
 
-      <select id="m12a">
-          <option>Bye</option>
-      </select>
-      <select id="m12b">
-          <option>Bye</option>
-      </select>
+      <p id="m12a">Bye
+      </p>
+      <p id="m12b">Bye
+      </p>
+      <button id="m12" class="editMatch" onclick="editMatch('m12')"></button>
 
-      <select id="m13a">
-          <option>Bye</option>
-      </select>
-      <select id="m13b">
-          <option>Bye</option>
-      </select>
+      <p id="m13a">Bye
+      </p>
+      <p id="m13b">Bye
+      </p>
+      <button id="m13" class="editMatch" onclick="editMatch('m13')"></button>
 
-      <select id="m14a">
-          <option>Bye</option>
-      </select>
-      <select id="m14b">
-          <option>Bye</option>
-      </select>
+      <p id="m14a">Bye
+      </p>
+      <p id="m14b">Bye
+      </p>
+      <button id="m14" class="editMatch" onclick="editMatch('m14')"></button>
     </div>
   </body>
 
@@ -170,9 +171,11 @@
       var divRef = tournamentsRef.child(tournamentId).child("divisions").child(divName);
 
       var matchIds = ["m0a", "m0b", "m1a", "m1b", "m2a", "m2b", "m3a", "m3b",
-                      "m4a", "m4b", "m5a", "m5b", "m6a", "m6b", "m7a", "m7b",
-                      "m8a", "m8b", "m9a", "m9b", "m10a", "m10b", "m11a", "m11b",
-                      "m12a", "m12b", "m13a", "m13b", "m14a", "m14b"];
+                      "m4a", "m4b", "m5a", "m5b", "m6a", "m6b", "m7a", "m7b"]
+      
+      var matchIds2 = ["m8a", "m8b", "m9a", "m9b", "m10a", "m10b", "m11a", 
+                        "m11b", "m12a", "m12b", "m13a", "m13b", "m14a", "m14b"];
+
       var playerOptionElements = [];
       divRef.once("value").then(ss => {
         var playersList = ss.child("players").val();
@@ -205,6 +208,22 @@
       var tournamentsRef = rootRef.child("tournaments");
       var divRef = tournamentsRef.child(tournamentId).child("divisions").child(divName);
 
+      /*
+        "m8a": document.getElementById("m8a").selectedIndex,
+        "m8b": document.getElementById("m8b").selectedIndex,
+        "m9a": document.getElementById("m9a").selectedIndex,
+        "m9b": document.getElementById("m9b").selectedIndex,
+        "m10a": document.getElementById("m10a").selectedIndex,
+        "m10b": document.getElementById("m10b").selectedIndex,
+        "m11a": document.getElementById("m11a").selectedIndex,
+        "m11b": document.getElementById("m11b").selectedIndex,
+        "m12a": document.getElementById("m12a").selectedIndex,
+        "m12b": document.getElementById("m12b").selectedIndex,
+        "m13a": document.getElementById("m13a").selectedIndex,
+        "m13b": document.getElementById("m13b").selectedIndex,
+        "m14a": document.getElementById("m14a").selectedIndex,
+        "m14b": document.getElementById("m14b").selectedIndex,
+      */
       divRef.child("draw").set({
         "m0a": document.getElementById("m0a").selectedIndex,
         "m0b": document.getElementById("m0b").selectedIndex,
@@ -222,23 +241,13 @@
         "m6b": document.getElementById("m6b").selectedIndex,
         "m7a": document.getElementById("m7a").selectedIndex,
         "m7b": document.getElementById("m7b").selectedIndex,
-        "m8a": document.getElementById("m8a").selectedIndex,
-        "m8b": document.getElementById("m8b").selectedIndex,
-        "m9a": document.getElementById("m9a").selectedIndex,
-        "m9b": document.getElementById("m9b").selectedIndex,
-        "m10a": document.getElementById("m10a").selectedIndex,
-        "m10b": document.getElementById("m10b").selectedIndex,
-        "m11a": document.getElementById("m11a").selectedIndex,
-        "m11b": document.getElementById("m11b").selectedIndex,
-        "m12a": document.getElementById("m12a").selectedIndex,
-        "m12b": document.getElementById("m12b").selectedIndex,
-        "m13a": document.getElementById("m13a").selectedIndex,
-        "m13b": document.getElementById("m13b").selectedIndex,
-        "m14a": document.getElementById("m14a").selectedIndex,
-        "m14b": document.getElementById("m14b").selectedIndex,
       }).then(tmp => {
         document.getElementById("savingProgress").textContent = "Saved!"
       });
+    }
+
+    function editMatch(matchId) {
+      console.log(matchId);
     }
   </script>
 
@@ -265,6 +274,11 @@
       left: 90px;
     }
 
+    .editMatch {
+      background-color: #cfe2f3;
+      border: 1px solid black;
+    }
+
     #m0a {
       position: absolute;
       left: 50px;
@@ -274,6 +288,12 @@
       position: absolute;
       left: 50px;
       top: 199px;
+    }
+    #m0 {
+      position: absolute;
+      left: 190px;
+      top: 154px;
+      padding: 7px;
     }
 
     #m1a {
@@ -286,6 +306,12 @@
       left: 50px;
       top: 457px;
     }
+    #m1 {
+      position: absolute;
+      left: 190px;
+      top: 412px;
+      padding: 7px;
+    }
 
     #m2a {
       position: absolute;
@@ -296,6 +322,12 @@
       position: absolute;
       left: 50px;
       top: 715px;
+    }
+    #m2 {
+      position: absolute;
+      left: 190px;
+      top: 670px;
+      padding: 7px;
     }
 
     #m3a {
@@ -308,6 +340,12 @@
       left: 50px;
       top: 973px;
     }
+    #m3 {
+      position: absolute;
+      left: 190px;
+      top: 928px;
+      padding: 7px;
+    }
 
     #m4a {
       position: absolute;
@@ -318,6 +356,12 @@
       position: absolute;
       left: 1550px;
       top: 199px;
+    }
+    #m4 {
+      position: absolute;
+      left: 1550px;
+      top: 154px;
+      padding: 7px;
     }
 
     #m5a {
@@ -330,6 +374,12 @@
       left: 1550px;
       top: 457px;
     }
+    #m5 {
+      position: absolute;
+      left: 1550px;
+      top: 412px;
+      padding: 7px;
+    }
 
     #m6a {
       position: absolute;
@@ -340,6 +390,12 @@
       position: absolute;
       left: 1550px;
       top: 715px;
+    }
+    #m6 {
+      position: absolute;
+      left: 1550px;
+      top: 670px;
+      padding: 7px;
     }
 
     #m7a {
@@ -352,6 +408,12 @@
       left: 1550px;
       top: 973px;
     }
+    #m7 {
+      position: absolute;
+      left: 1550px;
+      top: 928px;
+      padding: 7px;
+    }
 
     #m8a {
       position: absolute;
@@ -362,6 +424,12 @@
       position: absolute;
       left: 250px;
       top: 392px;
+    }
+    #m8 {
+      position: absolute;
+      left: 375px;
+      top: 281px;
+      padding: 7px;
     }
 
     #m9a {
@@ -374,6 +442,12 @@
       left: 250px;
       top: 908px;
     }
+    #m9 {
+      position: absolute;
+      left: 375px;
+      top: 797px;
+      padding: 7px;
+    }
 
     #m10a {
       position: absolute;
@@ -385,16 +459,29 @@
       left: 1370px;
       top: 392px;
     }
+    #m10 {
+      position: absolute;
+      left: 1360px;
+      top: 281px;
+      padding: 7px;
+    }
+    
 
     #m11a {
       position: absolute;
-      left: 1370px;
+      left: 1360px;
       top: 650px;
     }
     #m11b {
       position: absolute;
       left: 1370px;
       top: 908px;
+    }
+    #m11 {
+      position: absolute;
+      left: 1370px;
+      top: 797px;
+      padding: 7px;
     }
 
     #m12a {
@@ -407,6 +494,12 @@
       left: 440px;
       top: 779px;
     }
+    #m12 {
+      position: absolute;
+      left: 560px;
+      top: 540px;
+      padding: 7px;
+    }
 
     #m13a {
       position: absolute;
@@ -418,6 +511,12 @@
       left: 1190px;
       top: 779px;
     }
+    #m13 {
+      position: absolute;
+      left: 1175px;
+      top: 540px;
+      padding: 7px;
+    }
 
     #m14a {
       position: absolute;
@@ -428,6 +527,12 @@
       position: absolute;
       left: 1000px;
       top: 521px;
+    }
+    #m14 {
+      position: absolute;
+      left: 865px;
+      top: 540px;
+      padding: 7px;
     }
   </style>
 </html>
