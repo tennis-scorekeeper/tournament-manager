@@ -29,7 +29,6 @@
     <div id="bracketNameHolder">
       <h2 id="drawName"></h2>
     </div>
-    <button id="saveButton" type="button" class="btn btn-primary" onclick="saveDraw()">Save</button>
     <p id="savingProgress"></p>
     <div id="bracket">
       <img height="1000" width="1750" id="bracket" src="images/16b.png">
@@ -41,6 +40,8 @@
           <option>Bye</option>
       </select>
       <button id="m0" class="editMatch" onclick="editMatch('m0')" data-toggle="modal" data-target="#editMatchModal"></button>
+      <p id="m0details" class="matchDetailsLeft"></p>
+      <p id="m0score" class="matchScore"></p>
 
       <select id="m1a" onchange="saveDraw2('m1', 'm1a')">
           <option>Bye</option>
@@ -49,6 +50,8 @@
           <option>Bye</option>
       </select>
       <button id="m1" class="editMatch" onclick="editMatch('m1')" data-toggle="modal" data-target="#editMatchModal"></button>
+      <p id="m1details" class="matchDetailsLeft"></p>
+      <p id="m1score" class="matchScore"></p>
 
       <select id="m2a" onchange="saveDraw2('m2', 'm2a')">
           <option>Bye</option>
@@ -57,6 +60,8 @@
           <option>Bye</option>
       </select>
       <button id="m2" class="editMatch" onclick="editMatch('m2')" data-toggle="modal" data-target="#editMatchModal"></button>
+      <p id="m2details" class="matchDetailsLeft"></p>
+      <p id="m2score" class="matchScore"></p>
 
       <select id="m3a" onchange="saveDraw2('m3', 'm3a')">
           <option>Bye</option>
@@ -65,6 +70,8 @@
           <option>Bye</option>
       </select>
       <button id="m3" class="editMatch" onclick="editMatch('m3')" data-toggle="modal" data-target="#editMatchModal"></button>
+      <p id="m3details" class="matchDetailsLeft"></p>
+      <p id="m3score" class="matchScore"></p>
 
       <select id="m4a" onchange="saveDraw2('m4', 'm4a')">
           <option>Bye</option>
@@ -73,6 +80,8 @@
           <option>Bye</option>
       </select>
       <button id="m4" class="editMatch" onclick="editMatch('m4')" data-toggle="modal" data-target="#editMatchModal"></button>
+      <p id="m4details" class="matchDetailsRight"></p>
+      <p id="m4score" class="matchScore"></p>
 
       <select id="m5a" onchange="saveDraw2('m5', 'm5a')">
           <option>Bye</option>
@@ -81,6 +90,8 @@
           <option>Bye</option>
       </select>
       <button id="m5" class="editMatch" onclick="editMatch('m5')" data-toggle="modal" data-target="#editMatchModal"></button>
+      <p id="m5details" class="matchDetailsRight"></p>
+      <p id="m5score" class="matchScore"></p>
 
       <select id="m6a" onchange="saveDraw2('m6', 'm6a')">
           <option>Bye</option>
@@ -89,6 +100,8 @@
           <option>Bye</option>
       </select>
       <button id="m6" class="editMatch" onclick="editMatch('m6')" data-toggle="modal" data-target="#editMatchModal"></button>
+      <p id="m6details" class="matchDetailsRight"></p>
+      <p id="m6score" class="matchScore"></p>
 
       <select id="m7a" onchange="saveDraw2('m7', 'm7a')">
           <option>Bye</option>
@@ -97,36 +110,52 @@
           <option>Bye</option>
       </select>
       <button id="m7" class="editMatch" onclick="editMatch('m7')" data-toggle="modal" data-target="#editMatchModal"></button>
+      <p id="m7details" class="matchDetailsRight"></p>
+      <p id="m7score" class="matchScore"></p>
 
       <span id="m8a"></span>
       <span id="m8b"></span>
       <button id="m8" class="editMatch" onclick="editMatch('m8')" data-toggle="modal" data-target="#editMatchModal"></button>
+      <p id="m8details" class="matchDetailsLeft"></p>
+      <p id="m8score" class="matchScore"></p>
 
       <span id="m9a"></span>
       <span id="m9b"></span>
       <button id="m9" class="editMatch" onclick="editMatch('m9')" data-toggle="modal" data-target="#editMatchModal"></button>
+      <p id="m9details" class="matchDetailsLeft"></p>
+      <p id="m9score" class="matchScore"></p>
 
       <span id="m10a"></span>
       <span id="m10b"></span>
       <button id="m10" class="editMatch" onclick="editMatch('m10')" data-toggle="modal" data-target="#editMatchModal"></button>
+      <p id="m10details" class="matchDetailsRight"></p>
+      <p id="m10score" class="matchScore"></p>
 
       <span id="m11a"></span>
       <span id="m11b"></span>
       <button id="m11" class="editMatch" onclick="editMatch('m11')" data-toggle="modal" data-target="#editMatchModal"></button>
+      <p id="m11details" class="matchDetailsRight"></p>
+      <p id="m11score" class="matchScore"></p>
 
       <span id="m12a"></span>
       <span id="m12b"></span>
       <button id="m12" class="editMatch" onclick="editMatch('m12')" data-toggle="modal" data-target="#editMatchModal"></button>
+      <p id="m12details" class="matchDetailsLeft"></p>
+      <p id="m12score" class="matchScore"></p>
 
       <span id="m13a"></span>
       <span id="m13b"></span>
       <button id="m13" class="editMatch" onclick="editMatch('m13')" data-toggle="modal" data-target="#editMatchModal"></button>
+      <p id="m13details" class="matchDetailsRight"></p>
+      <p id="m13score" class="matchScore"></p>
 
       <span id="m14a"></span>
       <span id="m14b"></span>
       <button id="m14" class="editMatch" onclick="editMatch('m14')" data-toggle="modal" data-target="#editMatchModal"></button>
+      <p id="m14details" class="matchDetailsCenter"></p>
+      <p id="m14score" class="matchScoreCenter"></p>
 
-      <span id="winner"></span>
+      <span id="winner" class="matchScoreCenter "></span>
     </div>
 
     <div class="modal fade" id="editMatchModal" tabindex="-1" role="dialog" aria-labelledby="editMatchModalLabel"
@@ -238,10 +267,58 @@
         fullMatchIds.forEach(id => {
           document.getElementById(id+"a").value = ss.child("draw").child(id).child(id+"a").val();
           document.getElementById(id+"b").value = ss.child("draw").child(id).child(id+"b").val();
+          var detailString = "";
+          var date = ss.child("draw").child(id).child("date").val();
+          var time = ss.child("draw").child(id).child("matchTime").val()
+          var courtNumber = ss.child("draw").child(id).child("courtNumber").val();
+
+          if (date != null && date != "") {
+            detailString += date.substring(date.indexOf("-")+1) + " ";
+          }
+          if (time != null && time != "") {
+            detailString += time + " ";
+          }
+          if (courtNumber != null && courtNumber != "") {
+            detailString += "Court " + courtNumber;
+          }
+          document.getElementById(id+"details").textContent = detailString;
+
+          var score = ss.child("draw").child(id).child("score").val();
+          var scoreString = "";
+          score.split(" ").forEach(set => {
+            if (set.length == 3) {
+              scoreString += set + " ";
+            }
+          });
+          document.getElementById(id+"score").textContent = scoreString;
         })
         fullMatchIds2.forEach(id => {
           document.getElementById(id+"a").textContent = ss.child("draw").child(id).child(id+"a").val();
           document.getElementById(id+"b").textContent = ss.child("draw").child(id).child(id+"b").val();
+          var detailString = "";
+          var date = ss.child("draw").child(id).child("date").val();
+          var time = ss.child("draw").child(id).child("matchTime").val()
+          var courtNumber = ss.child("draw").child(id).child("courtNumber").val();
+
+          if (date != null && date != "") {
+            detailString += date.substring(date.indexOf("-")+1) + " ";
+          }
+          if (time != null && time != "") {
+            detailString += time + " ";
+          }
+          if (courtNumber != null && courtNumber != "") {
+            detailString += "Court " + courtNumber;
+          }
+          document.getElementById(id+"details").textContent = detailString;
+
+          var score = ss.child("draw").child(id).child("score").val();
+          var scoreString = "";
+          score.split(" ").forEach(set => {
+            if (set.length == 3) {
+              scoreString += set + " ";
+            }
+          });
+          document.getElementById(id+"score").textContent = scoreString;
         })
         document.getElementById("winner").textContent = ss.child("draw").child("winner").val();
       })
@@ -307,6 +384,17 @@
     }
 
     function editMatch(matchId) {
+      var url = window.location.href.substring(
+        window.location.href.indexOf("?")
+      );
+      var params = new URLSearchParams(url);
+      var tournamentId = params.get("tournamentId");
+      var divName = params.get("div");
+      document.getElementById("drawName").textContent = divName;
+
+      var rootRef = firebase.database().ref();
+      var tournamentsRef = rootRef.child("tournaments");
+      var divRef = tournamentsRef.child(tournamentId).child("divisions").child(divName);
       var matchNumber = parseInt(matchId.substring(1));
       document.getElementById("editMatchModalLabel").textContent = matchId;
 
@@ -317,6 +405,53 @@
         document.getElementById("p1Label").textContent = document.getElementById(matchId+"a").textContent
         document.getElementById("p2Label").textContent = document.getElementById(matchId+"b").textContent
       }
+      divRef.once("value").then(ss => {
+        var date = ss.child("draw").child(matchId).child("date").val();
+        var time = ss.child("draw").child(matchId).child("matchTime").val()
+        var courtNumber = ss.child("draw").child(matchId).child("courtNumber").val();
+
+        var score = ["-","-","-"];
+        if (ss.child("draw").child(matchId).child("score").val() != null) {
+          score = ss.child("draw").child(matchId).child("score").val().split(" ");
+        }
+
+        document.getElementById("matchCourtNumber").value = courtNumber;
+        document.getElementById("matchTime").value = time;
+        document.getElementById("editMatchDate").value = date;
+        
+        if (score[0].length == 3) {
+          document.getElementById("p1s1").value = score[0][0];
+          document.getElementById("p2s1").value = score[0][2];
+        } else {
+          document.getElementById("p1s1").value = "";
+          document.getElementById("p2s1").value = "";
+        }
+        if (score[1].length == 3) {
+          document.getElementById("p1s2").value = score[1][0];
+          document.getElementById("p2s2").value = score[1][2];
+        } else {
+          document.getElementById("p1s2").value = "";
+          document.getElementById("p2s2").value = "";
+        }
+        if (score[2].length == 3) {
+          document.getElementById("p1s3").value = score[2][0];
+          document.getElementById("p2s3").value = score[2][2];
+        } else {
+          document.getElementById("p1s3").value = "";
+          document.getElementById("p2s3").value = "";
+        }
+
+        var p1 = document.getElementById("p1Label").textContent;
+        var p2 = document.getElementById("p2Label").textContent;
+        var winner = ss.child("draw").child(matchId).child("winner").val();
+
+        if (winner == p1) {
+          document.getElementById("p1").checked = true;
+        }
+        if (winner == p2) {
+          document.getElementById("p2").checked = true;
+        }
+      });
     }
 
     function saveMatch() {
@@ -357,8 +492,31 @@
       var matchProgressionList = ["m8a","m8b","m9a","m9b","m10a","m10b","m11a","m11b","m12a","m12b","m13a","m13b","m14a","m14b","winner"];
       document.getElementById(matchProgressionList[parseInt(matchId.substring(1))]).textContent = winner;
 
-      saveDraw();
+      var detailString = "";
+      var date = document.getElementById("editMatchDate").value;
+      var time = document.getElementById("matchTime").value;
+      var courtNumber = document.getElementById("matchCourtNumber").value;
 
+      if (date != null && date != "") {
+        detailString += date.substring(date.indexOf("-")+1) + " ";
+      }
+      if (time != null && time != "") {
+        detailString += time + " ";
+      }
+      if (courtNumber != null && courtNumber != "") {
+        detailString += "Court " + courtNumber;
+      }
+      
+      var scoreString = "";
+      score.split(" ").forEach(set => {
+        if (set.length == 3) {
+          scoreString += set + " ";
+        }
+      });
+      document.getElementById(matchId+"score").textContent = scoreString;
+      document.getElementById(matchId+"details").textContent = detailString;
+
+      saveDraw();
     }
   </script>
 
@@ -371,12 +529,6 @@
     #bracket {
       position: absolute;
       top:50px;
-    }
-
-    #saveButton {
-      position: absolute;
-      top: 20px;
-      left: 20px;
     }
 
     #savingProgress {
@@ -408,13 +560,37 @@
 
     #matchCourtNumber {
       margin-top: 20px;
-      width: 2em;
+      width: 3em;
       margin-right: 50px;
     }
 
     #matchTime {
       margin-top: 20px;
-      width: 5em;
+      width: 7em;
+    }
+
+    .matchDetailsLeft {
+      width: 10em;
+      text-align: right;
+      padding-right: 7px;
+    }
+
+    .matchDetailsRight {
+      width: 10em;
+    }
+
+    .matchDetailsCenter {
+      width: 10em;
+      text-align: center;
+    }
+
+    .matchScore {
+      width: 6em;
+    }
+
+    .matchScoreCenter {
+      width: 6em;
+      text-align: center;
     }
 
     #m0a {
@@ -433,6 +609,16 @@
       top: 154px;
       padding: 7px;
     }
+    #m0details {
+      position: absolute;
+      top: 149px;
+      left: 25px;
+    }
+    #m0score {
+      position: absolute;
+      left: 250px;
+      top: 164px;
+    }
 
     #m1a {
       position: absolute;
@@ -449,6 +635,16 @@
       left: 190px;
       top: 412px;
       padding: 7px;
+    }
+    #m1details {
+      position: absolute;
+      top: 407px;
+      left: 25px;
+    }
+    #m1score {
+      position: absolute;
+      left: 250px;
+      top: 422px;
     }
 
     #m2a {
@@ -467,6 +663,16 @@
       top: 670px;
       padding: 7px;
     }
+    #m2details {
+      position: absolute;
+      top: 665px;
+      left: 25px;
+    }
+    #m2score {
+      position: absolute;
+      left: 250px;
+      top: 680px;
+    }
 
     #m3a {
       position: absolute;
@@ -483,6 +689,16 @@
       left: 190px;
       top: 928px;
       padding: 7px;
+    }
+    #m3details {
+      position: absolute;
+      top: 923px;
+      left: 25px;
+    }
+    #m3score {
+      position: absolute;
+      left: 250px;
+      top: 938px;
     }
 
     #m4a {
@@ -501,6 +717,16 @@
       top: 154px;
       padding: 7px;
     }
+    #m4details {
+      position: absolute;
+      top: 149px;
+      left: 1580px;
+    }
+    #m4score {
+      position: absolute;
+      left: 1370px;
+      top: 164px;
+    }
 
     #m5a {
       position: absolute;
@@ -517,6 +743,16 @@
       left: 1550px;
       top: 412px;
       padding: 7px;
+    }
+    #m5details {
+      position: absolute;
+      top: 407px;
+      left: 1580px;
+    }
+    #m5score {
+      position: absolute;
+      left: 1370px;
+      top: 422px;
     }
 
     #m6a {
@@ -535,6 +771,16 @@
       top: 670px;
       padding: 7px;
     }
+    #m6details {
+      position: absolute;
+      top: 665px;
+      left: 1580px;
+    }
+    #m6score {
+      position: absolute;
+      left: 1370px;
+      top: 680px;
+    }
 
     #m7a {
       position: absolute;
@@ -551,6 +797,16 @@
       left: 1550px;
       top: 928px;
       padding: 7px;
+    }
+    #m7details {
+      position: absolute;
+      top: 923px;
+      left: 1580px;
+    }
+    #m7score {
+      position: absolute;
+      left: 1370px;
+      top: 938px;
     }
 
     #m8a {
@@ -569,6 +825,16 @@
       top: 281px;
       padding: 7px;
     }
+    #m8details {
+      position: absolute;
+      top: 276px;
+      left: 210px;
+    }
+    #m8score {
+      position: absolute;
+      left: 440px;
+      top: 293px;
+    }
 
     #m9a {
       position: absolute;
@@ -585,6 +851,16 @@
       left: 375px;
       top: 797px;
       padding: 7px;
+    }
+    #m9details {
+      position: absolute;
+      top: 792px;
+      left: 210px;
+    }
+    #m9score {
+      position: absolute;
+      left: 440px;
+      top: 809px;
     }
 
     #m10a {
@@ -603,11 +879,20 @@
       top: 281px;
       padding: 7px;
     }
+    #m10details {
+      position: absolute;
+      top: 276px;
+      left: 1390px;
+    }
+    #m10score {
+      position: absolute;
+      left: 1190px;
+      top: 293px;
+    }
     
-
     #m11a {
       position: absolute;
-      left: 1360px;
+      left: 1370px;
       top: 650px;
     }
     #m11b {
@@ -617,9 +902,19 @@
     }
     #m11 {
       position: absolute;
-      left: 1370px;
+      left: 1360px;
       top: 797px;
       padding: 7px;
+    }
+    #m11details {
+      position: absolute;
+      top: 792px;
+      left: 1390px;
+    }
+    #m11score {
+      position: absolute;
+      left: 1190px;
+      top: 809px;
     }
 
     #m12a {
@@ -638,6 +933,16 @@
       top: 540px;
       padding: 7px;
     }
+    #m12details {
+      position: absolute;
+      top: 535px;
+      left: 395px;
+    }
+    #m12score {
+      position: absolute;
+      left: 630px;
+      top: 551px;
+    }
 
     #m13a {
       position: absolute;
@@ -654,6 +959,16 @@
       left: 1175px;
       top: 540px;
       padding: 7px;
+    }
+    #m13details {
+      position: absolute;
+      top: 535px;
+      left: 1205px;
+    }
+    #m13score {
+      position: absolute;
+      left: 1000px;
+      top: 551px;
     }
 
     #m14a {
@@ -672,10 +987,21 @@
       top: 540px;
       padding: 7px;
     }
+    #m14details {
+      position: absolute;
+      top: 510px;
+      left: 800px;
+      text-align: center;
+    }
+    #m14score {
+      position: absolute;
+      top: 560px;
+      left: 825px;
+    }
 
     #winner {
       position: absolute;
-      left: 800px;
+      left: 825px;
       top: 650px;
     }
   </style>
