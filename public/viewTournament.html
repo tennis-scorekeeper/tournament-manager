@@ -420,8 +420,7 @@
 
     var newDivision = document
       .getElementById("newDivision")
-      .value.toLowerCase()
-      .replace(".", ",");
+      .value.replace(".", ",");
     var drawSize = document.getElementById("drawSizeSelect").value;
     var tournamentRef = tournamentsRef.child(tournamentId);
 
@@ -626,7 +625,7 @@
       var params = new URLSearchParams(url);
       var tournamentId = params.get("tournamentId");
       var divName = document.getElementById("divisionSelect").value;
-      window.open("bracket16.html?tournamentId="+tournamentId+"&div="+divName, "_blank");
+      window.open("bracket64.html?tournamentId="+tournamentId+"&div="+divName, "_blank");
     }
   }
 </script>
