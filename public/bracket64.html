@@ -476,7 +476,7 @@
       <span id="m52a"></span>
       <span id="m52b"></span>
       <button id="m52" class="editMatch" onclick="editMatch('m52')" data-toggle="modal" data-target="#editMatchModal"></button>
-      <p id="m52details" class="matchDetailsLeft"></p>
+      <p id="m52details" class="matchDetailsRight"></p>
       <p id="m52score" class="matchScore"></p>
 
       <span id="m53a"></span>
@@ -719,7 +719,7 @@
 
       var playerInc = 155;
       var matchInc = 150;
-      var editInc = 308;
+      var editInc = 305;
 
       for (var i = 0; i < round2LeftMatchIds1.length; i++) {
         document.getElementById(round2LeftMatchIds1[i]+"a").setAttribute("style", "position:absolute;left:248px;top:"+topCounter+"px;");
@@ -752,6 +752,63 @@
 
         document.getElementById(round2RightMatchIds1[i]+"b").setAttribute("style", "position:absolute;left:2077px;top:"+topCounter+"px;");
         document.getElementById(round2RightMatchIds2[i]+"b").setAttribute("style", "position:absolute;left:2077px;top:"+botCounter+"px;");
+
+        topCounter += matchInc;
+        botCounter += matchInc;
+        if (i == 5) {
+          counter += 3;
+        }
+      }
+
+      var round3LeftMatchIds1 = 
+        ["m48", "m49"];
+      var round3LeftMatchIds2 =
+        ["m50", "m51"];
+      var round3RightMatchIds1 = 
+        ["m52", "m53"];
+      var round3RightMatchIds2 =
+        ["m54", "m55"];
+
+      var topCounter = 175;
+      var botCounter = 1443;
+      var editTopCounter = 347;
+      var editBotCounter = 1608;
+
+      var playerInc = 305;
+      var matchInc = 308;
+      var editInc = 616;
+
+      for (var i = 0; i < round3LeftMatchIds1.length; i++) {
+        document.getElementById(round3LeftMatchIds1[i]+"a").setAttribute("style", "position:absolute;left:448px;top:"+topCounter+"px;");
+        document.getElementById(round3LeftMatchIds1[i]).setAttribute("style", "position:absolute;left:600px;padding:7px;top:"+editTopCounter+"px;");
+        document.getElementById(round3LeftMatchIds1[i]+"details").setAttribute("style", "position:absolute;left:405px;padding:7px;top:"+(editTopCounter-15)+"px;width:12em;");
+        document.getElementById(round3LeftMatchIds1[i]+"score").setAttribute("style", "position:absolute;left:640px;padding:7px;top:"+(editTopCounter+8)+"px;width:6em;");
+        
+        document.getElementById(round3LeftMatchIds2[i]+"a").setAttribute("style", "position:absolute;left:448px;top:"+botCounter+"px;");
+        document.getElementById(round3LeftMatchIds2[i]).setAttribute("style", "position:absolute;left:600px;padding:7px;top:"+editBotCounter+"px;");
+        document.getElementById(round3LeftMatchIds2[i]+"details").setAttribute("style", "position:absolute;left:405px;padding:7px;top:"+(editBotCounter-15)+"px;width:12em;");
+        document.getElementById(round3LeftMatchIds2[i]+"score").setAttribute("style", "position:absolute;left:640px;padding:7px;top:"+(editBotCounter+8)+"px;width:6em;");
+        
+        document.getElementById(round3RightMatchIds1[i]+"a").setAttribute("style", "position:absolute;left:1883px;top:"+topCounter+"px;");
+        document.getElementById(round3RightMatchIds1[i]).setAttribute("style", "position:absolute;left:1883px;padding:7px;top:"+editTopCounter+"px;");
+        document.getElementById(round3RightMatchIds1[i]+"details").setAttribute("style", "position:absolute;left:1903px;padding:7px;top:"+(editTopCounter-15)+"px;width:12em;");
+        document.getElementById(round3RightMatchIds1[i]+"score").setAttribute("style", "position:absolute;left:1700px;padding:7px;top:"+(editTopCounter+8)+"px;width:6em;");
+
+        document.getElementById(round3RightMatchIds2[i]+"a").setAttribute("style", "position:absolute;left:1883px;top:"+botCounter+"px;");
+        document.getElementById(round3RightMatchIds2[i]).setAttribute("style", "position:absolute;left:1883px;padding:7px;top:"+editBotCounter+"px;");
+        document.getElementById(round3RightMatchIds2[i]+"details").setAttribute("style", "position:absolute;left:1903px ;padding:7px;top:"+(editBotCounter-15)+"px;width:12em;");
+        document.getElementById(round3RightMatchIds2[i]+"score").setAttribute("style", "position:absolute;left:1700px;padding:7px;top:"+(editBotCounter+8)+"px;width:6em;");
+
+        editTopCounter += editInc;
+        editBotCounter += editInc;
+
+        topCounter += playerInc;
+        botCounter += playerInc;
+        document.getElementById(round3LeftMatchIds1[i]+"b").setAttribute("style", "position:absolute;left:448px;top:"+topCounter+"px;");
+        document.getElementById(round3LeftMatchIds2[i]+"b").setAttribute("style", "position:absolute;left:448px;top:"+botCounter+"px;");
+
+        document.getElementById(round3RightMatchIds1[i]+"b").setAttribute("style", "position:absolute;left:1883px;top:"+topCounter+"px;");
+        document.getElementById(round3RightMatchIds2[i]+"b").setAttribute("style", "position:absolute;left:1883px;top:"+botCounter+"px;");
 
         topCounter += matchInc;
         botCounter += matchInc;
@@ -873,7 +930,7 @@
       var divRef = tournamentsRef.child(tournamentId).child("divisions").child(divName);
       var matchNumber = parseInt(matchId.substring(1));
 
-      if (matchNumber < 8) {
+      if (matchNumber < 32) {
         divRef.child("draw").child(matchId).child(matchPlayerId).set(document.getElementById(matchPlayerId).value).then(tmp => {
           document.getElementById("savingProgress").textContent = "Saved!"
         });
