@@ -31,7 +31,7 @@
     </div>
     <p id="savingProgress"></p>
     <div id="bracket">
-      <img height="2500" width="2500" id="bracket" src="images/bracket128Top.png">
+      <img height="2500" width="2500" id="bracket" src="images/64b.png">
 
       <select id="m0a" onchange="saveDraw2('m0', 'm0a')">
           <option>Bye</option>
@@ -500,7 +500,7 @@
       <span id="m56a"></span>
       <span id="m56b"></span>
       <button id="m56" class="editMatch" onclick="editMatch('m56')" data-toggle="modal" data-target="#editMatchModal"></button>
-      <p id="m56details" class="matchDetailsRight"></p>
+      <p id="m56details" class="matchDetailsLeft"></p>
       <p id="m56score" class="matchScore"></p>
 
       <span id="m57a"></span>
@@ -512,7 +512,7 @@
       <span id="m58a"></span>
       <span id="m58b"></span>
       <button id="m58" class="editMatch" onclick="editMatch('m58')" data-toggle="modal" data-target="#editMatchModal"></button>
-      <p id="m58details" class="matchDetailsLeft"></p>
+      <p id="m58details" class="matchDetailsRight"></p>
       <p id="m58score" class="matchScore"></p>
 
       <span id="m59a"></span>
@@ -524,22 +524,22 @@
       <span id="m60a"></span>
       <span id="m60b"></span>
       <button id="m60" class="editMatch" onclick="editMatch('m60')" data-toggle="modal" data-target="#editMatchModal"></button>
-      <p id="m60details" class="matchDetailsRight"></p>
+      <p id="m60details" class="matchDetailsLeft"></p>
       <p id="m60score" class="matchScore"></p>
 
       <span id="m61a"></span>
       <span id="m61b"></span>
       <button id="m61" class="editMatch" onclick="editMatch('m61')" data-toggle="modal" data-target="#editMatchModal"></button>
-      <p id="m61details" class="matchDetailsLeft"></p>
+      <p id="m61details" class="matchDetailsRight"></p>
       <p id="m61score" class="matchScore"></p>
 
       <span id="m62a"></span>
       <span id="m62b"></span>
       <button id="m62" class="editMatch" onclick="editMatch('m62')" data-toggle="modal" data-target="#editMatchModal"></button>
-      <p id="m62details" class="matchDetailsRight"></p>
-      <p id="m62score" class="matchScore"></p>
+      <p id="m62details" class="matchDetailsCenter"></p>
+      <p id="m62score" class="matchScoreCenter"></p>
 
-      <span id="winner" class="matchScoreCenter "></span>
+      <span id="winner" class="matchScoreCenter"></span>
     </div>
 
     <div class="modal fade" id="editMatchModal" tabindex="-1" role="dialog" aria-labelledby="editMatchModalLabel"
@@ -733,13 +733,13 @@
         document.getElementById(round2LeftMatchIds2[i]+"score").setAttribute("style", "position:absolute;left:440px;padding:7px;top:"+(editBotCounter+8)+"px;width:6em;");
         
         document.getElementById(round2RightMatchIds1[i]+"a").setAttribute("style", "position:absolute;left:2077px;top:"+topCounter+"px;");
-        document.getElementById(round2RightMatchIds1[i]).setAttribute("style", "position:absolute;left:2070px;padding:7px;top:"+editTopCounter+"px;");
-        document.getElementById(round2RightMatchIds1[i]+"details").setAttribute("style", "position:absolute;left:2090px;padding:7px;top:"+(editTopCounter-15)+"px;width:12em;");
+        document.getElementById(round2RightMatchIds1[i]).setAttribute("style", "position:absolute;left:2080px;padding:7px;top:"+editTopCounter+"px;");
+        document.getElementById(round2RightMatchIds1[i]+"details").setAttribute("style", "position:absolute;left:2100px;padding:7px;top:"+(editTopCounter-15)+"px;width:12em;");
         document.getElementById(round2RightMatchIds1[i]+"score").setAttribute("style", "position:absolute;left:1875px;padding:7px;top:"+(editTopCounter+8)+"px;width:6em;");
 
         document.getElementById(round2RightMatchIds2[i]+"a").setAttribute("style", "position:absolute;left:2077px;top:"+botCounter+"px;");
-        document.getElementById(round2RightMatchIds2[i]).setAttribute("style", "position:absolute;left:2070px;padding:7px;top:"+editBotCounter+"px;");
-        document.getElementById(round2RightMatchIds2[i]+"details").setAttribute("style", "position:absolute;left:2090px ;padding:7px;top:"+(editBotCounter-15)+"px;width:12em;");
+        document.getElementById(round2RightMatchIds2[i]).setAttribute("style", "position:absolute;left:2080px;padding:7px;top:"+editBotCounter+"px;");
+        document.getElementById(round2RightMatchIds2[i]+"details").setAttribute("style", "position:absolute;left:2100px ;padding:7px;top:"+(editBotCounter-15)+"px;width:12em;");
         document.getElementById(round2RightMatchIds2[i]+"score").setAttribute("style", "position:absolute;left:1875px;padding:7px;top:"+(editBotCounter+8)+"px;width:6em;");
 
         editTopCounter += editInc;
@@ -816,6 +816,83 @@
           counter += 3;
         }
       }
+
+      var round4LeftMatchIds1 = 
+        ["m56"];
+      var round4LeftMatchIds2 =
+        ["m57"];
+      var round4RightMatchIds1 = 
+        ["m58"];
+      var round4RightMatchIds2 =
+        ["m59"];
+
+      var topCounter = 330;
+      var botCounter = 1590;
+      var editTopCounter = 650;
+      var editBotCounter = 1950;
+
+      var playerInc = 613;
+      var matchInc = 308;
+      var editInc = 616;
+
+      for (var i = 0; i < round4LeftMatchIds1.length; i++) {
+        document.getElementById(round4LeftMatchIds1[i]+"a").setAttribute("style", "position:absolute;left:648px;top:"+topCounter+"px;");
+        document.getElementById(round4LeftMatchIds1[i]).setAttribute("style", "position:absolute;left:780px;padding:7px;top:"+editTopCounter+"px;");
+        document.getElementById(round4LeftMatchIds1[i]+"details").setAttribute("style", "position:absolute;left:585px;padding:7px;top:"+(editTopCounter-15)+"px;width:12em;");
+        document.getElementById(round4LeftMatchIds1[i]+"score").setAttribute("style", "position:absolute;left:815px;padding:7px;top:"+(editTopCounter+8)+"px;width:6em;");
+        
+        document.getElementById(round4LeftMatchIds2[i]+"a").setAttribute("style", "position:absolute;left:648px;top:"+botCounter+"px;");
+        document.getElementById(round4LeftMatchIds2[i]).setAttribute("style", "position:absolute;left:780px;padding:7px;top:"+editBotCounter+"px;");
+        document.getElementById(round4LeftMatchIds2[i]+"details").setAttribute("style", "position:absolute;left:585px;padding:7px;top:"+(editBotCounter-15)+"px;width:12em;");
+        document.getElementById(round4LeftMatchIds2[i]+"score").setAttribute("style", "position:absolute;left:815px;padding:7px;top:"+(editBotCounter+8)+"px;width:6em;");
+        
+        document.getElementById(round4RightMatchIds1[i]+"a").setAttribute("style", "position:absolute;left:1708px;top:"+topCounter+"px;");
+        document.getElementById(round4RightMatchIds1[i]).setAttribute("style", "position:absolute;left:1703px;padding:7px;top:"+editTopCounter+"px;");
+        document.getElementById(round4RightMatchIds1[i]+"details").setAttribute("style", "position:absolute;left:1723px;padding:7px;top:"+(editTopCounter-15)+"px;width:12em;");
+        document.getElementById(round4RightMatchIds1[i]+"score").setAttribute("style", "position:absolute;left:1526px;padding:7px;top:"+(editTopCounter+8)+"px;width:6em;");
+
+        document.getElementById(round4RightMatchIds2[i]+"a").setAttribute("style", "position:absolute;left:1708px;top:"+botCounter+"px;");
+        document.getElementById(round4RightMatchIds2[i]).setAttribute("style", "position:absolute;left:1703px;padding:7px;top:"+editBotCounter+"px;");
+        document.getElementById(round4RightMatchIds2[i]+"details").setAttribute("style", "position:absolute;left:1723px ;padding:7px;top:"+(editBotCounter-15)+"px;width:12em;");
+        document.getElementById(round4RightMatchIds2[i]+"score").setAttribute("style", "position:absolute;left:1526px;padding:7px;top:"+(editBotCounter+8)+"px;width:6em;");
+
+        editTopCounter += editInc;
+        editBotCounter += editInc;
+
+        topCounter += playerInc;
+        botCounter += playerInc;
+        document.getElementById(round4LeftMatchIds1[i]+"b").setAttribute("style", "position:absolute;left:648px;top:"+topCounter+"px;");
+        document.getElementById(round4LeftMatchIds2[i]+"b").setAttribute("style", "position:absolute;left:648px;top:"+botCounter+"px;");
+
+        document.getElementById(round4RightMatchIds1[i]+"b").setAttribute("style", "position:absolute;left:1708px;top:"+topCounter+"px;");
+        document.getElementById(round4RightMatchIds2[i]+"b").setAttribute("style", "position:absolute;left:1708px;top:"+botCounter+"px;");
+
+        topCounter += matchInc;
+        botCounter += matchInc;
+        if (i == 5) {
+          counter += 3;
+        }
+      }
+
+      document.getElementById("m60a").setAttribute("style", "position:absolute;left:823px;top:"+633+"px;");
+      document.getElementById("m60b").setAttribute("style", "position:absolute;left:823px;top:"+1933+"px;");
+      document.getElementById("m60").setAttribute("style", "position:absolute;left:945px;padding:7px;top:"+1073+"px;");
+      document.getElementById("m60details").setAttribute("style", "position:absolute;left:750px;padding:7px;top:"+1058+"px;width:12em;");
+      document.getElementById("m60score").setAttribute("style", "position:absolute;left:985px;padding:7px;top:"+1081+"px;width:6em;");
+
+      document.getElementById("m61a").setAttribute("style", "position:absolute;left:1534px;top:"+633+"px;");
+      document.getElementById("m61b").setAttribute("style", "position:absolute;left:1534px;top:"+1933+"px;");
+      document.getElementById("m61").setAttribute("style", "position:absolute;left:1534px;padding:7px;top:"+1073+"px;");
+      document.getElementById("m61details").setAttribute("style", "position:absolute;left:1554px;padding:7px;top:"+1058+"px;width:12em;");
+      document.getElementById("m61score").setAttribute("style", "position:absolute;left:1364px;padding:7px;top:"+1081+"px;width:6em;");
+
+      document.getElementById("m62a").setAttribute("style", "position:absolute;left:993px;top:"+1055+"px;");
+      document.getElementById("m62b").setAttribute("style", "position:absolute;left:1373px;top:"+1055+"px;");
+      document.getElementById("m62").setAttribute("style", "position:absolute;left:1240px;padding:7px;top:"+1073+"px;");
+      document.getElementById("m62details").setAttribute("style", "position:absolute;left:1155px;padding:7px;top:"+1035+"px;width:12em;");
+      document.getElementById("m62score").setAttribute("style", "position:absolute;left:1200px;padding:7px;top:"+1085+"px;width:6em;");
+
+      document.getElementById("winner").setAttribute("style", "position:absolute;left:1200px;top:"+1310+"px;");
     
       var fullMatchIds = 
         ["m0", "m1", "m2","m3","m4", "m5", "m6", "m7",
@@ -999,6 +1076,8 @@
         document.getElementById("p1Label").textContent = document.getElementById(matchId+"a").value
         document.getElementById("p2Label").textContent = document.getElementById(matchId+"b").value
       } else {
+        console.log(matchId);
+        console.log(document.getElementById(matchId+"a").textContent);
         document.getElementById("p1Label").textContent = document.getElementById(matchId+"a").textContent
         document.getElementById("p2Label").textContent = document.getElementById(matchId+"b").textContent
       }
