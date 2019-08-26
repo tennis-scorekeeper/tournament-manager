@@ -68,7 +68,7 @@
       <h4 class="tabText" onclick="openDrawsTab()">Draws</h4>
     </div>
     <div class="col-lg-4 displayTab">
-      <h4 class="tabText" onclick="openScheduleTab()">Schedule of Play</h4>
+      <h4 class="tabText" onclick="openScheduleTab()">Schedule</h4>
     </div>
   </div>
 
@@ -540,6 +540,8 @@
     if (document.getElementById("divisionSelect").value == '0') {
       document.getElementById("divisionSelectError").innerHTML = "Please select a division first!";
     } else {
+      $("#tabContent").load("playersTabContent.html");
+
       var url = window.location.href.substring(
         window.location.href.indexOf("?")
       );
@@ -549,7 +551,7 @@
       var tournamentsRef = rootRef.child("tournaments");
       var tournamentId = params.get("tournamentId");
       var divRef = tournamentsRef.child(tournamentId).child("divisions").child(divName);
-
+      
       divRef.once("value").then(ss => {
         var playersList = ss.child("players").val();
         fillPlayersList(playersList);
@@ -562,7 +564,6 @@
       })
 
       document.getElementById("divisionSelectError").innerHTML = "";
-      $("#tabContent").load("playersTabContent.html");
     }
   }
   
@@ -627,6 +628,85 @@
       var divName = document.getElementById("divisionSelect").value;
       window.open("bracket64.html?tournamentId="+tournamentId+"&div="+divName, "_blank");
     }
+  }
+
+  function openScheduleTab() {
+    $("#tabContent").load("scheduleTabContent.html");
+
+    var url = window.location.href.substring(
+      window.location.href.indexOf("?")
+    );
+    var divName = document.getElementById("divisionSelect").value;
+    var params = new URLSearchParams(url);
+    var rootRef = firebase.database().ref();
+    var tournamentsRef = rootRef.child("tournaments");
+    var tournamentId = params.get("tournamentId");
+    var tournamentRef = tournamentsRef.child(tournamentId).child("divisions");
+    
+    tournamentRef.once("value").then(ss => {
+      var dayMatchSet = new Set();
+      ss.forEach(div => {
+        var drawSize = parseInt(div.child("drawSize").val());
+
+        /*** 64 TEMPORARY, CHANGE TO drawSize LATER ***/
+        for (var i = 0; i < 64; i++) { 
+          var currentMatchDate = div.child("draw").child("m"+i).child("date").val();
+          if (currentMatchDate != null && currentMatchDate != "") {
+            dayMatchSet.add(currentMatchDate);
+          }
+        }
+      });
+      document.getElementById("daySelect").innerHTML = "<option value='0'>Choose a date</option>";
+      Array.from(dayMatchSet).sort().forEach(date => {
+        var tmpDate = new Date(date);
+        tmpDate.setDate(tmpDate.getDate()+1);
+        var options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+        var optElement = document.createElement("option");
+        optElement.textContent = tmpDate.toLocaleDateString("en-US", options);
+        optElement.setAttribute("value", date);
+        document.getElementById("daySelect").appendChild(optElement);
+      });
+
+    document.getElementById("divisionSelectError").innerHTML = "";
+    });
+  }
+
+  function loadSchedule() {
+    var date = document.getElementById("daySelect").value;
+    var url = window.location.href.substring(
+      window.location.href.indexOf("?")
+    );
+    var divName = document.getElementById("divisionSelect").value;
+    var params = new URLSearchParams(url);
+    var rootRef = firebase.database().ref();
+    var tournamentsRef = rootRef.child("tournaments");
+    var tournamentId = params.get("tournamentId");
+    var tournamentRef = tournamentsRef.child(tournamentId).child("divisions");
+    
+    tournamentRef.once("value").then(ss => {
+      var matches = [];
+      ss.forEach(div => {
+        var drawSize = parseInt(div.child("drawSize").val());
+
+        /*** 64 TEMPORARY, CHANGE TO drawSize LATER ***/
+        for (var i = 0; i < 64; i++) { 
+          var currentMatchDate = div.child("draw").child("m"+i).child("date").val();
+          if (currentMatchDate == date) {
+            var tmpMatch = div.child("draw").child("m"+i).val();
+            var newObj = {};
+            tmpMatch.matchNumber = i;
+            tmpMatch.division = div.key;
+            tmpMatch.p1 = div.child("draw").child("m"+i).child("m"+i+"a").val();
+            tmpMatch.p2 = div.child("draw").child("m"+i).child("m"+i+"b").val();
+            matches.push(tmpMatch);
+          }
+        }
+      });
+      console.log(matches);
+      console.log(matches.sort((a, b) => (a.matchTime >= b.matchTime) ? 1 : -1));
+    });
+    
+    
   }
 </script>
 
@@ -721,6 +801,19 @@
 
   .topPlayer {
     border: 1px solid black;
+  }
+
+  #scheduleColLabels {
+    margin-top: 30px;
+    padding-top: 10px;
+    padding-left:50px;
+    border-bottom:solid 1px black;
+    border-top: solid 1px black;
+  }
+
+  #daySelect {
+    margin-right: 40px;
+    margin-top: 20px;
   }
 </style>
 
