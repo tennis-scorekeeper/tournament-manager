@@ -702,11 +702,68 @@
           }
         }
       });
-      console.log(matches);
-      console.log(matches.sort((a, b) => (a.matchTime >= b.matchTime) ? 1 : -1));
+      matches = matches.sort((a, b) => (a.matchTime >= b.matchTime) ? 1 : -1);
+
+      matches.forEach(match => {
+        var row = document.createElement("div");
+        row.setAttribute("class", "row matchRow");
+
+        var timeDiv = document.createElement("div");
+        timeDiv.setAttribute("class", "col-3");
+
+        var time = document.createElement("p");
+        time.innerHTML = convertTo12Hour(match.matchTime);
+        time.setAttribute("class", "matchTime");
+        var courtLabel = document.createElement("div");
+        courtLabel.innerHTML = "Court ";
+        courtLabel.setAttribute("class", "courtLabel"); 
+        var courtNumber = document.createElement("div");
+        courtNumber.innerHTML = match.courtNumber;
+        courtNumber.setAttribute("class", "courtNumber"); 
+
+        timeDiv.appendChild(time);
+        timeDiv.appendChild(courtLabel);
+        timeDiv.appendChild(courtNumber);
+
+        var divisionDiv = document.createElement("div");
+        divisionDiv.setAttribute("class", "col-3 verticalCenter");
+        divisionDiv.innerHTML = "<div>"+match.division+"</div>";
+        
+
+        row.appendChild(timeDiv);
+        row.appendChild(divisionDiv);
+        document.getElementById("matchList").appendChild(row);
+      })
     });
-    
-    
+  }
+
+  function convertTo12Hour(time) {
+    if (time == null || time == "") {
+      return "";
+    }
+
+    var split = time.split(":");
+    var pm = false;
+    var hour = parseInt(split[0]);
+    var result;
+    if (hour == 0) {
+      result = "12:";
+    } else if (hour == 12) {
+      result = "12:";
+      pm = true;
+    } else if (hour > 12) {
+      result = (hour-12) + ":";
+      pm = true;
+    } else {
+      result = hour + ":";
+    }
+    result += split[1];
+    if (pm) {
+      result += " PM";
+    } else {
+      result += " AM";
+    }
+    return result;
   }
 </script>
 
@@ -814,6 +871,35 @@
   #daySelect {
     margin-right: 40px;
     margin-top: 20px;
+  }
+
+  .matchRow {
+    border-bottom: 1px solid black;
+    padding-bottom: 5px;
+    padding-left: 50px;
+  }
+
+  .matchTime {
+    margin-top: 8px;
+  }
+
+  .courtNumber {
+    display: inline-block;
+    width: 1.7em;
+    height: 1.7em;
+    border: 1px solid black;
+    vertical-align: middle;
+    margin-left: 10px;
+    text-align: center;
+  }
+
+  .courtLabel {
+    display: inline-block;
+  }
+
+  .verticalCenter {
+    margin-top: auto;
+    margin-bottom: auto;
   }
 </style>
 
