@@ -599,6 +599,7 @@
   </div>
   </body>
 
+  <script type="text/javascript" src="js/util.js"></script>
   <script>
     document.addEventListener("DOMContentLoaded", function () {
       try {
@@ -643,7 +644,7 @@
       var editButtonInc = 152;
 
       for (var i = 0; i < round1LeftMatchIds1.length; i++) {
-        document.getElementById(round1LeftMatchIds1[i]+"a").setAttribute("style", "position:absolute;left:50px;top:"+counter+"px;");
+        document.getElementById(round1LeftMatchIds1[i]+"a").setAttribute("style", "position:absolute;left:10px;top:"+counter+"px;");
         document.getElementById(round1LeftMatchIds1[i]).setAttribute("style", "position:absolute;left:190px;padding:7px;top:"+editButtonCounter+"px;");
         document.getElementById(round1LeftMatchIds1[i]+"details").setAttribute("style", "position:absolute;left:0px;padding:7px;top:"+(editButtonCounter-15)+"px;width:12em;");
         document.getElementById(round1LeftMatchIds1[i]+"score").setAttribute("style", "position:absolute;left:240px;padding:7px;top:"+(editButtonCounter+8)+"px;width:6em;");
@@ -657,7 +658,7 @@
         editButtonCounter += editButtonInc;
 
         counter += round1PlayerInc;
-        document.getElementById(round1LeftMatchIds1[i]+"b").setAttribute("style", "position:absolute;left:50px;top:"+counter+"px;");
+        document.getElementById(round1LeftMatchIds1[i]+"b").setAttribute("style", "position:absolute;left:10px;top:"+counter+"px;");
         document.getElementById(round1RightMatchIds1[i]+"b").setAttribute("style", "position:absolute;left:2280px;top:"+counter+"px;");
 
         counter += round1MatchInc;
@@ -668,7 +669,7 @@
       counter = 1325;
       editButtonCounter = 1385;
       for (var i = 0; i < round1LeftMatchIds1.length; i++) {
-        document.getElementById(round1LeftMatchIds2[i]+"a").setAttribute("style", "position:absolute;left:50px;top:"+counter+"px;");
+        document.getElementById(round1LeftMatchIds2[i]+"a").setAttribute("style", "position:absolute;left:10px;top:"+counter+"px;");
         document.getElementById(round1LeftMatchIds2[i]).setAttribute("style", "position:absolute;left:190px;padding:7px;top:"+editButtonCounter+"px;");
         document.getElementById(round1LeftMatchIds2[i]+"details").setAttribute("style", "position:absolute;left:0px;padding:7px;top:"+(editButtonCounter-15)+"px;width:12em;");
         document.getElementById(round1LeftMatchIds2[i]+"score").setAttribute("style", "position:absolute;left:240px;padding:7px;top:"+(editButtonCounter+8)+"px;width:6em;");
@@ -676,7 +677,7 @@
         editButtonCounter += editButtonInc;
 
         counter += round1PlayerInc;
-        document.getElementById(round1LeftMatchIds2[i]+"b").setAttribute("style", "position:absolute;left:50px;top:"+counter+"px;");
+        document.getElementById(round1LeftMatchIds2[i]+"b").setAttribute("style", "position:absolute;left:10px;top:"+counter+"px;");
 
         counter += round1MatchInc;
         if (i == 5) {
@@ -722,22 +723,22 @@
       var editInc = 305;
 
       for (var i = 0; i < round2LeftMatchIds1.length; i++) {
-        document.getElementById(round2LeftMatchIds1[i]+"a").setAttribute("style", "position:absolute;left:248px;top:"+topCounter+"px;");
+        document.getElementById(round2LeftMatchIds1[i]+"a").setAttribute("style", "position:absolute;left:248px;top:"+topCounter+"px;width:11em;");
         document.getElementById(round2LeftMatchIds1[i]).setAttribute("style", "position:absolute;left:400px;padding:7px;top:"+editTopCounter+"px;");
         document.getElementById(round2LeftMatchIds1[i]+"details").setAttribute("style", "position:absolute;left:205px;padding:7px;top:"+(editTopCounter-15)+"px;width:12em;");
         document.getElementById(round2LeftMatchIds1[i]+"score").setAttribute("style", "position:absolute;left:440px;padding:7px;top:"+(editTopCounter+8)+"px;width:6em;");
         
-        document.getElementById(round2LeftMatchIds2[i]+"a").setAttribute("style", "position:absolute;left:248px;top:"+botCounter+"px;");
+        document.getElementById(round2LeftMatchIds2[i]+"a").setAttribute("style", "position:absolute;left:248px;top:"+botCounter+"px;width:11em;");
         document.getElementById(round2LeftMatchIds2[i]).setAttribute("style", "position:absolute;left:400px;padding:7px;top:"+editBotCounter+"px;");
         document.getElementById(round2LeftMatchIds2[i]+"details").setAttribute("style", "position:absolute;left:205px;padding:7px;top:"+(editBotCounter-15)+"px;width:12em;");
         document.getElementById(round2LeftMatchIds2[i]+"score").setAttribute("style", "position:absolute;left:440px;padding:7px;top:"+(editBotCounter+8)+"px;width:6em;");
         
-        document.getElementById(round2RightMatchIds1[i]+"a").setAttribute("style", "position:absolute;left:2077px;top:"+topCounter+"px;");
+        document.getElementById(round2RightMatchIds1[i]+"a").setAttribute("style", "position:absolute;left:2077px;top:"+topCounter+"px;width:11em;");
         document.getElementById(round2RightMatchIds1[i]).setAttribute("style", "position:absolute;left:2080px;padding:7px;top:"+editTopCounter+"px;");
         document.getElementById(round2RightMatchIds1[i]+"details").setAttribute("style", "position:absolute;left:2100px;padding:7px;top:"+(editTopCounter-15)+"px;width:12em;");
         document.getElementById(round2RightMatchIds1[i]+"score").setAttribute("style", "position:absolute;left:1875px;padding:7px;top:"+(editTopCounter+8)+"px;width:6em;");
 
-        document.getElementById(round2RightMatchIds2[i]+"a").setAttribute("style", "position:absolute;left:2077px;top:"+botCounter+"px;");
+        document.getElementById(round2RightMatchIds2[i]+"a").setAttribute("style", "position:absolute;left:2077px;top:"+botCounter+"px;width:11em;");
         document.getElementById(round2RightMatchIds2[i]).setAttribute("style", "position:absolute;left:2080px;padding:7px;top:"+editBotCounter+"px;");
         document.getElementById(round2RightMatchIds2[i]+"details").setAttribute("style", "position:absolute;left:2100px ;padding:7px;top:"+(editBotCounter-15)+"px;width:12em;");
         document.getElementById(round2RightMatchIds2[i]+"score").setAttribute("style", "position:absolute;left:1875px;padding:7px;top:"+(editBotCounter+8)+"px;width:6em;");
@@ -747,11 +748,11 @@
 
         topCounter += playerInc;
         botCounter += playerInc;
-        document.getElementById(round2LeftMatchIds1[i]+"b").setAttribute("style", "position:absolute;left:248px;top:"+topCounter+"px;");
-        document.getElementById(round2LeftMatchIds2[i]+"b").setAttribute("style", "position:absolute;left:248px;top:"+botCounter+"px;");
+        document.getElementById(round2LeftMatchIds1[i]+"b").setAttribute("style", "position:absolute;left:248px;top:"+topCounter+"px;width:11em;");
+        document.getElementById(round2LeftMatchIds2[i]+"b").setAttribute("style", "position:absolute;left:248px;top:"+botCounter+"px;width:11em;");
 
-        document.getElementById(round2RightMatchIds1[i]+"b").setAttribute("style", "position:absolute;left:2077px;top:"+topCounter+"px;");
-        document.getElementById(round2RightMatchIds2[i]+"b").setAttribute("style", "position:absolute;left:2077px;top:"+botCounter+"px;");
+        document.getElementById(round2RightMatchIds1[i]+"b").setAttribute("style", "position:absolute;left:2077px;top:"+topCounter+"px;width:11em;");
+        document.getElementById(round2RightMatchIds2[i]+"b").setAttribute("style", "position:absolute;left:2077px;top:"+botCounter+"px;width:11em;");
 
         topCounter += matchInc;
         botCounter += matchInc;
@@ -779,22 +780,22 @@
       var editInc = 616;
 
       for (var i = 0; i < round3LeftMatchIds1.length; i++) {
-        document.getElementById(round3LeftMatchIds1[i]+"a").setAttribute("style", "position:absolute;left:448px;top:"+topCounter+"px;");
+        document.getElementById(round3LeftMatchIds1[i]+"a").setAttribute("style", "position:absolute;left:448px;top:"+topCounter+"px;width:11em;");
         document.getElementById(round3LeftMatchIds1[i]).setAttribute("style", "position:absolute;left:600px;padding:7px;top:"+editTopCounter+"px;");
         document.getElementById(round3LeftMatchIds1[i]+"details").setAttribute("style", "position:absolute;left:405px;padding:7px;top:"+(editTopCounter-15)+"px;width:12em;");
         document.getElementById(round3LeftMatchIds1[i]+"score").setAttribute("style", "position:absolute;left:640px;padding:7px;top:"+(editTopCounter+8)+"px;width:6em;");
         
-        document.getElementById(round3LeftMatchIds2[i]+"a").setAttribute("style", "position:absolute;left:448px;top:"+botCounter+"px;");
+        document.getElementById(round3LeftMatchIds2[i]+"a").setAttribute("style", "position:absolute;left:448px;top:"+botCounter+"px;width:11em;");
         document.getElementById(round3LeftMatchIds2[i]).setAttribute("style", "position:absolute;left:600px;padding:7px;top:"+editBotCounter+"px;");
         document.getElementById(round3LeftMatchIds2[i]+"details").setAttribute("style", "position:absolute;left:405px;padding:7px;top:"+(editBotCounter-15)+"px;width:12em;");
         document.getElementById(round3LeftMatchIds2[i]+"score").setAttribute("style", "position:absolute;left:640px;padding:7px;top:"+(editBotCounter+8)+"px;width:6em;");
         
-        document.getElementById(round3RightMatchIds1[i]+"a").setAttribute("style", "position:absolute;left:1883px;top:"+topCounter+"px;");
+        document.getElementById(round3RightMatchIds1[i]+"a").setAttribute("style", "position:absolute;left:1883px;top:"+topCounter+"px;width:11em;");
         document.getElementById(round3RightMatchIds1[i]).setAttribute("style", "position:absolute;left:1883px;padding:7px;top:"+editTopCounter+"px;");
         document.getElementById(round3RightMatchIds1[i]+"details").setAttribute("style", "position:absolute;left:1903px;padding:7px;top:"+(editTopCounter-15)+"px;width:12em;");
         document.getElementById(round3RightMatchIds1[i]+"score").setAttribute("style", "position:absolute;left:1700px;padding:7px;top:"+(editTopCounter+8)+"px;width:6em;");
 
-        document.getElementById(round3RightMatchIds2[i]+"a").setAttribute("style", "position:absolute;left:1883px;top:"+botCounter+"px;");
+        document.getElementById(round3RightMatchIds2[i]+"a").setAttribute("style", "position:absolute;left:1883px;top:"+botCounter+"px;width:11em;");
         document.getElementById(round3RightMatchIds2[i]).setAttribute("style", "position:absolute;left:1883px;padding:7px;top:"+editBotCounter+"px;");
         document.getElementById(round3RightMatchIds2[i]+"details").setAttribute("style", "position:absolute;left:1903px ;padding:7px;top:"+(editBotCounter-15)+"px;width:12em;");
         document.getElementById(round3RightMatchIds2[i]+"score").setAttribute("style", "position:absolute;left:1700px;padding:7px;top:"+(editBotCounter+8)+"px;width:6em;");
@@ -804,11 +805,11 @@
 
         topCounter += playerInc;
         botCounter += playerInc;
-        document.getElementById(round3LeftMatchIds1[i]+"b").setAttribute("style", "position:absolute;left:448px;top:"+topCounter+"px;");
-        document.getElementById(round3LeftMatchIds2[i]+"b").setAttribute("style", "position:absolute;left:448px;top:"+botCounter+"px;");
+        document.getElementById(round3LeftMatchIds1[i]+"b").setAttribute("style", "position:absolute;left:448px;top:"+topCounter+"px;width:11em;");
+        document.getElementById(round3LeftMatchIds2[i]+"b").setAttribute("style", "position:absolute;left:448px;top:"+botCounter+"px;width:11em;");
 
-        document.getElementById(round3RightMatchIds1[i]+"b").setAttribute("style", "position:absolute;left:1883px;top:"+topCounter+"px;");
-        document.getElementById(round3RightMatchIds2[i]+"b").setAttribute("style", "position:absolute;left:1883px;top:"+botCounter+"px;");
+        document.getElementById(round3RightMatchIds1[i]+"b").setAttribute("style", "position:absolute;left:1883px;top:"+topCounter+"px;width:11em;");
+        document.getElementById(round3RightMatchIds2[i]+"b").setAttribute("style", "position:absolute;left:1883px;top:"+botCounter+"px;width:11em;");
 
         topCounter += matchInc;
         botCounter += matchInc;
@@ -836,22 +837,22 @@
       var editInc = 616;
 
       for (var i = 0; i < round4LeftMatchIds1.length; i++) {
-        document.getElementById(round4LeftMatchIds1[i]+"a").setAttribute("style", "position:absolute;left:648px;top:"+topCounter+"px;");
+        document.getElementById(round4LeftMatchIds1[i]+"a").setAttribute("style", "position:absolute;left:648px;top:"+topCounter+"px;width:11em;");
         document.getElementById(round4LeftMatchIds1[i]).setAttribute("style", "position:absolute;left:780px;padding:7px;top:"+editTopCounter+"px;");
         document.getElementById(round4LeftMatchIds1[i]+"details").setAttribute("style", "position:absolute;left:585px;padding:7px;top:"+(editTopCounter-15)+"px;width:12em;");
         document.getElementById(round4LeftMatchIds1[i]+"score").setAttribute("style", "position:absolute;left:815px;padding:7px;top:"+(editTopCounter+8)+"px;width:6em;");
         
-        document.getElementById(round4LeftMatchIds2[i]+"a").setAttribute("style", "position:absolute;left:648px;top:"+botCounter+"px;");
+        document.getElementById(round4LeftMatchIds2[i]+"a").setAttribute("style", "position:absolute;left:648px;top:"+botCounter+"px;width:11em;");
         document.getElementById(round4LeftMatchIds2[i]).setAttribute("style", "position:absolute;left:780px;padding:7px;top:"+editBotCounter+"px;");
         document.getElementById(round4LeftMatchIds2[i]+"details").setAttribute("style", "position:absolute;left:585px;padding:7px;top:"+(editBotCounter-15)+"px;width:12em;");
         document.getElementById(round4LeftMatchIds2[i]+"score").setAttribute("style", "position:absolute;left:815px;padding:7px;top:"+(editBotCounter+8)+"px;width:6em;");
         
-        document.getElementById(round4RightMatchIds1[i]+"a").setAttribute("style", "position:absolute;left:1708px;top:"+topCounter+"px;");
+        document.getElementById(round4RightMatchIds1[i]+"a").setAttribute("style", "position:absolute;left:1708px;top:"+topCounter+"px;width:11em;");
         document.getElementById(round4RightMatchIds1[i]).setAttribute("style", "position:absolute;left:1703px;padding:7px;top:"+editTopCounter+"px;");
         document.getElementById(round4RightMatchIds1[i]+"details").setAttribute("style", "position:absolute;left:1723px;padding:7px;top:"+(editTopCounter-15)+"px;width:12em;");
         document.getElementById(round4RightMatchIds1[i]+"score").setAttribute("style", "position:absolute;left:1526px;padding:7px;top:"+(editTopCounter+8)+"px;width:6em;");
 
-        document.getElementById(round4RightMatchIds2[i]+"a").setAttribute("style", "position:absolute;left:1708px;top:"+botCounter+"px;");
+        document.getElementById(round4RightMatchIds2[i]+"a").setAttribute("style", "position:absolute;left:1708px;top:"+botCounter+"px;width:11em;");
         document.getElementById(round4RightMatchIds2[i]).setAttribute("style", "position:absolute;left:1703px;padding:7px;top:"+editBotCounter+"px;");
         document.getElementById(round4RightMatchIds2[i]+"details").setAttribute("style", "position:absolute;left:1723px ;padding:7px;top:"+(editBotCounter-15)+"px;width:12em;");
         document.getElementById(round4RightMatchIds2[i]+"score").setAttribute("style", "position:absolute;left:1526px;padding:7px;top:"+(editBotCounter+8)+"px;width:6em;");
@@ -861,11 +862,11 @@
 
         topCounter += playerInc;
         botCounter += playerInc;
-        document.getElementById(round4LeftMatchIds1[i]+"b").setAttribute("style", "position:absolute;left:648px;top:"+topCounter+"px;");
-        document.getElementById(round4LeftMatchIds2[i]+"b").setAttribute("style", "position:absolute;left:648px;top:"+botCounter+"px;");
+        document.getElementById(round4LeftMatchIds1[i]+"b").setAttribute("style", "position:absolute;left:648px;top:"+topCounter+"px;width:11em;");
+        document.getElementById(round4LeftMatchIds2[i]+"b").setAttribute("style", "position:absolute;left:648px;top:"+botCounter+"px;width:11em;");
 
-        document.getElementById(round4RightMatchIds1[i]+"b").setAttribute("style", "position:absolute;left:1708px;top:"+topCounter+"px;");
-        document.getElementById(round4RightMatchIds2[i]+"b").setAttribute("style", "position:absolute;left:1708px;top:"+botCounter+"px;");
+        document.getElementById(round4RightMatchIds1[i]+"b").setAttribute("style", "position:absolute;left:1708px;top:"+topCounter+"px;width:11em;");
+        document.getElementById(round4RightMatchIds2[i]+"b").setAttribute("style", "position:absolute;left:1708px;top:"+botCounter+"px;width:11em;");
 
         topCounter += matchInc;
         botCounter += matchInc;
@@ -874,25 +875,25 @@
         }
       }
 
-      document.getElementById("m60a").setAttribute("style", "position:absolute;left:823px;top:"+633+"px;");
-      document.getElementById("m60b").setAttribute("style", "position:absolute;left:823px;top:"+1933+"px;");
+      document.getElementById("m60a").setAttribute("style", "position:absolute;left:823px;top:"+633+"px;width:11em;");
+      document.getElementById("m60b").setAttribute("style", "position:absolute;left:823px;top:"+1933+"px;width:11em;");
       document.getElementById("m60").setAttribute("style", "position:absolute;left:945px;padding:7px;top:"+1073+"px;");
       document.getElementById("m60details").setAttribute("style", "position:absolute;left:750px;padding:7px;top:"+1058+"px;width:12em;");
       document.getElementById("m60score").setAttribute("style", "position:absolute;left:985px;padding:7px;top:"+1081+"px;width:6em;");
 
-      document.getElementById("m61a").setAttribute("style", "position:absolute;left:1534px;top:"+633+"px;");
-      document.getElementById("m61b").setAttribute("style", "position:absolute;left:1534px;top:"+1933+"px;");
+      document.getElementById("m61a").setAttribute("style", "position:absolute;left:1534px;top:"+633+"px;width:11em;");
+      document.getElementById("m61b").setAttribute("style", "position:absolute;left:1534px;top:"+1933+"px;width:11em;");
       document.getElementById("m61").setAttribute("style", "position:absolute;left:1534px;padding:7px;top:"+1073+"px;");
       document.getElementById("m61details").setAttribute("style", "position:absolute;left:1554px;padding:7px;top:"+1058+"px;width:12em;");
       document.getElementById("m61score").setAttribute("style", "position:absolute;left:1364px;padding:7px;top:"+1081+"px;width:6em;");
 
-      document.getElementById("m62a").setAttribute("style", "position:absolute;left:993px;top:"+1055+"px;");
-      document.getElementById("m62b").setAttribute("style", "position:absolute;left:1373px;top:"+1055+"px;");
+      document.getElementById("m62a").setAttribute("style", "position:absolute;left:993px;top:"+1055+"px;width:11em;");
+      document.getElementById("m62b").setAttribute("style", "position:absolute;left:1373px;top:"+1055+"px;width:11em;");
       document.getElementById("m62").setAttribute("style", "position:absolute;left:1240px;padding:7px;top:"+1073+"px;");
       document.getElementById("m62details").setAttribute("style", "position:absolute;left:1155px;padding:7px;top:"+1035+"px;width:12em;");
       document.getElementById("m62score").setAttribute("style", "position:absolute;left:1200px;padding:7px;top:"+1085+"px;width:6em;");
 
-      document.getElementById("winner").setAttribute("style", "position:absolute;left:1200px;top:"+1310+"px;");
+      document.getElementById("winner").setAttribute("style", "position:absolute;left:1160px;top:"+1310+"px;width:11em;");
     
       var fullMatchIds = 
         ["m0", "m1", "m2","m3","m4", "m5", "m6", "m7",
@@ -923,7 +924,7 @@
         matchIds.forEach(id => {
           playersList.forEach(player => {
             var optionElement = document.createElement("option");
-            optionElement.textContent = player;
+            optionElement.textContent = formatPlayerNameDraw(player);
             optionElement.setAttribute("value", player);
             document.getElementById(id).appendChild(optionElement);
           })
@@ -959,8 +960,8 @@
           document.getElementById(id+"score").textContent = scoreString;
         })
         fullMatchIds2.forEach(id => {
-          document.getElementById(id+"a").textContent = ss.child("draw").child(id).child(id+"a").val();
-          document.getElementById(id+"b").textContent = ss.child("draw").child(id).child(id+"b").val();
+          document.getElementById(id+"a").textContent = formatPlayerNameDrawShorten(ss.child("draw").child(id).child(id+"a").val());
+          document.getElementById(id+"b").textContent = formatPlayerNameDrawShorten(ss.child("draw").child(id).child(id+"b").val());
           var detailString = "";
           var date = ss.child("draw").child(id).child("date").val();
           var time = ss.child("draw").child(id).child("matchTime").val()
@@ -1018,7 +1019,7 @@
       }
     }
 
-    function saveDraw() {
+    /*function saveDraw() {
       document.getElementById("savingProgress").textContent = "Saving..."
       var url = window.location.href.substring(
         window.location.href.indexOf("?")
@@ -1055,7 +1056,7 @@
       divRef.child("draw").child("winner").set(document.getElementById("winner").textContent);
         
       document.getElementById("savingProgress").textContent = "Saved!"
-    }
+    }*/
 
     function editMatch(matchId) {
       var url = window.location.href.substring(
@@ -1080,6 +1081,8 @@
         document.getElementById("p2Label").textContent = document.getElementById(matchId+"b").textContent
       }
       divRef.once("value").then(ss => {
+        var p1 = ss.child("draw").child(matchId).child(matchId+"a").val();
+        var p2 = ss.child("draw").child(matchId).child(matchId+"b").val();
         var date = ss.child("draw").child(matchId).child("date").val();
         var time = ss.child("draw").child(matchId).child("matchTime").val()
         var courtNumber = ss.child("draw").child(matchId).child("courtNumber").val();
@@ -1089,6 +1092,8 @@
           score = ss.child("draw").child(matchId).child("score").val().split(" ");
         }
 
+        document.getElementById("p1Label").textContent = formatPlayerNameDraw(p1);
+        document.getElementById("p2Label").textContent = formatPlayerNameDraw(p2);
         document.getElementById("matchCourtNumber").value = courtNumber;
         document.getElementById("matchTime").value = time;
         document.getElementById("editMatchDate").value = date;
@@ -1115,8 +1120,6 @@
           document.getElementById("p2s3").value = "";
         }
 
-        var p1 = document.getElementById("p1Label").textContent;
-        var p2 = document.getElementById("p2Label").textContent;
         var winner = ss.child("draw").child(matchId).child("winner").val();
 
         if (winner == p1) {
@@ -1144,10 +1147,10 @@
       var matchId = document.getElementById("editMatchModalLabel").textContent;
       var winner = "";
       if (document.getElementById("p1").checked) {
-        winner = document.getElementById("p1Label").textContent;
+        winner = formatDrawNameToDBFormat(document.getElementById("p1Label").textContent);
       }
       if (document.getElementById("p2").checked) {
-        winner = document.getElementById("p2Label").textContent;
+        winner = formatDrawNameToDBFormat(document.getElementById("p2Label").textContent);
       }
 
       var score = document.getElementById("p1s1").value + "-" + document.getElementById("p2s1").value + " " 
@@ -1172,7 +1175,7 @@
         "m52a","m52b","m53a","m53b","m54a","m54b","m55a","m55b",
         "m56a","m56b","m57a","m57b","m58a","m58b","m59a","m59b",
         "m60a","m60b","m61a","m61b","m62a","m62b","winner"];
-      document.getElementById(matchProgressionList[parseInt(matchId.substring(1))]).textContent = winner;
+      document.getElementById(matchProgressionList[parseInt(matchId.substring(1))]).textContent = formatPlayerNameDrawShorten(winner);
 
       var detailString = "";
       var date = document.getElementById("editMatchDate").value;
@@ -1198,8 +1201,14 @@
       document.getElementById(matchId+"score").textContent = scoreString;
       document.getElementById(matchId+"details").textContent = detailString;
 
-      saveDraw();
+      var winnerMatchPlayerId = matchProgressionList[parseInt(matchId.substring(1))];
+      var matchId = winnerMatchPlayerId.substring(0, winnerMatchPlayerId.length - 1);
+      
+      divRef.child("draw").child(matchId).child(winnerMatchPlayerId).set(winner).then(tmp => {
+        document.getElementById("savingProgress").textContent = "Saved!"
+      });
     }
+
   </script>
 
   <style>
