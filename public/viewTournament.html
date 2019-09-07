@@ -704,6 +704,8 @@
       });
       matches = matches.sort((a, b) => (a.matchTime >= b.matchTime) ? 1 : -1);
 
+      document.getElementById("matchList").innerHTML = "";
+
       matches.forEach(match => {
         var row = document.createElement("div");
         row.setAttribute("class", "row matchRow");
@@ -728,10 +730,75 @@
         var divisionDiv = document.createElement("div");
         divisionDiv.setAttribute("class", "col-3 verticalCenter");
         divisionDiv.innerHTML = "<div>"+match.division+"</div>";
-        
 
+        var playersDiv = document.createElement("div");
+        playersDiv.setAttribute("class", "col-3 verticalCenter");
+        var p1Div = document.createElement("div");
+        var p2Div = document.createElement("div");
+        p1Div.setAttribute("style", "margin-bottom:10px; margin-top: 5px;");
+        p2Div.setAttribute("style", "margin-top:10px; margin-bottom: 5px;");
+        p1Div.innerHTML = match.p1;
+        p2Div.innerHTML = match.p2;
+        playersDiv.appendChild(p1Div);
+        playersDiv.appendChild(p2Div);
+
+        var scoreList = match.score.split(" ");
+        var scoreDiv = document.createElement("div");
+        scoreDiv.setAttribute("class", "col-3 verticalCenter");
+        var p1ScoreDiv = document.createElement("div");
+        var p2ScoreDiv = document.createElement("div");
+        p1ScoreDiv.setAttribute("style", "margin-bottom:10px; margin-top: 10px;");
+        p2ScoreDiv.setAttribute("style", "margin-top:10px; margin-bottom: 5px;");
+        var p1s1 = document.createElement("div");
+        var p1s2 = document.createElement("div");
+        var p1s3 = document.createElement("div");
+        var p2s1 = document.createElement("div");
+        var p2s2 = document.createElement("div");
+        var p2s3 = document.createElement("div");
+
+        p1s1.setAttribute("class", "courtNumber");
+        p1s2.setAttribute("class", "courtNumber");
+        p1s3.setAttribute("class", "courtNumber");
+        p2s1.setAttribute("class", "courtNumber");
+        p2s2.setAttribute("class", "courtNumber");
+        p2s3.setAttribute("class", "courtNumber");
+
+        p1s1.setAttribute("style", "display:inline-block; margin-bottom:10px; margin-top: 5px;");
+        p1s2.setAttribute("style", "display:inline-block; margin-bottom:10px; margin-top: 5px;");
+        p1s3.setAttribute("style", "display:inline-block; margin-bottom:10px; margin-top: 5px;");
+        p2s1.setAttribute("style", "display:inline-block; margin-bottom:10px; margin-top: 5px;");
+        p2s2.setAttribute("style", "display:inline-block; margin-bottom:10px; margin-top: 5px;");
+        p2s3.setAttribute("style", "display:inline-block; margin-bottom:10px; margin-top: 5px;");
+
+        if (scoreList[0].length == 3) {
+          p1s1.innerHTML = scoreList[0][0];
+          p2s1.innerHTML = scoreList[0][2];
+        }
+
+        if (scoreList[1].length == 3) {
+          p1s2.innerHTML = scoreList[1][0];
+          p2s2.innerHTML = scoreList[1][2];
+        }
+
+        if (scoreList[2].length == 3) {
+          p1s3.innerHTML = scoreList[2][0];
+          p2s3.innerHTML = scoreList[2][2];
+        }
+
+        p1ScoreDiv.appendChild(p1s1);
+        p1ScoreDiv.appendChild(p1s2);
+        p1ScoreDiv.appendChild(p1s3);
+        p2ScoreDiv.appendChild(p2s1);
+        p2ScoreDiv.appendChild(p2s2);
+        p2ScoreDiv.appendChild(p2s3);
+
+        scoreDiv.appendChild(p1ScoreDiv);
+        scoreDiv.appendChild(p2ScoreDiv);
+        
         row.appendChild(timeDiv);
         row.appendChild(divisionDiv);
+        row.appendChild(playersDiv);
+        row.appendChild(scoreDiv);
         document.getElementById("matchList").appendChild(row);
       })
     });
