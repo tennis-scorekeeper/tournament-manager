@@ -8,6 +8,7 @@
 
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
     integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous" />
+  <link rel="stylesheet" type="text/css" media="print" href="css/print.css">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
     integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
@@ -25,7 +26,7 @@
 
 <body>
   <div class="row justify-content-end">
-    <div class="col-lg-12 col-md-12 col-sm-12" id="signedInInfo">
+    <div class="col-lg-12 col-md-12 col-sm-12 doNotPrint" id="signedInInfo">
       <button id="backButton" type="button" class="btn btn-primary" onclick="goBack()">
         < Tournament List </button> <button id="signOutButton" type="button" class="btn btn-danger" onclick="signout()">
           Sign Out
@@ -35,11 +36,11 @@
   <div class="row justify-content-center">
     <div class="col-lg-12 col-md-12 col-sm-12" id="titleHolder">
       <h1 id="title"></h1>
-      <h4 id="hostedBy"></h4>
-      <p id="divisionSelectError"></p>
+      <h4 class="doNotPrint" id="hostedBy"></h4>
+      <p class="doNotPrint" id="divisionSelectError"></p>
     </div>
   </div>
-  <div class="row justify-content-end">
+  <div class="row justify-content-end doNotPrint">
     <div class="col-lg-12 col-md-12 col-sm-12" id="signedInInfo">
       <label id="divisionSelectLabel" for="divisionSelect">Select Division:</label>
       <select id="divisionSelect" onchange="divisionSelectChange()">
@@ -60,7 +61,7 @@
     </div>
   </div>
 
-  <div class="row">
+  <div class="row doNotPrint">
     <div class="col-lg-4 displayTab">
       <h4 class="tabText" onclick="openPlayersTab()">Players</h4>
     </div>
@@ -711,7 +712,7 @@
         row.setAttribute("class", "row matchRow");
 
         var timeDiv = document.createElement("div");
-        timeDiv.setAttribute("class", "col-3");
+        timeDiv.setAttribute("class", "col-3 verticalCenter");
 
         var time = document.createElement("p");
         time.innerHTML = convertTo12Hour(match.matchTime);
@@ -832,6 +833,10 @@
     }
     return result;
   }
+
+  function printElem() {
+    window.print();
+  }
 </script>
 
 <style media="screen">
@@ -936,8 +941,13 @@
   }
 
   #daySelect {
-    margin-right: 40px;
     margin-top: 20px;
+    margin-right: 20px;
+  }
+
+  #printButton {
+    margin-top: 20px;
+    margin-right: 40px;
   }
 
   .matchRow {
