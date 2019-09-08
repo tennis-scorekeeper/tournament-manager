@@ -88,8 +88,9 @@
       tournamentAdmin = tss.child(tournamentId).val().admin;
 
       document.getElementById("title").textContent = tournamentName;
-      document.getElementById("hostedBy").textContent =
-        "Hosted By: " + tournamentAdmin.replace(",", ".");
+      userRef.once("value").then(uss => {
+        document.getElementById("hostedBy").textContent = "Hosted By: " + uss.child(tournamentAdmin).val().name;
+      });
       fillCurrentDivisionsList();
     });
   });
