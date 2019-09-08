@@ -36,6 +36,7 @@
   <div class="row justify-content-center">
     <div class="col-lg-12 col-md-12 col-sm-12" id="titleHolder">
       <h1 id="title"></h1>
+      <h4 class="onlyPrint" id="scheduleDate"></h4>
       <h4 class="doNotPrint" id="hostedBy"></h4>
       <p class="doNotPrint" id="divisionSelectError"></p>
     </div>
@@ -684,6 +685,11 @@
     var tournamentsRef = rootRef.child("tournaments");
     var tournamentId = params.get("tournamentId");
     var tournamentRef = tournamentsRef.child(tournamentId).child("divisions");
+
+    var options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+    var tmpDate = new Date(date);
+    tmpDate.setDate(tmpDate.getDate()+1);
+    document.getElementById("scheduleDate").innerHTML = tmpDate.toLocaleDateString("en-US", options);
     
     tournamentRef.once("value").then(ss => {
       var matches = [];
@@ -985,6 +991,10 @@
   .verticalCenter {
     margin-top: auto;
     margin-bottom: auto;
+  }
+
+  .onlyPrint {
+    display: none;
   }
 </style>
 
