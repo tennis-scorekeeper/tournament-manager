@@ -708,12 +708,18 @@
 
       document.getElementById("matchList").innerHTML = "";
 
+      var counter = 1;
       matches.forEach(match => {
         var row = document.createElement("div");
         row.setAttribute("class", "row matchRow");
 
+        var cellNumberDiv = document.createElement("div");
+        cellNumberDiv.setAttribute("class", "col-1 verticalCenter justify-content-end");
+        cellNumberDiv.innerHTML = counter;
+        counter += 1;
+
         var timeDiv = document.createElement("div");
-        timeDiv.setAttribute("class", "col-3 verticalCenter");
+        timeDiv.setAttribute("class", "col-2 verticalCenter");
 
         var time = document.createElement("p");
         time.innerHTML = convertTo12Hour(match.matchTime);
@@ -730,11 +736,11 @@
         timeDiv.appendChild(courtNumber);
 
         var divisionDiv = document.createElement("div");
-        divisionDiv.setAttribute("class", "col-3 verticalCenter");
+        divisionDiv.setAttribute("class", "col-2 verticalCenter");
         divisionDiv.innerHTML = "<div>"+match.division+"</div>";
 
         var playersDiv = document.createElement("div");
-        playersDiv.setAttribute("class", "col-3 verticalCenter");
+        playersDiv.setAttribute("class", "col-4 verticalCenter");
         var p1Div = document.createElement("div");
         var p2Div = document.createElement("div");
         p1Div.setAttribute("style", "margin-bottom:10px; margin-top: 5px;");
@@ -797,6 +803,7 @@
         scoreDiv.appendChild(p1ScoreDiv);
         scoreDiv.appendChild(p2ScoreDiv);
         
+        row.appendChild(cellNumberDiv);
         row.appendChild(timeDiv);
         row.appendChild(divisionDiv);
         row.appendChild(playersDiv);
