@@ -31,6 +31,32 @@
     <div class="headerBox" id="formHeader"></div>
     <div id="errorBox"></div>
     <div class="centerBox" id="form"></div>
+    <div class="centerBox" id="guestSearch">
+      <div style="text-align:center;">
+        <h2>Tournament Search</h2>
+      </div>
+      <form onsubmit="return searchTournament()">
+        <div class="form-group">
+          <p id="searchError"></p>
+          
+          <button type="submit" class="btn btn-primary" style="float: right">Search</button>
+          <div style="overflow: hidden; padding-right: .5em;">
+
+            <input
+              type="text"
+              class="form-control"
+              id="searchTournamentName"
+              aria-describedby="emailHelp"
+              placeholder="Tournament name"
+              style="width: 100%;"
+            />
+          </div>
+        </div>
+        
+      </form>
+    </div>
+    <div class="centerBox" id="searchResults">
+    </div>
   </body>
 
   <script>
@@ -115,12 +141,61 @@
       document.getElementById("formHeader").innerHTML =
         "<h2>Create Account</h2>";
       document.getElementById("errorBox").innerHTML = "";
+      document.getElementById("guestSearch").setAttribute("style", "display:none");
     }
 
     function cancelRegister() {
       $("#form").load("loginForm.html");
       document.getElementById("formHeader").innerHTML = "<h2>Sign In</h2>";
       document.getElementById("errorBox").innerHTML = "";
+      document.getElementById("guestSearch").setAttribute("style", "display:block")
+    }
+
+    function searchTournament() {
+      var rootRef = firebase.database().ref();
+      var tournamentsRef = rootRef.child("tournaments");
+      var searchName = document.getElementById("searchTournamentName").value;
+
+      document.getElementById("searchResults").innerHTML = "";
+
+      if (searchName.trim("") != "") {
+        tournamentsRef.once("value").then(tss => {
+          tss.forEach(child => {
+            var name = tss.child(child.key).child("name").val();
+
+            if (name.toLowerCase().trim(" ").includes(searchName.toLowerCase().trim(" "))) {
+              var startDate = tss.child(child.key).child("startDate").val();
+              var endDate = tss.child(child.key).child("endDate").val();
+              var startDateString = startDate.substring(5,7) + "/" + startDate.substring(8) + "/" + startDate.substring(0,4);
+              var endDateString = endDate.substring(5,7) + "/" + endDate.substring(8) + "/" + endDate.substring(0,4);
+
+              var div = document.createElement("div");
+              div.setAttribute("class", "tournamentHolder");
+
+              var p1 = document.createElement("span");
+              p1.textContent = name;
+              var linebreak = document.createElement("br");
+              var p2 = document.createElement("span");
+              p2.textContent = startDateString + "-" + endDateString;
+
+              div.appendChild(p1);
+              div.appendChild(linebreak);
+              div.appendChild(p2);
+
+              var a = document.createElement("a");
+              a.setAttribute("class", "tournament");
+              a.setAttribute(
+                "href",
+                "/guestViewTournament.html?tournamentId=" + child.key
+              );
+              a.appendChild(div);
+
+              document.getElementById("searchResults").appendChild(a);
+            }
+          })
+        })
+      }
+      return false;
     }
   </script>
 
@@ -141,7 +216,7 @@
     }
     .headerBox {
       background: white;
-      max-width: 360px;
+      max-width: 500px;
       margin: 20px auto 16px;
       padding: 20px 24px 8px;
       border-radius: 3px;
@@ -209,5 +284,32 @@
         border-top: 16px solid #ffa100;
       }
     }
+
+    #guestSearch {
+      margin-top: 50px;
+    }
+
+    .tournamentHolder {
+    background-color: #e9eef7;
+    border: 2px solid black;
+    padding-left: 20px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    margin-top: 2px;
+  }
+
+  div.tournamentHolder:hover {
+    background-color: #d2e0fc;
+  }
+
+  .tournament {
+    font-size: 1em;
+    color: black;
+  }
+
+  a.tournament:hover {
+    color: black;
+    text-decoration: none;
+  }
   </style>
 </html>
