@@ -904,18 +904,25 @@
 
         var divisionDiv = document.createElement("div");
         divisionDiv.setAttribute("class", "col-2 verticalCenter");
-        divisionDiv.innerHTML = "<div>"+match.division+"</div>";
+        var divisionName = document.createElement("div");
+        divisionName.innerHTML = match.division;
+        divisionDiv.appendChild(divisionName);
+
+        var roundName = document.createElement("div");
+        // CHANGE TO drawSize LATER
+        roundName.innerHTML = getRoundName(match.matchNumber, 64);
+        divisionDiv.appendChild(roundName);
 
         var playersDiv = document.createElement("div");
         playersDiv.setAttribute("class", "col-4 verticalCenter");
         var p1Div = document.createElement("div");
         var p2Div = document.createElement("div");
-        if (match.p1.split(",").length == 3) {
+        if (match.p1 != null && match.p1.split(",").length == 3) {
           p1Div.setAttribute("style", "margin-bottom:10px; margin-top: 5px; font-weight: bold;");  
         } else {
           p1Div.setAttribute("style", "margin-bottom:10px; margin-top: 5px;");
         }
-        if (match.p2.split(",").length == 3) {
+        if (match.p2 != null && match.p2.split(",").length == 3) {
           p2Div.setAttribute("style", "margin-bottom:10px; margin-top: 5px; font-weight: bold;");
         } else {
           p2Div.setAttribute("style", "margin-top:10px; margin-bottom: 5px;");

@@ -68,3 +68,26 @@ function formatPlayerNameDrawShorten(name) {
     }
     return result;
 }
+
+function getRoundName(matchNumber, drawSize) {
+    var calc = drawSize - matchNumber;
+    if (calc == 2) {
+        return "Finals"
+    } else if (calc <= 4) {
+        return "Semifinals"
+    } else if (calc <= 8) {
+        return "Quarterfinals"
+    } else {
+        if (matchNumber < drawSize / 2) {
+            return "Round of " + drawSize;
+        } else if (matchNumber < ((drawSize / 2) + (drawSize / 4))) {
+            return "Round of " + (drawSize / 2);
+        } else if (matchNumber < ((drawSize / 2) + (drawSize / 4) + (drawSize / 8))) { 
+            return "Round of " + (drawSize / 4);
+        } else if (matchNumber < ((drawSize / 2) + (drawSize / 4) + (drawSize / 8) + (drawSize / 16))) { 
+            return "Round of " + (drawSize / 8);
+        } else if (matchNumber < ((drawSize / 2) + (drawSize / 4) + (drawSize / 8) + (drawSize / 16) + (drawSize / 32))) { 
+            return "Round of " + (drawSize / 16);
+        }
+    }
+}
