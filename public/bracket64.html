@@ -605,7 +605,11 @@
       try {
         firebase.auth().onAuthStateChanged(function (user) {
           if (user) {
-            loadDraw();
+            if (!user.emailVerified) {
+              window.location.replace("/");
+            } else {
+              loadDraw();
+            }
           } else {
             window.location.replace("/");
           }

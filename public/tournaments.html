@@ -94,9 +94,13 @@
     try {
       firebase.auth().onAuthStateChanged(function (user) {
         if (user) {
-          document.getElementById("signedInInfo").innerHTML +=
-            "<p id='signedInEmail'>Signed in as: " + user.email + "</p>";
-          loadTournaments();
+          if (!user.emailVerified) {
+            window.location.replace("/");
+          } else {
+            document.getElementById("signedInInfo").innerHTML +=
+              "<p id='signedInEmail'>Signed in as: " + user.email + "</p>";
+            loadTournaments();
+          }
         } else {
           window.location.replace("/");
         }

@@ -225,27 +225,31 @@
     try {
       firebase.auth().onAuthStateChanged(function (user) {
         if (user) {
-          document.getElementById("signedInInfo").innerHTML +=
+          if (!user.emailVerified) {
+            window.location.replace("/");
+          } else {
+            document.getElementById("signedInInfo").innerHTML +=
             "<p id='signedInEmail'>Signed in as: " + user.email + "</p>";
 
-          var rootRef = firebase.database().ref();
-          var userRef = rootRef.child("users");
-          var tournamentsRef = rootRef.child("tournaments");
-          var fbEmail = user.email.toLowerCase().replace(".", ",");
-          var tournamentId = params.get("tournamentId");
+            var rootRef = firebase.database().ref();
+            var userRef = rootRef.child("users");
+            var tournamentsRef = rootRef.child("tournaments");
+            var fbEmail = user.email.toLowerCase().replace(".", ",");
+            var tournamentId = params.get("tournamentId");
 
-          var tournamentName, tournamentAdmin, tournamentStart, tournamentEnd;
-          tournamentsRef.once("value").then(tss => {
-            tournamentName = tss.child(tournamentId).val().name;
-            tournamentAdmin = tss.child(tournamentId).val().admin;
+            var tournamentName, tournamentAdmin, tournamentStart, tournamentEnd;
+            tournamentsRef.once("value").then(tss => {
+              tournamentName = tss.child(tournamentId).val().name;
+              tournamentAdmin = tss.child(tournamentId).val().admin;
 
-            document.getElementById("title").textContent = tournamentName;
-            userRef.once("value").then(uss => {
-              document.getElementById("hostedBy").textContent = "Hosted By: " + uss.child(tournamentAdmin).val().name;
+              document.getElementById("title").textContent = tournamentName;
+              userRef.once("value").then(uss => {
+                document.getElementById("hostedBy").textContent = "Hosted By: " + uss.child(tournamentAdmin).val().name;
+              });
+              fillCurrentUmpiresList();
+              fillCurrentDivisionsList();
             });
-            fillCurrentUmpiresList();
-            fillCurrentDivisionsList();
-          });
+          }
         } else {
           window.location.replace("/");
         }

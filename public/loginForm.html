@@ -1,4 +1,4 @@
-<form>
+<form onsubmit="return login()">
   <div class="form-group">
     <p id="error"></p>
     <label for="loginEmail">Email address</label>
@@ -19,8 +19,17 @@
       placeholder="Password"
     />
   </div>
-  <button type="button" class="btn btn-primary" onclick="login()">Login</button>
-  <button type="button" class="btn btn-primary" onclick="openRegister()">
-    Register
-  </button>
+  <div style="text-align: center;margin-bottom:20px">
+    <button type="submit" class="btn btn-primary">
+      Login
+    </button>
+    <button type="button" class="btn btn-primary" onclick="openRegister()">
+      Register</button
+    ><br />
+  </div>
+  <div style="text-align: center">
+    <a style="margin-top: 30px" href="#" onclick="openForgotPassword()"
+      >Forgot Password?</a
+    >
+  </div>
 </form>
