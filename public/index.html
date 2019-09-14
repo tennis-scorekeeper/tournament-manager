@@ -197,35 +197,36 @@
         tournamentsRef.once("value").then(tss => {
           tss.forEach(child => {
             var name = tss.child(child.key).child("name").val();
+            if (tss.child(child.key).child("privacy").val() == "public") {
+              if (name.toLowerCase().trim(" ").includes(searchName.toLowerCase().trim(" "))) {
+                var startDate = tss.child(child.key).child("startDate").val();
+                var endDate = tss.child(child.key).child("endDate").val();
+                var startDateString = startDate.substring(5,7) + "/" + startDate.substring(8) + "/" + startDate.substring(0,4);
+                var endDateString = endDate.substring(5,7) + "/" + endDate.substring(8) + "/" + endDate.substring(0,4);
 
-            if (name.toLowerCase().trim(" ").includes(searchName.toLowerCase().trim(" "))) {
-              var startDate = tss.child(child.key).child("startDate").val();
-              var endDate = tss.child(child.key).child("endDate").val();
-              var startDateString = startDate.substring(5,7) + "/" + startDate.substring(8) + "/" + startDate.substring(0,4);
-              var endDateString = endDate.substring(5,7) + "/" + endDate.substring(8) + "/" + endDate.substring(0,4);
+                var div = document.createElement("div");
+                div.setAttribute("class", "tournamentHolder");
 
-              var div = document.createElement("div");
-              div.setAttribute("class", "tournamentHolder");
+                var p1 = document.createElement("span");
+                p1.textContent = name;
+                var linebreak = document.createElement("br");
+                var p2 = document.createElement("span");
+                p2.textContent = startDateString + "-" + endDateString;
 
-              var p1 = document.createElement("span");
-              p1.textContent = name;
-              var linebreak = document.createElement("br");
-              var p2 = document.createElement("span");
-              p2.textContent = startDateString + "-" + endDateString;
+                div.appendChild(p1);
+                div.appendChild(linebreak);
+                div.appendChild(p2);
 
-              div.appendChild(p1);
-              div.appendChild(linebreak);
-              div.appendChild(p2);
+                var a = document.createElement("a");
+                a.setAttribute("class", "tournament");
+                a.setAttribute(
+                  "href",
+                  "/guestViewTournament.html?tournamentId=" + child.key
+                );
+                a.appendChild(div);
 
-              var a = document.createElement("a");
-              a.setAttribute("class", "tournament");
-              a.setAttribute(
-                "href",
-                "/guestViewTournament.html?tournamentId=" + child.key
-              );
-              a.appendChild(div);
-
-              document.getElementById("searchResults").appendChild(a);
+                document.getElementById("searchResults").appendChild(a);
+              }
             }
           })
         })

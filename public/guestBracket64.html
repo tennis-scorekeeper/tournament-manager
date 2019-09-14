@@ -370,6 +370,12 @@
       var tournamentsRef = rootRef.child("tournaments");
       var divRef = tournamentsRef.child(tournamentId).child("divisions").child(divName);
 
+      tournamentsRef.child(tournamentId).once("value").then(tss => {
+        if (tss.val().privacy != "public") {
+          window.location.replace("/");
+        }
+      });
+
       var round1LeftMatchIds1 = 
         ["m0", "m1", "m2","m3","m4", "m5", "m6", "m7"];
       var round1LeftMatchIds2 =

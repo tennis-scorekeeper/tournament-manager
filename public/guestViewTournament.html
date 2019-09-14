@@ -84,6 +84,9 @@
 
     var tournamentName, tournamentAdmin, tournamentStart, tournamentEnd;
     tournamentsRef.once("value").then(tss => {
+      if (tss.child(tournamentId).val().privacy != "public") {
+        window.location.replace("/");
+      }
       tournamentName = tss.child(tournamentId).val().name;
       tournamentAdmin = tss.child(tournamentId).val().admin;
 

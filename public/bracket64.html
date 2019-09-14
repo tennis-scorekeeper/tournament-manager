@@ -555,8 +555,15 @@
           </button>
         </div>
         <div class="modal-body">
-          <div id="editMatchDateHolder">
+          <div class="row">
+          <div class="col-6" id="editMatchLocationHolder">
+            <select id="editMatchLocationSelect">
+              <option value="">Choose a Location</option>
+            </select>
+          </div>
+          <div class="col-6" id="editMatchDateHolder">
             <input type="date" id="editMatchDate" />
+          </div>
           </div>
           <div class="row">
             <div class="col-5">
@@ -630,7 +637,8 @@
 
       var rootRef = firebase.database().ref();
       var tournamentsRef = rootRef.child("tournaments");
-      var divRef = tournamentsRef.child(tournamentId).child("divisions").child(divName);
+      var tournamentRef = tournamentsRef.child(tournamentId);
+      var divRef = tournamentRef.child("divisions").child(divName);
 
       var round1LeftMatchIds1 = 
         ["m0", "m1", "m2","m3","m4", "m5", "m6", "m7"];
@@ -939,7 +947,7 @@
           var detailString = "";
           var date = ss.child("draw").child(id).child("date").val();
           var time = ss.child("draw").child(id).child("matchTime").val()
-          var courtNumber = ss.child("draw").child(id).child("courtNumber").val();
+          var location = ss.child("draw").child(id).child("location").val();
 
           if (date != null && date != "") {
             detailString += date.substring(date.indexOf("-")+1) + " ";
@@ -947,8 +955,8 @@
           if (time != null && time != "") {
             detailString += time + " ";
           }
-          if (courtNumber != null && courtNumber != "") {
-            detailString += "Court " + courtNumber;
+          if (location != null && location != "") {
+            detailString += location.substring(location.indexOf(" - ") + 3);
           }
           document.getElementById(id+"details").textContent = detailString;
 
@@ -970,6 +978,7 @@
           var date = ss.child("draw").child(id).child("date").val();
           var time = ss.child("draw").child(id).child("matchTime").val()
           var courtNumber = ss.child("draw").child(id).child("courtNumber").val();
+          var location = ss.child("draw").child(id).child("location").val();
 
           if (date != null && date != "") {
             detailString += date.substring(date.indexOf("-")+1) + " ";
@@ -977,8 +986,8 @@
           if (time != null && time != "") {
             detailString += time + " ";
           }
-          if (courtNumber != null && courtNumber != "") {
-            detailString += "Court " + courtNumber;
+          if (location != null && location != "") {
+            detailString += location.substring(location.indexOf(" - ") + 3);
           }
           document.getElementById(id+"details").textContent = detailString;
 
@@ -994,6 +1003,16 @@
           document.getElementById(id+"score").textContent = scoreString;
         })
         document.getElementById("winner").textContent = ss.child("draw").child("winner").val();
+      })
+
+      tournamentRef.once("value").then(tss => {
+        tss.child("locations").forEach(location => {
+          var optElement = document.createElement("option");
+          optElement.textContent = location.key.replace(",", ".") + " - " + location.child("abbrev").val();
+          optElement.setAttribute("value", location.key + " - " + location.child("abbrev").val());
+          document.getElementById("editMatchLocationSelect").appendChild(optElement);
+        })
+      
       })
     }
 
@@ -1073,7 +1092,8 @@
 
       var rootRef = firebase.database().ref();
       var tournamentsRef = rootRef.child("tournaments");
-      var divRef = tournamentsRef.child(tournamentId).child("divisions").child(divName);
+      var tournamentRef = tournamentsRef.child(tournamentId);
+      var divRef = tournamentRef.child("divisions").child(divName);
       var matchNumber = parseInt(matchId.substring(1));
       document.getElementById("editMatchModalLabel").textContent = matchId;
 
@@ -1090,6 +1110,7 @@
         var date = ss.child("draw").child(matchId).child("date").val();
         var time = ss.child("draw").child(matchId).child("matchTime").val()
         var courtNumber = ss.child("draw").child(matchId).child("courtNumber").val();
+        var location = ss.child("draw").child(matchId).child("location").val();
 
         var score = ["-","-","-"];
         if (ss.child("draw").child(matchId).child("score").val() != null) {
@@ -1101,6 +1122,7 @@
         document.getElementById("matchCourtNumber").value = courtNumber;
         document.getElementById("matchTime").value = time;
         document.getElementById("editMatchDate").value = date;
+        document.getElementById("editMatchLocationSelect").value = location;
         
         if (score[0].length == 3) {
           document.getElementById("p1s1").value = score[0][0];
@@ -1167,7 +1189,8 @@
         "score": score,
         "date": document.getElementById("editMatchDate").value,
         "courtNumber": document.getElementById("matchCourtNumber").value,
-        "matchTime": document.getElementById("matchTime").value  
+        "matchTime": document.getElementById("matchTime").value,
+        "location": document.getElementById("editMatchLocationSelect").value
       })
 
       var matchProgressionList = 
@@ -1185,6 +1208,7 @@
       var date = document.getElementById("editMatchDate").value;
       var time = document.getElementById("matchTime").value;
       var courtNumber = document.getElementById("matchCourtNumber").value;
+      var location = document.getElementById("editMatchLocationSelect").value;
 
       if (date != null && date != "") {
         detailString += date.substring(date.indexOf("-")+1) + " ";
@@ -1192,8 +1216,8 @@
       if (time != null && time != "") {
         detailString += time + " ";
       }
-      if (courtNumber != null && courtNumber != "") {
-        detailString += "Court " + courtNumber;
+      if (location != null && location != "") {
+        detailString += location.substring(location.indexOf(" - ") + 3);
       }
       
       var scoreString = "";

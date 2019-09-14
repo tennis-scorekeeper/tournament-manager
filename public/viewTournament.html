@@ -37,6 +37,7 @@
     <div class="col-lg-12 col-md-12 col-sm-12" id="titleHolder">
       <h1 id="title"></h1>
       <h4 class="onlyPrint" id="scheduleDate"></h4>
+      <h4 class="onlyPrint" id="scheduleLocation"></h4>
       <h4 class="doNotPrint" id="hostedBy"></h4>
       <p class="doNotPrint" id="divisionSelectError"></p>
     </div>
@@ -50,6 +51,10 @@
       <button id="manageDivisionsButton" type="button" class="btn btn-success" data-toggle="modal"
         data-target="#manageDivisionsModal">
         Manage Divisions
+      </button>
+      <button id="manageLocationsButton" type="button" class="btn btn-success" data-toggle="modal"
+        data-target="#manageLocationsModal">
+        Manage Locations
       </button>
       <button id="manageUmpiresButton" type="button" class="btn btn-success" data-toggle="modal"
         data-target="#manageUmpiresModal">
@@ -116,6 +121,49 @@
           </form>
           <h5 style="margin-top:10px">Current Divisions (click to remove):</h5>
           <div id="currentDivisionsList"></div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">
+            Close
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal fade" id="manageLocationsModal" tabindex="-1" role="dialog" aria-labelledby="manageLocationsModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="manageLocationsModalLabel">
+            Manage Locations
+          </h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <form>
+            <div class="form-group">
+              <p id="addLocationError"></p>
+              <label for="newLocation">New Location</label>
+              <input type="text" class="form-control" id="newLocation" aria-describedby="emailHelp"
+                placeholder="New Location" />
+            </div>
+            <div class="form-group">
+              <label for="locationAbbreviation">Location Abbreviation</label>
+              <input type="text" class="form-control" id="locationAbbreviation" aria-describedby="emailHelp"
+                placeholder="Location Abbreviation" />
+          </div>
+            <div>
+              <button type="button" class="btn btn-primary" onclick="addLocation()">
+                Add
+              </button>
+            </div>
+          </form>
+          <h5 style="margin-top:10px">Current Locations (click to remove):</h5>
+          <div id="currentLocationsList"></div>
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-dismiss="modal">
@@ -194,6 +242,13 @@
                 <input type="date" class="form-control" id="newTournamentEndDate" />
               </div>
             </div>
+            <div class="form-group">
+              <label for="tournamentPrivacy">Tournament Privacy</label>
+              <select class="form-control" id="tournamentPrivacy">
+                <option value='public'>Public</option>
+                <option value='private'>Private</option>
+              </select>
+            </div>
           </form>
         </div>
         <div class="modal-footer">
@@ -248,6 +303,7 @@
               });
               fillCurrentUmpiresList();
               fillCurrentDivisionsList();
+              fillCurrentLocationsList();
             });
           }
         } else {
@@ -450,6 +506,89 @@
     }
   }
 
+  function addLocation() {
+    var url = window.location.href.substring(
+      window.location.href.indexOf("?")
+    );
+    var params = new URLSearchParams(url);
+    var rootRef = firebase.database().ref();
+    var tournamentsRef = rootRef.child("tournaments");
+    var tournamentId = params.get("tournamentId");
+
+    var newLocation = document
+      .getElementById("newLocation")
+      .value.replace(".", ",");
+    var locationAbbreviation = document.getElementById("locationAbbreviation").value;
+    var tournamentRef = tournamentsRef.child(tournamentId);
+
+    if (newLocation.length <= 0) {
+      // check for invalid input
+      document.getElementById("addLocationError").textContent =
+        "Invalid location format!";
+    } else if (locationAbbreviation.trim(" ").length <= 1 || locationAbbreviation.trim(" ").length > 4) {
+      document.getElementById("addLocationError").textContent =
+        "Abbreviation must between 2 and 4 characters";
+    } else if (locationAbbreviation.trim(" ").includes(" ")) {
+      document.getElementById("addLocationError").textContent =
+        "Abbreviation cannot contain spaces";
+    } else {
+      tournamentRef.child("locations").child(newLocation).once("value").then(locss => {
+        if (locss.exists()) {
+          document.getElementById("addLocationError").textContent =
+            "Location already exists!";
+        } else {
+          tournamentRef.child("locations").child(newLocation).set({abbrev: locationAbbreviation.trim(" ").toUpperCase()});
+          fillCurrentLocationsList();
+          closeTab();
+        }
+      });
+    }
+  }
+
+  function fillCurrentLocationsList() {
+    var url = window.location.href.substring(
+      window.location.href.indexOf("?")
+    );
+    var params = new URLSearchParams(url);
+    var rootRef = firebase.database().ref();
+    var tournamentsRef = rootRef.child("tournaments");
+    var tournamentId = params.get("tournamentId");
+    var tournamentRef = tournamentsRef.child(tournamentId);
+
+    tournamentRef
+      .child("locations")
+      .once("value")
+      .then(tLocations => {
+        document.getElementById("currentLocationsList").innerHTML = "";
+        tLocations.forEach(div => {
+          var divElement = document.createElement("p");
+          divElement.textContent = div.key.replace(",", ".") + " - " + div.child("abbrev").val();
+          divElement.setAttribute("class", "currentUmpire");
+          divElement.addEventListener("click", function () {
+            deleteLocation(div.key);
+          });
+          document
+            .getElementById("currentLocationsList")
+            .appendChild(divElement);
+        });
+      });
+  }
+
+  function deleteLocation(division) {
+    var url = window.location.href.substring(
+      window.location.href.indexOf("?")
+    );
+    var params = new URLSearchParams(url);
+    var rootRef = firebase.database().ref();
+    var tournamentsRef = rootRef.child("tournaments");
+    var tournamentId = params.get("tournamentId");
+    var tournamentRef = tournamentsRef.child(tournamentId);
+    tournamentRef.child("locations").child(division).remove().then(tmp => {
+      fillCurrentLocationsList();
+      closeTab();
+    });
+  }
+
   function fillCurrentDivisionsList() {
     var url = window.location.href.substring(
       window.location.href.indexOf("?")
@@ -511,9 +650,10 @@
     var tournamentRef = tournamentsRef.child(tournamentId);
 
     tournamentRef.once("value").then(tss => {
-      document.getElementById("newTournamentName").value = tss.val().name
-      document.getElementById("newTournamentStartDate").value = tss.val().startDate
-      document.getElementById("newTournamentEndDate").value = tss.val().endDate
+      document.getElementById("newTournamentName").value = tss.val().name;
+      document.getElementById("newTournamentStartDate").value = tss.val().startDate;
+      document.getElementById("newTournamentEndDate").value = tss.val().endDate;
+      document.getElementById("tournamentPrivacy").value = tss.val().privacy;
     });
   }
 
@@ -530,7 +670,8 @@
     tournamentRef.update({
       name: document.getElementById("newTournamentName").value, 
       startDate: document.getElementById("newTournamentStartDate").value,
-      endDate: document.getElementById("newTournamentEndDate").value
+      endDate: document.getElementById("newTournamentEndDate").value,
+      privacy: document.getElementById("tournamentPrivacy").value
     }).then(t => {
       window.location.reload();
     });
@@ -653,18 +794,24 @@
     
     tournamentRef.once("value").then(ss => {
       var dayMatchSet = new Set();
+      var locationSet = new Set();
       ss.forEach(div => {
         var drawSize = parseInt(div.child("drawSize").val());
 
         /*** 64 TEMPORARY, CHANGE TO drawSize LATER ***/
         for (var i = 0; i < 64; i++) { 
           var currentMatchDate = div.child("draw").child("m"+i).child("date").val();
+          var currentMatchLocation = div.child("draw").child("m"+i).child("location").val();
           if (currentMatchDate != null && currentMatchDate != "") {
             dayMatchSet.add(currentMatchDate);
           }
+          if (currentMatchLocation != null && currentMatchLocation != "") {
+            locationSet.add(currentMatchLocation);
+          }
         }
       });
-      document.getElementById("daySelect").innerHTML = "<option value='0'>Choose a date</option>";
+      document.getElementById("daySelect").innerHTML = "<option value='0'>Choose a Date</option>";
+      document.getElementById("locationSelect").innerHTML = "<option value='0'>Choose a Location</option><option value=''>No Location Yet</option>";
       Array.from(dayMatchSet).sort().forEach(date => {
         var tmpDate = new Date(date);
         tmpDate.setDate(tmpDate.getDate()+1);
@@ -674,6 +821,12 @@
         optElement.setAttribute("value", date);
         document.getElementById("daySelect").appendChild(optElement);
       });
+      Array.from(locationSet).forEach(location => {
+        var optElement = document.createElement("option");
+        optElement.textContent = location;
+        optElement.setAttribute("value", location);
+        document.getElementById("locationSelect").appendChild(optElement);
+      });
 
     document.getElementById("divisionSelectError").innerHTML = "";
     });
@@ -681,6 +834,7 @@
 
   function loadSchedule() {
     var date = document.getElementById("daySelect").value;
+    var location = document.getElementById("locationSelect").value;
     var url = window.location.href.substring(
       window.location.href.indexOf("?")
     );
@@ -695,6 +849,7 @@
     var tmpDate = new Date(date);
     tmpDate.setDate(tmpDate.getDate()+1);
     document.getElementById("scheduleDate").innerHTML = tmpDate.toLocaleDateString("en-US", options);
+    document.getElementById("scheduleLocation").innerHTML = location;
     
     tournamentRef.once("value").then(ss => {
       var matches = [];
@@ -704,7 +859,8 @@
         /*** 64 TEMPORARY, CHANGE TO drawSize LATER ***/
         for (var i = 0; i < 64; i++) { 
           var currentMatchDate = div.child("draw").child("m"+i).child("date").val();
-          if (currentMatchDate == date) {
+          var currentMatchLocation = div.child("draw").child("m"+i).child("location").val();
+          if (currentMatchDate == date && (currentMatchLocation == location || (location == "" && currentMatchLocation == null))) {
             var tmpMatch = div.child("draw").child("m"+i).val();
             var newObj = {};
             tmpMatch.matchNumber = i;
@@ -754,8 +910,16 @@
         playersDiv.setAttribute("class", "col-4 verticalCenter");
         var p1Div = document.createElement("div");
         var p2Div = document.createElement("div");
-        p1Div.setAttribute("style", "margin-bottom:10px; margin-top: 5px;");
-        p2Div.setAttribute("style", "margin-top:10px; margin-bottom: 5px;");
+        if (match.p1.split(",").length == 3) {
+          p1Div.setAttribute("style", "margin-bottom:10px; margin-top: 5px; font-weight: bold;");  
+        } else {
+          p1Div.setAttribute("style", "margin-bottom:10px; margin-top: 5px;");
+        }
+        if (match.p2.split(",").length == 3) {
+          p2Div.setAttribute("style", "margin-bottom:10px; margin-top: 5px; font-weight: bold;");
+        } else {
+          p2Div.setAttribute("style", "margin-top:10px; margin-bottom: 5px;");
+        }
         p1Div.innerHTML = formatPlayerNameSchedule(match.p1);
         p2Div.innerHTML = formatPlayerNameSchedule(match.p2);
         playersDiv.appendChild(p1Div);
@@ -902,6 +1066,11 @@
 
   #manageUmpiresButton {
     float: right;
+    margin: 10px 30px 0px 0px;
+  }
+  
+  #manageLocationsButton {
+    float: right;
     margin: 10px 10px 0px 0px;
   }
 
@@ -915,6 +1084,10 @@
   }
 
   #addDivisionError {
+    color: red;
+  }
+
+  #addLocationError {
     color: red;
   }
 
@@ -960,6 +1133,11 @@
   }
 
   #daySelect {
+    margin-top: 20px;
+    margin-right: 20px;
+  }
+
+  #locationSelect {
     margin-top: 20px;
     margin-right: 20px;
   }
