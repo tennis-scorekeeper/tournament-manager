@@ -15,6 +15,9 @@ function formatPlayerNameDraw(name) {
         return "";
     }
     var parts = name.split(",");
+    if (parts.length == 2) {
+        return parts[0] + ", " + parts[1];
+    }
     if (parts.length != 3) {
         return name;
     }
@@ -53,6 +56,14 @@ function formatPlayerNameDrawShorten(name) {
         return "";
     }
     var parts = name.split(",");
+    if (parts.length == 2) {
+        var namesplit = parts[0].split(" ");
+        if (namesplit.length == 2) {
+            return namesplit[1];
+        } else {
+            return namesplit[0];
+        }
+    }
     if (parts.length != 3) {
         return name;
     }
