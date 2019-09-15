@@ -182,6 +182,17 @@
     var tournamentEndDate = document.getElementById("tournamentEndDate")
       .value;
     var tournamentPrivacy = document.getElementById("tournamentPrivacy").value;
+
+    if (!checkIfValidForFBKey(name)) {
+      document.getElementById("updateTournamentError").innerHTML = "Invalid tournament name";
+      return;
+    } else if (startDate == null || startDate == "") {
+      document.getElementById("updateTournamentError").innerHTML = "Invalid tournament start date";
+      return;
+    } else if (endDate == null || endDate == "") {
+      document.getElementById("updateTournamentError").innerHTML = "Invalid tournament end date";
+      return;
+    } 
     var result = tournamentsRef.push({
       admin: fbEmail,
       name: tournamentName,

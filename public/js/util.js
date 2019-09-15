@@ -102,3 +102,7 @@ function getRoundName(matchNumber, drawSize) {
         }
     }
 }
+
+function checkIfValidForFBKey(input) {
+    return input.match("^[a-zA-Z0-9- \/,]+$") != null;
+}

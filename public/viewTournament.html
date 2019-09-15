@@ -227,7 +227,7 @@
         <div class="modal-body">
           <form>
             <div class="form-group">
-              <p id="addUmpireError"></p>
+              <p id="updateTournamentError" style="color: red"></p>
               <label for="newTournamentName">Tournament Name</label>
               <input type="text" class="form-control" id="newTournamentName" aria-describedby="emailHelp"
                 placeholder="" />
@@ -255,7 +255,7 @@
           <button type="button" class="btn btn-secondary" data-dismiss="modal">
             Close
           </button>
-          <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="updateTournament()">
+          <button type="button" class="btn btn-primary" onclick="updateTournament()">
             Update
           </button>
         </div>
@@ -347,8 +347,7 @@
       hostedByFullText.indexOf(":") + 2
     );
 
-    if (false) {
-      // check for invalid input
+    if (newUmpire == "" || !newUmpire.includes("@")) {
       document.getElementById("addUmpireError").textContent =
         "Invalid email format!";
     } else {
@@ -356,7 +355,7 @@
         .child(newUmpire)
         .once("value")
         .then(ss => {
-          if (!ss.exists() || newUmpire == "") {
+          if (!ss.exists()) {
             document.getElementById("addUmpireError").textContent =
               "User does not exist!";
           } else if (newUmpire == hostEmail.toLowerCase().replace(".", ",")) {
@@ -488,8 +487,7 @@
     var drawSize = document.getElementById("drawSizeSelect").value;
     var tournamentRef = tournamentsRef.child(tournamentId);
 
-    if (newDivision.length <= 0) {
-      // check for invalid input
+    if (!checkIfValidForFBKey(newDivision)) {
       document.getElementById("addDivisionError").textContent =
         "Invalid division format!";
     } else {
@@ -498,6 +496,7 @@
           document.getElementById("addDivisionError").textContent =
             "Division already exists!";
         } else {
+          document.getElementById("addDivisionError").textContent = "";
           tournamentRef.child("divisions").child(newDivision).set({drawSize: drawSize});
           fillCurrentDivisionsList();
           closeTab();
@@ -521,8 +520,7 @@
     var locationAbbreviation = document.getElementById("locationAbbreviation").value;
     var tournamentRef = tournamentsRef.child(tournamentId);
 
-    if (newLocation.length <= 0) {
-      // check for invalid input
+    if (!checkIfValidForFBKey(newLocation)) {
       document.getElementById("addLocationError").textContent =
         "Invalid location format!";
     } else if (locationAbbreviation.trim(" ").length <= 1 || locationAbbreviation.trim(" ").length > 4) {
@@ -540,6 +538,8 @@
           tournamentRef.child("locations").child(newLocation).set({abbrev: locationAbbreviation.trim(" ").toUpperCase()});
           fillCurrentLocationsList();
           closeTab();
+          document.getElementById("addLocationError").textContent =
+            "";
         }
       });
     }
@@ -667,14 +667,27 @@
     var tournamentId = params.get("tournamentId");
     var tournamentRef = tournamentsRef.child(tournamentId);
 
-    tournamentRef.update({
-      name: document.getElementById("newTournamentName").value, 
-      startDate: document.getElementById("newTournamentStartDate").value,
-      endDate: document.getElementById("newTournamentEndDate").value,
-      privacy: document.getElementById("tournamentPrivacy").value
-    }).then(t => {
-      window.location.reload();
-    });
+    var name = document.getElementById("newTournamentName").value; 
+    var startDate = document.getElementById("newTournamentStartDate").value;
+    var endDate = document.getElementById("newTournamentEndDate").value;
+    var privacy = document.getElementById("tournamentPrivacy").value;
+
+    if (!checkIfValidForFBKey(name)) {
+      document.getElementById("updateTournamentError").innerHTML = "Invalid Tournament Name";
+    } else if (startDate == null || startDate == "") {
+      document.getElementById("updateTournamentError").innerHTML = "Invalid Tournament Start Date";
+    } else if (endDate == null || endDate == "") {
+      document.getElementById("updateTournamentError").innerHTML = "Invalid Tournament End Date";
+    } else {
+      tournamentRef.update({
+        name: name, 
+        startDate: startDate,
+        endDate: endDate,
+        privacy: privacy
+      }).then(t => {
+        window.location.reload();
+      });
+    }
   }
 
   function divisionSelectChange() {
@@ -705,11 +718,12 @@
         var playersList = ss.child("players").val();
         fillPlayersList(playersList);
         var playerListString = "";
-        
-        playersList.forEach(player => {
-          playerListString += player + "\n";
-        })
-        document.getElementById("playersListInput").value=playerListString;
+        if (playersList != null) {
+          playersList.forEach(player => {
+            playerListString += player + "\n";
+          })
+          document.getElementById("playersListInput").value=playerListString;
+        }
       })
 
       document.getElementById("divisionSelectError").innerHTML = "";
@@ -731,21 +745,37 @@
     var playerList = fullListString.split("\n");
 
     var checkedPlayerList = [];
+    var error = false;
     playerList.forEach(line => {
       if (line.indexOf(",") != -1 && line.length > 2) { //Length 2 to make sure atleast some text and not just comma
-        checkedPlayerList.push(line);
+        var split = line.split(",");
+        if (split.length < 2) {
+          error = true;
+        } else {
+          var formatLine = split[0].trim(" ") + "," + split[1].trim(" ");
+        }
+        if (split.length == 3) {
+          formatLine += "," + split[2].trim(" ");
+        }
+        checkedPlayerList.push(formatLine);
       }
     })
-    divRef.child("players").set(checkedPlayerList).then(tmp => {
-      fillPlayersList(checkedPlayerList);
-    });
+    if (!error) {
+      divRef.child("players").set(checkedPlayerList).then(tmp => {
+        fillPlayersList(checkedPlayerList);
+      });
+    } else {
+      document.getElementById("updatePlayersError").innerHTML = "Invalid player format"
+    }
   }
 
   function fillPlayersList(list) {
     document.getElementById("playerNames").innerHTML = "<h5>Name</h5>"
     document.getElementById("playerTeams").innerHTML = "<h5>School/Team</h5>"
     document.getElementById("playerSeeds").innerHTML = "<h5>Seed</h5>"
-
+    if (list == null) {
+      return;
+    }
     list.forEach(player => {
       var playerInfo = player.split(",");
       var nameElement = document.createElement("p");
