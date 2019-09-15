@@ -807,10 +807,21 @@
       var url = window.location.href.substring(
         window.location.href.indexOf("?")
       );
-      var params = new URLSearchParams(url);
-      var tournamentId = params.get("tournamentId");
       var divName = document.getElementById("divisionSelect").value;
-      window.open("bracket64.html?tournamentId="+tournamentId+"&div="+divName, "_blank");
+      var params = new URLSearchParams(url);
+      var rootRef = firebase.database().ref();
+      var tournamentsRef = rootRef.child("tournaments");
+      var tournamentId = params.get("tournamentId");
+      var tournamentRef = tournamentsRef.child(tournamentId);
+      tournamentRef.child("divisions").child(divName).once("value").then(dss => {
+        var drawSize = parseInt(dss.val().drawSize);
+        if (drawSize == 32) {
+          window.open("bracket32.html?tournamentId="+tournamentId+"&div="+divName, "_blank");
+        } else {
+          window.open("bracket64.html?tournamentId="+tournamentId+"&div="+divName, "_blank");
+        }
+      })
+      
     }
   }
 

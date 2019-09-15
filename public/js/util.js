@@ -32,6 +32,24 @@ function formatPlayerNameDraw(name) {
     return result;
 }
 
+function formatPlayerNameDrawEdit(name) {
+    if (name == null) {
+        return "";
+    }
+    var parts = name.split(",");
+    if (parts.length == 2) {
+        return parts[0] + ", " + parts[1];
+    }
+    if (parts.length != 3) {
+        return name;
+    }
+    var result = parts[0] + ", " + parts[1];
+    if (parts.length == 3) {
+        result += " (" + parts[2] + ")";
+    }
+    return result;
+}
+
 function formatDrawNameToDBFormat(name) {
     if (name == null) {
         return "";
