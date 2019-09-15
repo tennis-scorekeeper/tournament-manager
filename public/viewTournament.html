@@ -671,6 +671,8 @@
     var startDate = document.getElementById("newTournamentStartDate").value;
     var endDate = document.getElementById("newTournamentEndDate").value;
     var privacy = document.getElementById("tournamentPrivacy").value;
+    var startTmpDate = new Date(startDate);
+    var endTmpDate = new Date(endDate);
 
     if (!checkIfValidForFBKey(name)) {
       document.getElementById("updateTournamentError").innerHTML = "Invalid Tournament Name";
@@ -678,7 +680,10 @@
       document.getElementById("updateTournamentError").innerHTML = "Invalid Tournament Start Date";
     } else if (endDate == null || endDate == "") {
       document.getElementById("updateTournamentError").innerHTML = "Invalid Tournament End Date";
-    } else {
+    } else if (startTmpDate > endTmpDate) {
+      document.getElementById("updateTournamentError").innerHTML = "Start Date must be before End Date";
+    } 
+    else {
       tournamentRef.update({
         name: name, 
         startDate: startDate,

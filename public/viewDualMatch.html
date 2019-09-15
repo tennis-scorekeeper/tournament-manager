@@ -1,0 +1,736 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Welcome to Firebase Hosting</title>
+
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+    integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous" />
+  <link rel="stylesheet" type="text/css" media="print" href="css/print.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+    integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+    crossorigin="anonymous"></script>
+  <!-- update the version number as needed -->
+  <script defer src="/__/firebase/6.0.4/firebase-app.js"></script>
+  <!-- include only the Firebase features as you need -->
+  <script defer src="/__/firebase/6.0.4/firebase-auth.js"></script>
+  <script defer src="/__/firebase/6.0.4/firebase-database.js"></script>
+  <!--<script defer src="/__/ firebase/6.0.4/firebase-messaging.js"></script>-->
+  <script defer src="/__/firebase/6.0.4/firebase-storage.js"></script>
+  <!-- initialize the SDK after all desired features are loaded -->
+  <script defer src="/__/firebase/init.js"></script>
+</head>
+
+<body>
+  <div class="row justify-content-end">
+    <div class="col-lg-12 col-md-12 col-sm-12 doNotPrint" id="signedInInfo">
+      <button id="backButton" type="button" class="btn btn-primary" onclick="goBack()">
+        < Event List </button> <button id="signOutButton" type="button" class="btn btn-danger" onclick="signout()">
+          Sign Out
+      </button>
+    </div>
+  </div>
+  <div class="row justify-content-center">
+    <div class="col-lg-12 col-md-12 col-sm-12" id="titleHolder">
+      <h1 id="title"></h1>
+      <h4 class="onlyPrint" id="scheduleDate"></h4>
+      <h4 class="onlyPrint" id="scheduleLocation"></h4>
+      <h4 class="doNotPrint" id="hostedBy"></h4>
+      <p class="doNotPrint" id="divisionSelectError"></p>
+    </div>
+  </div>
+  <div class="row justify-content-end doNotPrint">
+    <div class="col-lg-12 col-md-12 col-sm-12" id="signedInInfo">
+      <button id="manageUmpiresButton" type="button" class="btn btn-success" data-toggle="modal"
+        data-target="#manageUmpiresModal">
+        Manage Umpires
+      </button>
+      <button id="editTournamentButton" type="button" class="btn btn-success" data-toggle="modal"
+      data-target="#editTournamentModal" onclick="prefillEditModal()">
+        Edit Dual Match
+      </button>
+    </div>
+  </div>
+
+  <div class="row doNotPrint">
+    <div class="col-lg-4 displayTab">
+      <h4 class="tabText" onclick="openLineupTab()">Line-ups</h4>
+    </div>
+    <div class="col-lg-4 displayTab">
+      <h4 class="tabText" onclick="openOfficialsTab()">Officials</h4>
+    </div>
+    <div class="col-lg-4 displayTab">
+      <h4 class="tabText" onclick="openPrintLineupTab()">Print Line-up</h4>
+    </div>
+  </div>
+
+  <div id="tabContent"></div>
+
+  <div class="modal fade" id="manageUmpiresModal" tabindex="-1" role="dialog" aria-labelledby="manageUmpiresModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="manageUmpiresModalLabel">
+            Manage Umpires
+          </h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <form>
+            <div style="display:inline-block" class="form-group">
+              <p id="addUmpireError"></p>
+              <label for="newUmpireEmail">New Umpire Email</label>
+              <input type="text" class="form-control" id="newUmpireEmail" aria-describedby="emailHelp"
+                placeholder="New Umpire Email" />
+            </div>
+            <div style="display:inline-block">
+              <button type="button" class="btn btn-primary" onclick="addUmpire()">
+                Add
+              </button>
+            </div>
+          </form>
+          <h5>Current Umpires (click to remove):</h5>
+          <div id="currentUmpiresList"></div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">
+            Close
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal fade" id="editTournamentModal" tabindex="-1" role="dialog" aria-labelledby="editTournamentModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="editTournamentModalLabel">
+            Edit Dual Match
+          </h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <form>
+            <div class="form-group">
+              <p id="updateTournamentError" style="color: red"></p>
+              <label for="newDualMatchTeam1">Team 1</label>
+              <input type="text" class="form-control" id="newDualMatchTeam1" aria-describedby="emailHelp"
+                placeholder="" />
+            </div>
+            <div class="form-group">
+                    <label for="newDualMatchTeam2">Team 2</label>
+                    <input type="text" class="form-control" id="newDualMatchTeam2" aria-describedby="emailHelp"
+                      placeholder="Team 2" />
+                  </div>
+            <div class="form-group">
+              <div class="tournamentDateHolder">
+                <label for="newDualMatchDate">Date</label>
+                <input type="date" class="form-control" id="newDualMatchDate" />
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="dualMatchPrivacy">Dual Match Privacy</label>
+              <select class="form-control" id="dualMatchPrivacy">
+                <option value='public'>Public</option>
+                <option value='private'>Private</option>
+              </select>
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">
+            Close
+          </button>
+          <button type="button" class="btn btn-primary" onclick="updateDualMatch()">
+            Update
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+
+<script type="text/javascript" src="js/util.js"></script>
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    var url = window.location.href.substring(
+      window.location.href.indexOf("?")
+    );
+    var params = new URLSearchParams(url);
+    if (
+      !params.has("dualMatchId") ||
+      params.get("dualMatchId").length == 0
+    ) {
+      window.location.replace("/tournaments.html");
+    }
+    try {
+      firebase.auth().onAuthStateChanged(function (user) {
+        if (user) {
+          if (!user.emailVerified) {
+            window.location.replace("/");
+          } else {
+            document.getElementById("signedInInfo").innerHTML +=
+            "<p id='signedInEmail'>Signed in as: " + user.email + "</p>";
+
+            var rootRef = firebase.database().ref();
+            var userRef = rootRef.child("users");
+            var dualMatchesRef = rootRef.child("dualMatches");
+            var fbEmail = user.email.toLowerCase().replace(".", ",");
+            var dualMatchId = params.get("dualMatchId");
+
+            var dualMatchTeam1, dualMatchTeam2, dualMatchAdmin, dualMatchStart;
+            dualMatchesRef.once("value").then(tss => {
+              dualMatchTeam1 = tss.child(dualMatchId).val().team1;
+              dualMatchTeam2 = tss.child(dualMatchId).val().team2;
+              dualMatchAdmin = tss.child(dualMatchId).val().admin;
+
+              document.getElementById("title").textContent = dualMatchTeam1 + " vs. " + dualMatchTeam2;
+              userRef.once("value").then(uss => {
+                document.getElementById("hostedBy").textContent = "Hosted By: " + uss.child(dualMatchAdmin).val().name;
+              });
+              fillCurrentUmpiresList();
+            });
+          }
+        } else {
+          window.location.replace("/");
+        }
+      });
+    } catch (e) {
+      console.log(e);
+    }
+  });
+
+  function signout() {
+    firebase.auth().signOut();
+    window.location.replace("/");
+  }
+
+  function goBack() {
+    window.location.replace("/tournaments.html");
+  }
+
+  function addUmpire() {
+    var url = window.location.href.substring(
+      window.location.href.indexOf("?")
+    );
+    var params = new URLSearchParams(url);
+    var rootRef = firebase.database().ref();
+    var userRef = rootRef.child("users");
+    var dualMatchesRef = rootRef.child("dualMatches");
+    var user = firebase.auth().currentUser;
+    var fbEmail = user.email.toLowerCase().replace(".", ",");
+    var dualMatchId = params.get("dualMatchId");
+
+    var newUmpire = document
+      .getElementById("newUmpireEmail")
+      .value.toLowerCase()
+      .replace(".", ",");
+    var dualMatchRef = dualMatchesRef.child(dualMatchId);
+
+    var hostedByFullText = document.getElementById("hostedBy").textContent;
+    var hostEmail = hostedByFullText.substring(
+      hostedByFullText.indexOf(":") + 2
+    );
+
+    if (newUmpire == "" || !newUmpire.includes("@")) {
+      document.getElementById("addUmpireError").textContent =
+        "Invalid email format!";
+    } else {
+      userRef
+        .child(newUmpire)
+        .once("value")
+        .then(ss => {
+          if (!ss.exists()) {
+            document.getElementById("addUmpireError").textContent =
+              "User does not exist!";
+          } else if (newUmpire == hostEmail.toLowerCase().replace(".", ",")) {
+            document.getElementById("addUmpireError").textContent =
+              "Umpire is already added!";
+          } else {
+            dualMatchRef
+              .child("umpires")
+              .once("value")
+              .then(tUmpires => {
+                var tumps = [];
+                if (tUmpires.exists()) {
+                  tumps = tUmpires.val();
+                }
+                var alreadyAdded = false;
+                tumps.forEach(existingUmpire => {
+                  if (existingUmpire == newUmpire) {
+                    document.getElementById("addUmpireError").textContent =
+                      "Umpire is already added!";
+                    alreadyAdded = true;
+                  }
+                });
+                if (!alreadyAdded) {
+                  tumps.push(newUmpire);
+                  dualMatchRef.update({ umpires: tumps });
+
+                  var tmp = [];
+                  if (ss.child("dualMatches").exists()) {
+                    tmp = ss.child("dualMatches").val();
+                  }
+                  tmp.push(dualMatchId);
+                  userRef.child(newUmpire).update({ dualMatches: tmp });
+                  document.getElementById("addUmpireError").textContent = "";
+                  dualMatchRef.once("value").then(tss => {
+                    fillCurrentUmpiresList();
+                  });
+                }
+              });
+          }
+        });
+    }
+  }
+
+  function fillCurrentUmpiresList() {
+    var url = window.location.href.substring(
+      window.location.href.indexOf("?")
+    );
+    var params = new URLSearchParams(url);
+    var rootRef = firebase.database().ref();
+    var userRef = rootRef.child("users");
+    var dualMatchesRef = rootRef.child("dualMatches");
+    var dualMatchId = params.get("dualMatchId");
+    var dualMatchRef = dualMatchesRef.child(dualMatchId);
+
+    dualMatchRef
+      .child("umpires")
+      .once("value")
+      .then(tUmpires => {
+        var tumps = [];
+        if (tUmpires.exists()) {
+          tumps = tUmpires.val();
+        }
+        document.getElementById("currentUmpiresList").innerHTML = "";
+        tumps.forEach(existingUmpire => {
+          var umpElement = document.createElement("p");
+          umpElement.textContent = existingUmpire.replace(",", ".");
+          umpElement.setAttribute("class", "currentUmpire");
+          umpElement.addEventListener("click", function () {
+            deleteUmpire(existingUmpire);
+          });
+          document
+            .getElementById("currentUmpiresList")
+            .appendChild(umpElement);
+        });
+      });
+  }
+
+  function deleteUmpire(umpire) {
+    var url = window.location.href.substring(
+      window.location.href.indexOf("?")
+    );
+    var params = new URLSearchParams(url);
+    var rootRef = firebase.database().ref();
+    var userRef = rootRef.child("users");
+    var dualMatchesRef = rootRef.child("dualMatches");
+    var user = firebase.auth().currentUser;
+    var fbEmail = user.email.toLowerCase().replace(".", ",");
+    var dualMatchId = params.get("dualMatchId");
+    var dualMatchRef = dualMatchesRef.child(dualMatchId);
+
+    userRef
+      .child(umpire)
+      .once("value")
+      .then(ss => {
+        var userdualMatches = ss.child("dualMatches").val();
+        for (var i = 0; i < userdualMatches.length; i++) {
+          if (userdualMatches[i] == dualMatchId) {
+            userdualMatches.splice(i, 1);
+          }
+        }
+        userRef.child(umpire).update({ dualMatches: userdualMatches });
+        dualMatchRef.once("value").then(tss => {
+          var dualMatchUmpires = tss.child("umpires").val();
+          for (var i = 0; i < dualMatchUmpires.length; i++) {
+            if (dualMatchUmpires[i] == umpire) {
+              dualMatchUmpires.splice(i, 1);
+            }
+          }
+          dualMatchRef.update({ umpires: dualMatchUmpires });
+          document.getElementById("addUmpireError").textContent =
+            "Umpire: " + umpire.replace(",", ".") + " has been removed.";
+          fillCurrentUmpiresList();
+        });
+      });
+  }
+
+  function prefillEditModal() {
+    var url = window.location.href.substring(
+      window.location.href.indexOf("?")
+    );
+    var params = new URLSearchParams(url);
+    var rootRef = firebase.database().ref();
+    var dualMatchesRef = rootRef.child("dualMatches");
+    var dualMatchId = params.get("dualMatchId");
+    var dualMatchRef = dualMatchesRef.child(dualMatchId);
+
+    dualMatchRef.once("value").then(tss => {
+      document.getElementById("newDualMatchTeam1").value = tss.val().team1;
+      document.getElementById("newDualMatchTeam2").value = tss.val().team2;
+      document.getElementById("newDualMatchDate").value = tss.val().date;
+      document.getElementById("dualMatchPrivacy").value = tss.val().privacy;
+    });
+  }
+
+  function updateDualMatch() {
+    var url = window.location.href.substring(
+      window.location.href.indexOf("?")
+    );
+    var params = new URLSearchParams(url);
+    var rootRef = firebase.database().ref();
+    var dualMatchesRef = rootRef.child("dualMatches");
+    var dualMatchId = params.get("dualMatchId");
+    var dualMatchRef = dualMatchesRef.child(dualMatchId);
+
+    var team1 = document.getElementById("newDualMatchTeam1").value;
+    var team2 = document.getElementById("newDualMatchTeam2").value; 
+    var date = document.getElementById("newDualMatchDate").value;
+    var privacy = document.getElementById("dualMatchPrivacy").value;
+    var tmpDate = new Date(date);
+
+    if (!checkIfValidForFBKey(team1)) {
+      document.getElementById("updateTournamentError").innerHTML = "Team 1 is Invalid";
+      return;
+    } else if (!checkIfValidForFBKey(team2)) {
+      document.getElementById("updateTournamentError").innerHTML = "Team 2 is Invalid";
+      return;
+    }  else if (date == null || date == "") {
+      document.getElementById("updateTournamentError").innerHTML = "Invalid Dual Match Date";
+      return;
+    } else {
+      dualMatchRef.update({
+        team1: team1,
+        team2: team2, 
+        date: date,
+        privacy: privacy
+      }).then(t => {
+        window.location.reload();
+      });
+    }
+  }
+
+  function divisionSelectChange() {
+    closeTab();
+  }
+
+  function closeTab() {
+    document.getElementById("tabContent").innerHTML="";
+  }
+
+  function openLineupTab() {
+      $("#tabContent").load("lineupTabContent.html");
+
+      var url = window.location.href.substring(
+        window.location.href.indexOf("?")
+      );
+      var params = new URLSearchParams(url);
+      var rootRef = firebase.database().ref();
+      var dualMatchesRef = rootRef.child("dualMatches");
+      var dualMatchId = params.get("dualMatchId");
+      var dualMatchRef = dualMatchesRef.child(dualMatchId);
+
+      dualMatchRef.once("value").then(dss => {
+        document.getElementById("team1Name").innerHTML = dss.val().team1;
+        document.getElementById("team2Name").innerHTML = dss.val().team2;
+        if (dss.child("lineup").exists()) {
+          document.getElementById("team1Doubles1").value = dss.child("lineup").val().team1Doubles1;
+          document.getElementById("team2Doubles1").value = dss.child("lineup").val().team2Doubles1;
+          document.getElementById("team1Doubles2").value = dss.child("lineup").val().team1Doubles2;
+          document.getElementById("team2Doubles2").value = dss.child("lineup").val().team2Doubles2;
+          document.getElementById("team1Doubles3").value = dss.child("lineup").val().team1Doubles3;
+          document.getElementById("team2Doubles3").value = dss.child("lineup").val().team2Doubles3;
+          document.getElementById("team1DoublesSub").value = dss.child("lineup").val().team1DoublesSub;
+          document.getElementById("team2DoublesSub").value = dss.child("lineup").val().team2DoublesSub;
+          document.getElementById("team1Singles1").value = dss.child("lineup").val().team1Singles1;
+          document.getElementById("team2Singles1").value = dss.child("lineup").val().team2Singles1;
+          document.getElementById("team1Singles2").value = dss.child("lineup").val().team1Singles2;
+          document.getElementById("team2Singles2").value = dss.child("lineup").val().team2Singles2;
+          document.getElementById("team1Singles3").value = dss.child("lineup").val().team1Singles3;
+          document.getElementById("team2Singles3").value = dss.child("lineup").val().team2Singles3;
+          document.getElementById("team1Singles4").value = dss.child("lineup").val().team1Singles4;
+          document.getElementById("team2Singles4").value = dss.child("lineup").val().team2Singles4;
+          document.getElementById("team1Singles5").value = dss.child("lineup").val().team1Singles5;
+          document.getElementById("team2Singles5").value = dss.child("lineup").val().team2Singles5;
+          document.getElementById("team1Singles6").value = dss.child("lineup").val().team1Singles6;
+          document.getElementById("team2Singles6").value = dss.child("lineup").val().team2Singles6;
+          document.getElementById("team1SinglesSub1").value = dss.child("lineup").val().team1SinglesSub1;
+          document.getElementById("team2SinglesSub1").value = dss.child("lineup").val().team2SinglesSub1;
+          document.getElementById("team1SinglesSub2").value = dss.child("lineup").val().team1SinglesSub2;
+          document.getElementById("team2SinglesSub2").value = dss.child("lineup").val().team2SinglesSub2;
+        }
+      });
+  }
+
+  function saveLineUp() {
+    var url = window.location.href.substring(
+      window.location.href.indexOf("?")
+    );
+    var params = new URLSearchParams(url);
+    var rootRef = firebase.database().ref();
+    var dualMatchesRef = rootRef.child("dualMatches");
+    var dualMatchId = params.get("dualMatchId");
+    var dualMatchRef = dualMatchesRef.child(dualMatchId);
+
+    dualMatchRef.child("lineup").set({
+      team1Doubles1: document.getElementById("team1Doubles1").value,
+      team2Doubles1: document.getElementById("team2Doubles1").value,
+      team1Doubles2: document.getElementById("team1Doubles2").value,
+      team2Doubles2: document.getElementById("team2Doubles2").value,
+      team1Doubles3: document.getElementById("team1Doubles3").value,
+      team2Doubles3: document.getElementById("team2Doubles3").value,
+      team1DoublesSub: document.getElementById("team1DoublesSub").value,
+      team2DoublesSub: document.getElementById("team2DoublesSub").value,
+      team1Singles1: document.getElementById("team1Singles1").value,
+      team2Singles1: document.getElementById("team2Singles1").value,
+      team1Singles2: document.getElementById("team1Singles2").value,
+      team2Singles2: document.getElementById("team2Singles2").value,
+      team1Singles3: document.getElementById("team1Singles3").value,
+      team2Singles3: document.getElementById("team2Singles3").value,
+      team1Singles4: document.getElementById("team1Singles4").value,
+      team2Singles4: document.getElementById("team2Singles4").value,
+      team1Singles5: document.getElementById("team1Singles5").value,
+      team2Singles5: document.getElementById("team2Singles5").value,
+      team1Singles6: document.getElementById("team1Singles6").value,
+      team2Singles6: document.getElementById("team2Singles6").value,
+      team1SinglesSub1: document.getElementById("team1SinglesSub1").value,
+      team2SinglesSub1: document.getElementById("team2SinglesSub1").value,
+      team1SinglesSub2: document.getElementById("team1SinglesSub2").value,
+      team2SinglesSub2: document.getElementById("team2SinglesSub2").value,
+    })
+  }
+
+  function openOfficialsTab() {
+      $("#tabContent").load("officialsTabContent.html");
+
+      var url = window.location.href.substring(
+        window.location.href.indexOf("?")
+      );
+      var params = new URLSearchParams(url);
+      var rootRef = firebase.database().ref();
+      var dualMatchesRef = rootRef.child("dualMatches");
+      var dualMatchId = params.get("dualMatchId");
+      var dualMatchRef = dualMatchesRef.child(dualMatchId);
+
+      dualMatchRef.once("value").then(dss => {
+        if (dss.child("officials").exists()) {
+          document.getElementById("refereeName").value = dss.child("officials").val().refereeName;
+          document.getElementById("refereeITANumber").value = dss.child("officials").val().refereeITANumber;
+          document.getElementById("offical1").value = dss.child("officials").val().offical1;
+          document.getElementById("offical2").value = dss.child("officials").val().offical2;
+          document.getElementById("offical3").value = dss.child("officials").val().offical3;
+          document.getElementById("offical4").value = dss.child("officials").val().offical4;
+          document.getElementById("offical5").value = dss.child("officials").val().offical5;
+          document.getElementById("offical6").value = dss.child("officials").val().offical6;
+          document.getElementById("offical7").value = dss.child("officials").val().offical7;
+          document.getElementById("offical8").value = dss.child("officials").val().offical8;
+          document.getElementById("offical9").value = dss.child("officials").val().offical9;
+          document.getElementById("offical10").value = dss.child("officials").val().offical10;
+          document.getElementById("offical11").value = dss.child("officials").val().offical11;
+          document.getElementById("offical12").value = dss.child("officials").val().offical12;
+        }
+      });
+  }
+
+  function saveOfficials() {
+    var url = window.location.href.substring(
+      window.location.href.indexOf("?")
+    );
+    var params = new URLSearchParams(url);
+    var rootRef = firebase.database().ref();
+    var dualMatchesRef = rootRef.child("dualMatches");
+    var dualMatchId = params.get("dualMatchId");
+    var dualMatchRef = dualMatchesRef.child(dualMatchId);
+
+    dualMatchRef.child("officials").set({
+      refereeName: document.getElementById("refereeName").value,
+      refereeITANumber: document.getElementById("refereeITANumber").value,
+      offical1: document.getElementById("offical1").value,
+      offical1: document.getElementById("offical1").value,
+      offical2: document.getElementById("offical2").value,
+      offical3: document.getElementById("offical3").value,
+      offical4: document.getElementById("offical4").value,
+      offical5: document.getElementById("offical5").value,
+      offical6: document.getElementById("offical6").value,
+      offical7: document.getElementById("offical7").value,
+      offical8: document.getElementById("offical8").value,
+      offical9: document.getElementById("offical9").value,
+      offical10: document.getElementById("offical10").value,
+      offical11: document.getElementById("offical11").value,
+      offical12: document.getElementById("offical12").value
+    })
+  }
+</script>
+
+<style media="screen">
+  body {
+    background: white;
+    color: rgba(0, 0, 0, 0.87);
+    font-family: Roboto, Helvetica, Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+  }
+
+  #signOutButton {
+    margin: 5px 15px 0px 0px;
+    float: right;
+    font-size: 0.8em;
+  }
+
+  #signedInEmail {
+    margin: 10px 15px 0px 0px;
+    float: right;
+  }
+
+  #backButton {
+    margin: 5px 0px 0px 15px;
+    float: left;
+  }
+
+  #titleHolder {
+    text-align: center;
+    margin-top: 25px;
+  }
+
+  #divisionSelectLabel {
+    margin-left: 20px;
+  }
+
+  #divisionSelect {
+    margin: 10px 0px 0px 5px;
+  }
+  
+  #manageDivisionsButton {
+    margin: 10px 0px 0px 10px;
+  }
+
+  #manageUmpiresButton {
+    float: right;
+    margin: 10px 30px 0px 0px;
+  }
+  
+  #manageLocationsButton {
+    float: right;
+    margin: 10px 10px 0px 0px;
+  }
+
+  #editTournamentButton {
+    float: right;
+    margin: 10px 30px 0px 0px;
+  }
+
+  #addUmpireError {
+    color: red;
+  }
+
+  #addDivisionError {
+    color: red;
+  }
+
+  #addLocationError {
+    color: red;
+  }
+
+  p.currentUmpire:hover {
+    text-decoration: line-through;
+    color: red;
+    cursor: pointer;
+  }
+
+  .tournamentDateHolder {
+    display: inline-block;
+  }
+
+  .displayTab {
+    margin-top: 25px;
+    text-align: center;
+  }
+  
+  .tabText {
+    padding-top: 1.5em;
+    padding-bottom: 1.5em;
+    margin-left: 5em;
+    margin-right: 5em;
+    background-color: #cfe2f3;
+    border: 2px solid black;
+  }
+
+  h4.tabText:hover {
+    cursor:pointer;
+    background-color: #b2d1ed;
+  }
+
+  .topPlayer {
+    border: 1px solid black;
+  }
+
+  #scheduleColLabels {
+    margin-top: 30px;
+    padding-top: 10px;
+    padding-left:50px;
+    border-bottom:solid 1px black;
+    border-top: solid 1px black;
+  }
+
+  #daySelect {
+    margin-top: 20px;
+    margin-right: 20px;
+  }
+
+  #locationSelect {
+    margin-top: 20px;
+    margin-right: 20px;
+  }
+
+  #printButton {
+    margin-top: 20px;
+    margin-right: 40px;
+  }
+
+  .matchRow {
+    border-bottom: 1px solid black;
+    padding-bottom: 5px;
+    padding-left: 50px;
+  }
+
+  .matchTime {
+    margin-top: 8px;
+  }
+
+  .courtNumber {
+    display: inline-block;
+    width: 1.7em;
+    height: 1.7em;
+    border: 1px solid black;
+    vertical-align: middle;
+    margin-left: 10px;
+    text-align: center;
+  }
+
+  .courtLabel {
+    display: inline-block;
+  }
+
+  .verticalCenter {
+    margin-top: auto;
+    margin-bottom: auto;
+  }
+
+  .onlyPrint {
+    display: none;
+  }
+</style>
+
+</html>

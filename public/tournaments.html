@@ -34,13 +34,26 @@
       <h1 id="title">Tournaments</h1>
     </div>
   </div>
-  <div class="row justify-content-end">
-    <div class="col-lg-12 col-md-12 col-sm-12" id="newTournamentHolder">
-      <button id="newTournament" type="button" class="btn btn-primary" data-toggle="modal"
+  <div class="row">
+    <div class="col-6" id="eventTabsHolder">
+      <div id="tournamentTab" class="displayTab">
+        <p id="tournamentTabText" class="tabText" onclick="openTournamentsTab()">Tournaments</p>
+      </div>
+      <div id="dualMatchTab" class="displayTab">
+        <p id="dualMatchTabText" class="tabText" onclick="openDualMatchTab()">Dual Matches</p>
+      </div>
+    </div>
+    <div class="col-6" id="newTournamentHolder">
+      <button id="newTournament" type="button" class="btn btn-success createEventButtons" data-toggle="modal"
+        data-target="#createDualMatchModal">
+        Create Dual Match
+      </button>
+      <button id="newTournament" type="button" class="btn btn-success createEventButtons" data-toggle="modal"
         data-target="#createTournamentModal">
         Create Tournament
       </button>
     </div>
+  </div>
 
     <div class="modal fade" id="createTournamentModal" tabindex="-1" role="dialog"
       aria-labelledby="createTournamentModalLabel" aria-hidden="true">
@@ -57,7 +70,7 @@
           <div class="modal-body">
             <form>
               <div class="form-group">
-                <p id="error"></p>
+                <p id="createTournamentError"></p>
                 <label for="tournamentName">Tournament Name</label>
                 <input type="text" class="form-control" id="tournamentName" aria-describedby="emailHelp"
                   placeholder="Tournament Name" />
@@ -92,10 +105,62 @@
         </div>
       </div>
     </div>
-  </div>
-  <div id="tournamentList"></div>
+
+    <div class="modal fade" id="createDualMatchModal" tabindex="-1" role="dialog"
+      aria-labelledby="createDualMatchModalLabel" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="createDualMatchModalLabel">
+              New Dual Match
+            </h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <form>
+              <div class="form-group">
+                <p id="createDualMatchError"></p>
+                <label for="dualMatchTeam1">Team 1</label>
+                <input type="text" class="form-control" id="dualMatchTeam1" aria-describedby="emailHelp"
+                  placeholder="Team 1" />
+              </div>
+              <div class="form-group">
+                  <label for="dualMatchTeam2">Team 2</label>
+                  <input type="text" class="form-control" id="dualMatchTeam2" aria-describedby="emailHelp"
+                    placeholder="Team 2" />
+                </div>
+              <div class="form-group">
+                <div class="dualMatchDateHolder">
+                  <label for="dualMatchDate">Date</label>
+                  <input type="date" class="form-control" id="dualMatchDate" />
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="dualMatchPrivacy">Dual Match Privacy</label>
+                <select class="form-control" id="dualMatchPrivacy">
+                  <option value='public'>Public</option>
+                  <option value='private'>Private</option>
+                </select>
+              </div>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">
+              Close
+            </button>
+            <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="createDualMatch()">
+              Create
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  <div id="eventList"></div>
 </body>
 
+<script type="text/javascript" src="js/util.js"></script>
 <script>
   document.addEventListener("DOMContentLoaded", function () {
     try {
@@ -106,7 +171,7 @@
           } else {
             document.getElementById("signedInInfo").innerHTML +=
               "<p id='signedInEmail'>Signed in as: " + user.email + "</p>";
-            loadTournaments();
+            //openTournamentsTab();
           }
         } else {
           window.location.replace("/");
@@ -123,6 +188,7 @@
   }
 
   function loadTournaments() {
+    document.getElementById("eventList").innerHTML = "";
     var rootRef = firebase.database().ref();
     var userRef = rootRef.child("users");
     var tournamentsRef = rootRef.child("tournaments");
@@ -145,9 +211,11 @@
               div.setAttribute("class", "tournamentHolder");
 
               var p1 = document.createElement("span");
+              p1.setAttribute("class", "tournamentName");
               p1.textContent = tss.child(id).val().name;
               var linebreak = document.createElement("br");
               var p2 = document.createElement("span");
+              p2.setAttribute("class", "tournamentDates");
               p2.textContent = startDateString + "-" + endDateString;
 
               div.appendChild(p1);
@@ -162,7 +230,7 @@
               );
               a.appendChild(div);
 
-              document.getElementById("tournamentList").appendChild(a);
+              document.getElementById("eventList").appendChild(a);
             });
           }
         });
@@ -182,15 +250,20 @@
     var tournamentEndDate = document.getElementById("tournamentEndDate")
       .value;
     var tournamentPrivacy = document.getElementById("tournamentPrivacy").value;
+    var startTmpDate = new Date(tournamentStartDate);
+    var endTmpDate = new Date(tournamentEndDate);
 
-    if (!checkIfValidForFBKey(name)) {
-      document.getElementById("updateTournamentError").innerHTML = "Invalid tournament name";
+    if (!checkIfValidForFBKey(tournamentName)) {
+      document.getElementById("createTournamentError").innerHTML = "Invalid tournament name";
       return;
-    } else if (startDate == null || startDate == "") {
-      document.getElementById("updateTournamentError").innerHTML = "Invalid tournament start date";
+    } else if (tournamentStartDate == null || tournamentStartDate == "") {
+      document.getElementById("createTournamentError").innerHTML = "Invalid tournament start date";
       return;
-    } else if (endDate == null || endDate == "") {
-      document.getElementById("updateTournamentError").innerHTML = "Invalid tournament end date";
+    } else if (tournamentEndDate == null || tournamentEndDate == "") {
+      document.getElementById("createTournamentError").innerHTML = "Invalid tournament end date";
+      return;
+    } else if (startTmpDate > endTmpDate) {
+      document.getElementById("createTournamentError").innerHTML = "Start Date must be before End Date";
       return;
     } 
     var result = tournamentsRef.push({
@@ -213,6 +286,113 @@
         tmp.push(tournamentId);
         userRef.child(fbEmail).update({ tournaments: tmp });
         window.location.reload();
+      });
+  }
+
+  function openTournamentsTab() {
+    loadTournaments();
+    document.getElementById("tournamentTabText").setAttribute("style", "background-color: #efefef;");
+    document.getElementById("dualMatchTabText").setAttribute("style", "background-color: white;")
+  }
+
+  function openDualMatchTab() {
+    loadDualMatches();
+    document.getElementById("dualMatchTabText").setAttribute("style", "background-color: #efefef;");
+    document.getElementById("tournamentTabText").setAttribute("style", "background-color: white;")
+  }
+
+  function createDualMatch() {
+    var rootRef = firebase.database().ref();
+    var userRef = rootRef.child("users");
+    var dualMatchesRef = rootRef.child("dualMatches");
+    var user = firebase.auth().currentUser;
+    var fbEmail = user.email.toLowerCase().replace(".", ",");
+
+    var dualMatchTeam1 = document.getElementById("dualMatchTeam1").value;
+    var dualMatchTeam2 = document.getElementById("dualMatchTeam2").value;
+    var dualMatchDate = document.getElementById("dualMatchDate")
+      .value;
+    var dualMatchPrivacy = document.getElementById("dualMatchPrivacy").value;
+    var tmpDate = new Date(dualMatchDate);
+
+    if (!checkIfValidForFBKey(dualMatchTeam1)) {
+      document.getElementById("createDualMatchError").innerHTML = "Team 1 is invalid";
+      return;
+    } else if (!checkIfValidForFBKey(dualMatchTeam2)) {
+      document.getElementById("createDualMatchError").innerHTML = "Team 2 is invalid";
+      return;
+    } else if (dualMatchDate == null || dualMatchDate == "") {
+      document.getElementById("createDualMatchError").innerHTML = "Invalid Dual Match Date";
+      return;
+    }
+    var result = dualMatchesRef.push({
+      admin: fbEmail,
+      team1: dualMatchTeam1,
+      team2: dualMatchTeam2,
+      date: dualMatchDate,
+      privacy: dualMatchPrivacy
+    });
+    var dualMatchId = result.path.pieces_[1];
+    userRef
+      .child(fbEmail)
+      .child("dualMatches")
+      .once("value")
+      .then(ss => {
+        var tmp = [];
+        if (ss.exists()) {
+          tmp = ss.val();
+        }
+        tmp.push(dualMatchId);
+        userRef.child(fbEmail).update({ dualMatches: tmp });
+        window.location.reload();
+      });
+  }
+
+  function loadDualMatches() {
+    document.getElementById("eventList").innerHTML = "";
+    var rootRef = firebase.database().ref();
+    var userRef = rootRef.child("users");
+    var dualMatchesRef = rootRef.child("dualMatches");
+    var user = firebase.auth().currentUser;
+    var fbEmail = user.email.toLowerCase().replace(".", ",");
+
+    userRef
+      .child(fbEmail)
+      .once("value")
+      .then(ss => {
+        dualMatchesRef.once("value").then(tss => {
+          if (ss.val().dualMatches != null) {
+            ss.val().dualMatches.forEach(id => {
+              var date = tss.child(id).val().date;
+              var dateString = date.substring(5,7) + "/" + date.substring(8) + "/" + date.substring(0,4);
+
+              var div = document.createElement("div");
+              div.setAttribute("class", "tournamentHolder");
+
+              var p1 = document.createElement("span");
+              p1.setAttribute("class", "tournamentName");
+              p1.textContent = tss.child(id).val().team1 + " vs. " + tss.child(id).val().team2;
+              var linebreak = document.createElement("br");
+              var p2 = document.createElement("span");
+              p2.setAttribute("class", "tournamentDates");
+              p2.textContent = dateString;
+
+              div.appendChild(p1);
+              div.appendChild(linebreak);
+              div.appendChild(p2);
+
+              var a = document.createElement("a");
+              a.setAttribute("class", "tournament");
+              a.setAttribute(
+                "href",
+                "/viewDualMatch.html?dualMatchId=" + id
+              );
+              a.appendChild(div);
+
+              document.getElementById("eventList").appendChild(a);
+            });
+          }
+        });
       });
   }
 </script>
@@ -243,21 +423,18 @@
 
   #newTournamentHolder {
     margin: 10px 0px 0px 0px;
-    text-align: center;
   }
 
   .tournamentDateHolder {
     display: inline-block;
   }
 
-  #tournamentList {
+  #eventList {
     margin: 15px 0px 0px 0px;
   }
 
   .tournamentHolder {
     background-color: #e9eef7;
-    border-top: 2px solid black;
-    border-bottom: 2px solid black;
     padding-left: 20px;
     padding-top: 5px;
     padding-bottom: 5px;
@@ -269,13 +446,40 @@
   }
 
   .tournament {
-    font-size: 2em;
     color: black;
   }
 
   a.tournament:hover {
     color: black;
     text-decoration: none;
+  }
+
+  .tournamentName {
+    font-size: 2em;
+  }
+
+  .tournamentDates {
+    font-size: 1.5em;
+  }
+
+  .createEventButtons {
+    margin-right: 10px;
+    float: right;
+  }
+  
+  .displayTab {
+    text-align: center;
+    display: inline-block
+  }
+  
+  .tabText {
+    padding: 0.5em;
+    background-color: white;
+    border: 2px solid black;
+  }
+
+  p.tabText:hover {
+    cursor:pointer;
   }
 </style>
 
