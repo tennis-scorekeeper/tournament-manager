@@ -815,7 +815,9 @@
       var tournamentRef = tournamentsRef.child(tournamentId);
       tournamentRef.child("divisions").child(divName).once("value").then(dss => {
         var drawSize = parseInt(dss.val().drawSize);
-        if (drawSize == 32) {
+        if (drawSize == 16) {
+          window.open("bracket16.html?tournamentId="+tournamentId+"&div="+divName, "_blank");
+        } else if (drawSize == 32) {
           window.open("bracket32.html?tournamentId="+tournamentId+"&div="+divName, "_blank");
         } else {
           window.open("bracket64.html?tournamentId="+tournamentId+"&div="+divName, "_blank");
