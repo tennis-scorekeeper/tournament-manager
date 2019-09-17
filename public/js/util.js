@@ -15,19 +15,33 @@ function formatPlayerNameDraw(name) {
         return "";
     }
     var parts = name.split(",");
+    var result = "";
     if (parts.length == 2) {
-        return parts[0] + ", " + parts[1];
+        result = parts[0] + ", " + parts[1];
     }
-    if (parts.length != 3) {
+    else if (parts.length != 3) {
         return name;
     }
-    var result = parts[0] + ", " + parts[1];
-    if (parts.length == 3) {
+    else if (parts.length == 3) {
+        result = parts[0] + ", " + parts[1];
         result += " (" + parts[2] + ")";
     }
-
     if (result.length >= 27) {
-        result = result.substring(result.indexOf(" "));
+        var lastSpace = 0;
+        for (var i = 0; i < parts[0].length; i++) {
+            if (parts[0][i] == " ") {
+                lastSpace = i;
+            }
+        }
+        result = result.substring(lastSpace);
+
+        var maxTeamName = 21 - parts[0].substring(lastSpace).length;
+        if (parts[1].length > maxTeamName) {
+            result = parts[0].substring(lastSpace) + ", " + parts[1].substring(0,maxTeamName-3) + "...";
+            if (parts.length == 3) {
+                result += " (" + parts[2] + ")";
+            }
+        }
     }
     return result;
 }
