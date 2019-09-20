@@ -757,7 +757,13 @@
         if (split.length < 2) {
           error = true;
         } else {
-          var formatLine = split[0].trim(" ") + "," + split[1].trim(" ");
+          var formatLine = "";
+          if (split[0].includes("/")) {
+            var doublesSplit = split[0].split("/");
+            formatLine = doublesSplit[0].trim(" ") + "/" + doublesSplit[1].trim(" ") + "," + split[1].trim(" ");
+          } else {
+            formatLine = split[0].trim(" ") + "," + split[1].trim(" ");
+          }
         }
         if (split.length == 3) {
           formatLine += "," + split[2].trim(" ");
