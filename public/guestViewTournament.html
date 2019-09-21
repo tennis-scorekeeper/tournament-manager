@@ -48,19 +48,22 @@
     </div>
   </div>
 
-  <div class="row doNotPrint">
-    <div class="col-lg-4 displayTab">
-      <h4 class="tabText" onclick="openPlayersTab()">Players</h4>
-    </div>
-    <div class="col-lg-4 displayTab">
-      <h4 class="tabText" onclick="openDrawsTab()">Draws</h4>
-    </div>
-    <div class="col-lg-4 displayTab">
-      <h4 class="tabText" onclick="openScheduleTab()">Schedule</h4>
+  <div class="mainHolder">
+    <div class="row justify-content-center">
+      <div class="col-sm-3 doNotPrint">
+        <div class="displayTab">
+          <h4 class="tabText" id="playersTab" onclick="openPlayersTab()">Players</h4>
+        </div>
+        <div class="displayTab">
+          <h4 class="tabText" id="drawsTab" onclick="openDrawsTab()">Draws</h4>
+        </div>
+        <div class="displayTab">
+          <h4 class="tabText" id="scheduleTab" onclick="openScheduleTab()">Schedule</h4>
+        </div>
+      </div>
+      <div class="col" id="tabContent"></div>
     </div>
   </div>
-
-  <div id="tabContent"></div>
 </body>
 
 <script type="text/javascript" src="js/util.js"></script>
@@ -132,13 +135,17 @@
 
   function closeTab() {
     document.getElementById("tabContent").innerHTML="";
+    document.getElementById("playersTab").setAttribute("class", "tabText");
+    document.getElementById("scheduleTab").setAttribute("class", "tabText");
   }
 
   function openPlayersTab() {
     if (document.getElementById("divisionSelect").value == '0') {
       document.getElementById("divisionSelectError").innerHTML = "Please select a division first!";
     } else {
+      closeTab();
       $("#tabContent").load("guestPlayersTabContent.html");
+      document.getElementById("playersTab").setAttribute("class", "tabTextSelected");
 
       var url = window.location.href.substring(
         window.location.href.indexOf("?")
@@ -153,12 +160,6 @@
       divRef.once("value").then(ss => {
         var playersList = ss.child("players").val();
         fillPlayersList(playersList);
-        var playerListString = "";
-        
-        playersList.forEach(player => {
-          playerListString += player + "\n";
-        })
-        document.getElementById("playersListInput").value=playerListString;
       })
 
       document.getElementById("divisionSelectError").innerHTML = "";
@@ -204,7 +205,9 @@
   }
 
   function openScheduleTab() {
-    $("#tabContent").load("guestScheduleTabContent.html");
+    closeTab();
+    $("#tabContent").load("scheduleTabContent.html");
+    document.getElementById("scheduleTab").setAttribute("class", "tabTextSelected");
 
     var url = window.location.href.substring(
       window.location.href.indexOf("?")
@@ -218,18 +221,24 @@
     
     tournamentRef.once("value").then(ss => {
       var dayMatchSet = new Set();
+      var locationSet = new Set();
       ss.forEach(div => {
         var drawSize = parseInt(div.child("drawSize").val());
 
         /*** 64 TEMPORARY, CHANGE TO drawSize LATER ***/
         for (var i = 0; i < 64; i++) { 
           var currentMatchDate = div.child("draw").child("m"+i).child("date").val();
+          var currentMatchLocation = div.child("draw").child("m"+i).child("location").val();
           if (currentMatchDate != null && currentMatchDate != "") {
             dayMatchSet.add(currentMatchDate);
           }
+          if (currentMatchLocation != null && currentMatchLocation != "") {
+            locationSet.add(currentMatchLocation);
+          }
         }
       });
-      document.getElementById("daySelect").innerHTML = "<option value='0'>Choose a date</option>";
+      document.getElementById("daySelect").innerHTML = "<option value='0'>Choose a Date</option>";
+      document.getElementById("locationSelect").innerHTML = "<option value='0'>Choose a Location</option><option value=''>No Location Yet</option>";
       Array.from(dayMatchSet).sort().forEach(date => {
         var tmpDate = new Date(date);
         tmpDate.setDate(tmpDate.getDate()+1);
@@ -239,6 +248,12 @@
         optElement.setAttribute("value", date);
         document.getElementById("daySelect").appendChild(optElement);
       });
+      Array.from(locationSet).forEach(location => {
+        var optElement = document.createElement("option");
+        optElement.textContent = location;
+        optElement.setAttribute("value", location);
+        document.getElementById("locationSelect").appendChild(optElement);
+      });
 
     document.getElementById("divisionSelectError").innerHTML = "";
     });
@@ -246,6 +261,7 @@
 
   function loadSchedule() {
     var date = document.getElementById("daySelect").value;
+    var location = document.getElementById("locationSelect").value;
     var url = window.location.href.substring(
       window.location.href.indexOf("?")
     );
@@ -255,11 +271,6 @@
     var tournamentsRef = rootRef.child("tournaments");
     var tournamentId = params.get("tournamentId");
     var tournamentRef = tournamentsRef.child(tournamentId).child("divisions");
-
-    var options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
-    var tmpDate = new Date(date);
-    tmpDate.setDate(tmpDate.getDate()+1);
-    document.getElementById("scheduleDate").innerHTML = tmpDate.toLocaleDateString("en-US", options);
     
     tournamentRef.once("value").then(ss => {
       var matches = [];
@@ -269,13 +280,14 @@
         /*** 64 TEMPORARY, CHANGE TO drawSize LATER ***/
         for (var i = 0; i < 64; i++) { 
           var currentMatchDate = div.child("draw").child("m"+i).child("date").val();
-          if (currentMatchDate == date) {
+          var currentMatchLocation = div.child("draw").child("m"+i).child("location").val();
+          if (currentMatchDate == date && (currentMatchLocation == location || (location == "" && currentMatchLocation == null))) {
             var tmpMatch = div.child("draw").child("m"+i).val();
-            var newObj = {};
             tmpMatch.matchNumber = i;
             tmpMatch.division = div.key;
             tmpMatch.p1 = div.child("draw").child("m"+i).child("m"+i+"a").val();
             tmpMatch.p2 = div.child("draw").child("m"+i).child("m"+i+"b").val();
+            tmpMatch.drawSize = drawSize;
             matches.push(tmpMatch);
           }
         }
@@ -285,7 +297,14 @@
       document.getElementById("matchList").innerHTML = "";
 
       var counter = 1;
+
+      var divisionProgressions = {};
       matches.forEach(match => {
+        if (divisionProgressions[match.division] == null) {
+          divisionProgressions[match.division] = {};
+        }
+        divisionProgressions[match.division][drawProgressions[match.drawSize][match.matchNumber]] = "Winner of Match " + counter;
+
         var row = document.createElement("div");
         row.setAttribute("class", "row matchRow");
 
@@ -313,16 +332,48 @@
 
         var divisionDiv = document.createElement("div");
         divisionDiv.setAttribute("class", "col-2 verticalCenter");
-        divisionDiv.innerHTML = "<div>"+match.division+"</div>";
+        var divisionName = document.createElement("div");
+        divisionName.innerHTML = match.division;
+        divisionDiv.appendChild(divisionName);
+
+        var roundName = document.createElement("div");
+        // CHANGE TO drawSize LATER
+        roundName.innerHTML = getRoundName(match.matchNumber, 64);
+        divisionDiv.appendChild(roundName);
 
         var playersDiv = document.createElement("div");
         playersDiv.setAttribute("class", "col-4 verticalCenter");
         var p1Div = document.createElement("div");
         var p2Div = document.createElement("div");
-        p1Div.setAttribute("style", "margin-bottom:10px; margin-top: 5px;");
-        p2Div.setAttribute("style", "margin-top:10px; margin-bottom: 5px;");
-        p1Div.innerHTML = formatPlayerNameSchedule(match.p1);
-        p2Div.innerHTML = formatPlayerNameSchedule(match.p2);
+        if (match.p1 != null && match.p1.split(",").length == 3) {
+          p1Div.setAttribute("style", "margin-bottom:10px; margin-top: 5px; font-weight: bold;");  
+        } else {
+          p1Div.setAttribute("style", "margin-bottom:10px; margin-top: 5px;");
+        }
+        if (match.p2 != null && match.p2.split(",").length == 3) {
+          p2Div.setAttribute("style", "margin-bottom:10px; margin-top: 5px; font-weight: bold;");
+        } else {
+          p2Div.setAttribute("style", "margin-top:10px; margin-bottom: 5px;");
+        }
+        if (match.p1 != "") {
+          p1Div.innerHTML = formatPlayerNameSchedule(match.p1);
+        } else {
+          if (divisionProgressions[match.division] != null) {
+            if (divisionProgressions[match.division][match.matchNumber + "a"] != null) {
+              p1Div.innerHTML = divisionProgressions[match.division][match.matchNumber + "a"];
+            }
+          }
+        }
+
+        if (match.p2 != "") {
+          p2Div.innerHTML = formatPlayerNameSchedule(match.p2);
+        } else {
+          if (divisionProgressions[match.division] != null) {
+            if (divisionProgressions[match.division][match.matchNumber + "b"] != null) {
+              p2Div.innerHTML = divisionProgressions[match.division][match.matchNumber + "b"];
+            }
+          }
+        }
         playersDiv.appendChild(p1Div);
         playersDiv.appendChild(p2Div);
 
@@ -494,22 +545,33 @@
   }
 
   .displayTab {
-    margin-top: 25px;
+    margin-top: 10px;
     text-align: center;
   }
   
   .tabText {
     padding-top: 1.5em;
     padding-bottom: 1.5em;
-    margin-left: 5em;
-    margin-right: 5em;
+    margin-left: 1em;
+    margin-right: 1em;
     background-color: #cfe2f3;
-    border: 2px solid black;
   }
 
   h4.tabText:hover {
     cursor:pointer;
     background-color: #b2d1ed;
+  }
+
+  .tabTextSelected {
+    padding-top: 1.5em;
+    padding-bottom: 1.5em;
+    margin-left: 1em;
+    margin-right: 1em;
+    background-color: #6fa7dc;
+  }
+
+  h4.tabTextSelected:hover {
+    cursor:pointer;
   }
 
   .topPlayer {
@@ -525,6 +587,11 @@
   }
 
   #daySelect {
+    margin-top: 20px;
+    margin-right: 20px;
+  }
+
+  #locationSelect {
     margin-top: 20px;
     margin-right: 20px;
   }
@@ -569,6 +636,12 @@
 
   #guestPlayerTabContent {
     margin-top: 75px;
+  }
+
+  .mainHolder {
+    border-top: black 1px solid; 
+    margin-top: 40px; 
+    padding-top: 20px;
   }
 </style>
 

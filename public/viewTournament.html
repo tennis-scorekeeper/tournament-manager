@@ -67,19 +67,22 @@
     </div>
   </div>
 
-  <div class="row doNotPrint">
-    <div class="col-lg-4 displayTab">
-      <h4 class="tabText" onclick="openPlayersTab()">Players</h4>
-    </div>
-    <div class="col-lg-4 displayTab">
-      <h4 class="tabText" onclick="openDrawsTab()">Draws</h4>
-    </div>
-    <div class="col-lg-4 displayTab">
-      <h4 class="tabText" onclick="openScheduleTab()">Schedule</h4>
+  <div class="mainHolder">
+    <div class="row justify-content-center">
+      <div class="col-sm-3 doNotPrint">
+        <div class="displayTab">
+          <h4 class="tabText" id="playersTab" onclick="openPlayersTab()">Players</h4>
+        </div>
+        <div class="displayTab">
+          <h4 class="tabText" id="drawsTab" onclick="openDrawsTab()">Draws</h4>
+        </div>
+        <div class="displayTab">
+          <h4 class="tabText" id="scheduleTab" onclick="openScheduleTab()">Schedule</h4>
+        </div>
+      </div>
+      <div class="col" id="tabContent"></div>
     </div>
   </div>
-
-  <div id="tabContent"></div>
 
   <div class="modal fade" id="manageDivisionsModal" tabindex="-1" role="dialog" aria-labelledby="manageDivisionsModalLabel"
     aria-hidden="true">
@@ -733,13 +736,17 @@
 
   function closeTab() {
     document.getElementById("tabContent").innerHTML="";
+    document.getElementById("playersTab").setAttribute("class", "tabText");
+    document.getElementById("scheduleTab").setAttribute("class", "tabText");
   }
 
   function openPlayersTab() {
     if (document.getElementById("divisionSelect").value == '0') {
       document.getElementById("divisionSelectError").innerHTML = "Please select a division first!";
     } else {
+      closeTab();
       $("#tabContent").load("playersTabContent.html");
+      document.getElementById("playersTab").setAttribute("class", "tabTextSelected");
 
       var url = window.location.href.substring(
         window.location.href.indexOf("?")
@@ -866,7 +873,9 @@
   }
 
   function openScheduleTab() {
+    closeTab();
     $("#tabContent").load("scheduleTabContent.html");
+    document.getElementById("scheduleTab").setAttribute("class", "tabTextSelected");
 
     var url = window.location.href.substring(
       window.location.href.indexOf("?")
@@ -1275,22 +1284,33 @@
   }
 
   .displayTab {
-    margin-top: 25px;
+    margin-top: 10px;
     text-align: center;
   }
   
   .tabText {
     padding-top: 1.5em;
     padding-bottom: 1.5em;
-    margin-left: 5em;
-    margin-right: 5em;
+    margin-left: 1em;
+    margin-right: 1em;
     background-color: #cfe2f3;
-    border: 2px solid black;
   }
 
   h4.tabText:hover {
     cursor:pointer;
     background-color: #b2d1ed;
+  }
+
+  .tabTextSelected {
+    padding-top: 1.5em;
+    padding-bottom: 1.5em;
+    margin-left: 1em;
+    margin-right: 1em;
+    background-color: #6fa7dc;
+  }
+
+  h4.tabTextSelected:hover {
+    cursor:pointer;
   }
 
   .topPlayer {
@@ -1351,6 +1371,12 @@
 
   .onlyPrint {
     display: none;
+  }
+
+  .mainHolder {
+    border-top: black 1px solid; 
+    margin-top: 40px; 
+    padding-top: 20px;
   }
 </style>
 

@@ -55,19 +55,22 @@
     </div>
   </div>
 
-  <div class="row doNotPrint">
-    <div class="col-lg-4 displayTab">
-      <h4 class="tabText" onclick="openLineupTab()">Line-ups</h4>
-    </div>
-    <div class="col-lg-4 displayTab">
-      <h4 class="tabText" onclick="openOfficialsTab()">Officials</h4>
-    </div>
-    <div class="col-lg-4 displayTab">
-      <h4 class="tabText" onclick="openPrintLineupTab()">Print Line-up</h4>
+  <div class="mainHolder">
+    <div class="row justify-content-center">
+      <div class="col-sm-3 doNotPrint">
+        <div class="displayTab">
+            <h4 class="tabText" id="lineupTab" onclick="openLineupTab()">Line-ups</h4>
+        </div>
+        <div class="displayTab">
+            <h4 class="tabText" id="officialsTab" onclick="openOfficialsTab()">Officials</h4>
+        </div>
+        <div class="displayTab">
+            <h4 class="tabText" id="printTab" onclick="openPrintLineupTab()">Print Line-up</h4>
+        </div>
+      </div>
+      <div class="col" id="tabContent"></div>
     </div>
   </div>
-
-  <div id="tabContent"></div>
 
   <div class="modal fade" id="manageUmpiresModal" tabindex="-1" role="dialog" aria-labelledby="manageUmpiresModalLabel"
     aria-hidden="true">
@@ -471,10 +474,14 @@
 
   function closeTab() {
     document.getElementById("tabContent").innerHTML="";
+    document.getElementById("lineupTab").setAttribute("class", "tabText");
+    document.getElementById("officialsTab").setAttribute("class", "tabText");
   }
 
   function openLineupTab() {
+      closeTab();
       $("#tabContent").load("lineupTabContent.html");
+      document.getElementById("lineupTab").setAttribute("class", "tabTextSelected");
 
       var url = window.location.href.substring(
         window.location.href.indexOf("?")
@@ -556,7 +563,9 @@
   }
 
   function openOfficialsTab() {
+      closeTab();
       $("#tabContent").load("officialsTabContent.html");
+      document.getElementById("officialsTab").setAttribute("class", "tabTextSelected");
 
       var url = window.location.href.substring(
         window.location.href.indexOf("?")
@@ -755,22 +764,33 @@
   }
 
   .displayTab {
-    margin-top: 25px;
+    margin-top: 10px;
     text-align: center;
   }
   
   .tabText {
     padding-top: 1.5em;
     padding-bottom: 1.5em;
-    margin-left: 5em;
-    margin-right: 5em;
+    margin-left: 1em;
+    margin-right: 1em;
     background-color: #cfe2f3;
-    border: 2px solid black;
   }
 
   h4.tabText:hover {
     cursor:pointer;
     background-color: #b2d1ed;
+  }
+
+  .tabTextSelected {
+    padding-top: 1.5em;
+    padding-bottom: 1.5em;
+    margin-left: 1em;
+    margin-right: 1em;
+    background-color: #6fa7dc;
+  }
+
+  h4.tabTextSelected:hover {
+    cursor:pointer;
   }
 
   .topPlayer {
@@ -831,6 +851,12 @@
 
   .onlyPrint {
     display: none;
+  }
+
+  .mainHolder {
+    border-top: black 1px solid; 
+    margin-top: 40px; 
+    padding-top: 20px;
   }
 </style>
 
