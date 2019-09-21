@@ -952,6 +952,7 @@
             tmpMatch.division = div.key;
             tmpMatch.p1 = div.child("draw").child("m"+i).child("m"+i+"a").val();
             tmpMatch.p2 = div.child("draw").child("m"+i).child("m"+i+"b").val();
+            tmpMatch.drawSize = drawSize;
             matches.push(tmpMatch);
           }
         }
@@ -961,7 +962,14 @@
       document.getElementById("matchList").innerHTML = "";
 
       var counter = 1;
+
+      var divisionProgressions = {};
       matches.forEach(match => {
+        if (divisionProgressions[match.division] == null) {
+          divisionProgressions[match.division] = {};
+        }
+        divisionProgressions[match.division][drawProgressions[match.drawSize][match.matchNumber]] = "Winner of Match " + counter;
+
         var row = document.createElement("div");
         row.setAttribute("class", "row matchRow");
 
@@ -1012,8 +1020,25 @@
         } else {
           p2Div.setAttribute("style", "margin-top:10px; margin-bottom: 5px;");
         }
-        p1Div.innerHTML = formatPlayerNameSchedule(match.p1);
-        p2Div.innerHTML = formatPlayerNameSchedule(match.p2);
+        if (match.p1 != "") {
+          p1Div.innerHTML = formatPlayerNameSchedule(match.p1);
+        } else {
+          if (divisionProgressions[match.division] != null) {
+            if (divisionProgressions[match.division][match.matchNumber + "a"] != null) {
+              p1Div.innerHTML = divisionProgressions[match.division][match.matchNumber + "a"];
+            }
+          }
+        }
+
+        if (match.p2 != "") {
+          p2Div.innerHTML = formatPlayerNameSchedule(match.p2);
+        } else {
+          if (divisionProgressions[match.division] != null) {
+            if (divisionProgressions[match.division][match.matchNumber + "b"] != null) {
+              p2Div.innerHTML = divisionProgressions[match.division][match.matchNumber + "b"];
+            }
+          }
+        }
         playersDiv.appendChild(p1Div);
         playersDiv.appendChild(p2Div);
 
