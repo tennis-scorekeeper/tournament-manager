@@ -948,7 +948,6 @@
           var currentMatchLocation = div.child("draw").child("m"+i).child("location").val();
           if (currentMatchDate == date && (currentMatchLocation == location || (location == "" && currentMatchLocation == null))) {
             var tmpMatch = div.child("draw").child("m"+i).val();
-            var newObj = {};
             tmpMatch.matchNumber = i;
             tmpMatch.division = div.key;
             tmpMatch.p1 = div.child("draw").child("m"+i).child("m"+i+"a").val();

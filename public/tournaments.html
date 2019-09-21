@@ -208,18 +208,33 @@
       .then(ss => {
         tournamentsRef.once("value").then(tss => {
           if (ss.val().tournaments != null) {
+            var allTournaments = [];
             ss.val().tournaments.forEach(id => {
-              var startDate = tss.child(id).val().startDate;
-              var endDate = tss.child(id).val().endDate;
+              var tmp = tss.child(id).val();
+              tmp.id = id;
+              allTournaments.push(tmp);
+            });
+            allTournaments = allTournaments.sort((a, b) => (a.startDate <= b.startDate) ? 1 : -1);
+            allTournaments.forEach(t => {
+              var startDate = t.startDate;
+              var endDate = t.endDate;
               var startDateString = startDate.substring(5,7) + "/" + startDate.substring(8) + "/" + startDate.substring(0,4);
               var endDateString = endDate.substring(5,7) + "/" + endDate.substring(8) + "/" + endDate.substring(0,4);
 
               var div = document.createElement("div");
-              div.setAttribute("class", "tournamentHolder");
+
+              var tmpEnd = new Date(endDate);
+              var now = Date.now();
+
+              if (tmpEnd < now) {
+                div.setAttribute("class", "pastEventHolder");
+              } else {
+                div.setAttribute("class", "tournamentHolder");
+              }
 
               var p1 = document.createElement("span");
               p1.setAttribute("class", "tournamentName");
-              p1.textContent = tss.child(id).val().name;
+              p1.textContent = t.name;
               var linebreak = document.createElement("br");
               var p2 = document.createElement("span");
               p2.setAttribute("class", "tournamentDates");
@@ -233,12 +248,12 @@
               a.setAttribute("class", "tournament");
               a.setAttribute(
                 "href",
-                "/viewTournament.html?tournamentId=" + id
+                "/viewTournament.html?tournamentId=" + t.id
               );
               a.appendChild(div);
 
               document.getElementById("eventList").appendChild(a);
-            });
+            })
           }
         });
       });
@@ -371,16 +386,30 @@
       .then(ss => {
         dualMatchesRef.once("value").then(tss => {
           if (ss.val().dualMatches != null) {
+            var allMatches = [];
             ss.val().dualMatches.forEach(id => {
-              var date = tss.child(id).val().date;
+              var tmp = tss.child(id).val();
+              tmp.id = id;
+              allMatches.push(tmp);
+            });
+            allMatches = allMatches.sort((a, b) => (a.date <= b.date) ? 1 : -1);
+            allMatches.forEach(m => {
+              var date = m.date;
               var dateString = date.substring(5,7) + "/" + date.substring(8) + "/" + date.substring(0,4);
 
               var div = document.createElement("div");
-              div.setAttribute("class", "tournamentHolder");
+              var tmpDate = new Date(date);
+              var now = Date.now();
+
+              if (tmpDate < now) {
+                div.setAttribute("class", "pastEventHolder");
+              } else {
+                div.setAttribute("class", "tournamentHolder");
+              }
 
               var p1 = document.createElement("span");
               p1.setAttribute("class", "tournamentName");
-              p1.textContent = tss.child(id).val().team1 + " vs. " + tss.child(id).val().team2 + " (" + tss.child(id).val().gender + ")";
+              p1.textContent = m.team1 + " vs. " + m.team2 + " (" + m.gender + ")";
               var linebreak = document.createElement("br");
               var p2 = document.createElement("span");
               p2.setAttribute("class", "tournamentDates");
@@ -394,7 +423,7 @@
               a.setAttribute("class", "tournament");
               a.setAttribute(
                 "href",
-                "/viewDualMatch.html?dualMatchId=" + id
+                "/viewDualMatch.html?dualMatchId=" + m.id
               );
               a.appendChild(div);
 
@@ -451,6 +480,18 @@
   }
 
   div.tournamentHolder:hover {
+    background-color: #d2e0fc;
+  }
+
+  .pastEventHolder {
+    background-color: #cccccc;
+    padding-left: 20px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    margin-top: 2px;
+  }
+
+  div.pastEventHolder:hover {
     background-color: #d2e0fc;
   }
 

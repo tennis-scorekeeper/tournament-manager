@@ -46,14 +46,6 @@ function formatPlayerNameDraw(name) {
         result += " (" + parts[2] + ")";
     }
     if (result.length >= 26 && !doubles) {
-        /*var lastSpace = 0;
-        for (var i = 0; i < parts[0].length; i++) {
-            if (parts[0][i] == " ") {
-                lastSpace = i;
-            }
-        }
-        result = result.substring(lastSpace);*/
-
         var maxTeamName = 21 - lastName.length;
         if (parts[1].length > maxTeamName) {
             result = lastName + ", " + parts[1].substring(0,maxTeamName-3) + "...";
