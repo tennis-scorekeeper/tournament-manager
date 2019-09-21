@@ -191,7 +191,7 @@ function getRoundName(matchNumber, drawSize) {
 }
 
 function checkIfValidForFBKey(input) {
-    return input.match("^[a-zA-Z0-9- \/,]+$") != null;
+    return input.match("^[a-zA-Z0-9- \/,']+$") != null;
 }
 
 var drawProgressions = {
