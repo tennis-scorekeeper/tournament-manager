@@ -643,22 +643,24 @@
       var umpires = tss.val().umpires;
 
       if (signedInEmail == admin) {
-        umpires.forEach(umpire => {
-          rootRef.child("users").child(umpire).once("value").then(uss => {
-            var userDualMatches = uss.val().dualMatches;
-            var ind = -1;
-            for (var i = 0; i < userDualMatches.length; i++) {
-              if (userDualMatches[i] == dualMatchId) {
-                ind = i;
-                break;
+        if (umpires != null) {
+          umpires.forEach(umpire => {
+            rootRef.child("users").child(umpire).once("value").then(uss => {
+              var userDualMatches = uss.val().dualMatches;
+              var ind = -1;
+              for (var i = 0; i < userDualMatches.length; i++) {
+                if (userDualMatches[i] == dualMatchId) {
+                  ind = i;
+                  break;
+                }
               }
-            }
-            if (ind != -1) {
-              userDualMatches.splice(ind, 1);
-              rootRef.child("users").child(umpire).child("dualMatches").set(userDualMatches);
-            }
-          })
-        });
+              if (ind != -1) {
+                userDualMatches.splice(ind, 1);
+                rootRef.child("users").child(umpire).child("dualMatches").set(userDualMatches);
+              }
+            })
+          });
+        }
         rootRef.child("users").child(admin).once("value").then(uss => {
             var userDualMatches = uss.val().dualMatches;
             var ind = -1;

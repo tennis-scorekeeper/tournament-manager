@@ -197,10 +197,27 @@
       var url = window.location.href.substring(
         window.location.href.indexOf("?")
       );
-      var params = new URLSearchParams(url);
-      var tournamentId = params.get("tournamentId");
       var divName = document.getElementById("divisionSelect").value;
-      window.open("guestBracket64.html?tournamentId="+tournamentId+"&div="+divName, "_blank");
+      var params = new URLSearchParams(url);
+      var rootRef = firebase.database().ref();
+      var tournamentsRef = rootRef.child("tournaments");
+      var tournamentId = params.get("tournamentId");
+      var tournamentRef = tournamentsRef.child(tournamentId);
+      tournamentRef.child("divisions").child(divName).once("value").then(dss => {
+        var drawSize = parseInt(dss.val().drawSize);
+        if (drawSize == 4) {
+          window.open("guestBracket4.html?tournamentId="+tournamentId+"&div="+divName, "_blank");
+        } else if (drawSize == 8) {
+          window.open("guestBracket8.html?tournamentId="+tournamentId+"&div="+divName, "_blank");
+        } else if (drawSize == 16) {
+          window.open("guestBracket16.html?tournamentId="+tournamentId+"&div="+divName, "_blank");
+        } else if (drawSize == 32) {
+          window.open("guestBracket32.html?tournamentId="+tournamentId+"&div="+divName, "_blank");
+        } else {
+          window.open("guestBracket64.html?tournamentId="+tournamentId+"&div="+divName, "_blank");
+        }
+      })
+      
     }
   }
 

@@ -860,7 +860,11 @@
       var tournamentRef = tournamentsRef.child(tournamentId);
       tournamentRef.child("divisions").child(divName).once("value").then(dss => {
         var drawSize = parseInt(dss.val().drawSize);
-        if (drawSize == 16) {
+        if (drawSize == 4) {
+          window.open("bracket4.html?tournamentId="+tournamentId+"&div="+divName, "_blank");
+        } else if (drawSize == 8) {
+          window.open("bracket8.html?tournamentId="+tournamentId+"&div="+divName, "_blank");
+        } else if (drawSize == 16) {
           window.open("bracket16.html?tournamentId="+tournamentId+"&div="+divName, "_blank");
         } else if (drawSize == 32) {
           window.open("bracket32.html?tournamentId="+tournamentId+"&div="+divName, "_blank");
@@ -1127,22 +1131,24 @@
       var umpires = tss.val().umpires;
 
       if (signedInEmail == admin) {
-        umpires.forEach(umpire => {
-          rootRef.child("users").child(umpire).once("value").then(uss => {
-            var userTournaments = uss.val().tournaments;
-            var ind = -1;
-            for (var i = 0; i < userTournaments.length; i++) {
-              if (userTournaments[i] == tournamentId) {
-                ind = i;
-                break;
+        if (umpires != null) {
+          umpires.forEach(umpire => {
+            rootRef.child("users").child(umpire).once("value").then(uss => {
+              var userTournaments = uss.val().tournaments;
+              var ind = -1;
+              for (var i = 0; i < userTournaments.length; i++) {
+                if (userTournaments[i] == tournamentId) {
+                  ind = i;
+                  break;
+                }
               }
-            }
-            if (ind != -1) {
-              userTournaments.splice(ind, 1);
-              rootRef.child("users").child(umpire).child("tournaments").set(userTournaments);
-            }
-          })
-        });
+              if (ind != -1) {
+                userTournaments.splice(ind, 1);
+                rootRef.child("users").child(umpire).child("tournaments").set(userTournaments);
+              }
+            })
+          });
+        }
         rootRef.child("users").child(admin).once("value").then(uss => {
             var userTournaments = uss.val().tournaments;
             var ind = -1;
