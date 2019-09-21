@@ -893,8 +893,7 @@
       ss.forEach(div => {
         var drawSize = parseInt(div.child("drawSize").val());
 
-        /*** 64 TEMPORARY, CHANGE TO drawSize LATER ***/
-        for (var i = 0; i < 64; i++) { 
+        for (var i = 0; i < drawSize; i++) { 
           var currentMatchDate = div.child("draw").child("m"+i).child("date").val();
           var currentMatchLocation = div.child("draw").child("m"+i).child("location").val();
           if (currentMatchDate != null && currentMatchDate != "") {
@@ -951,8 +950,7 @@
       ss.forEach(div => {
         var drawSize = parseInt(div.child("drawSize").val());
 
-        /*** 64 TEMPORARY, CHANGE TO drawSize LATER ***/
-        for (var i = 0; i < 64; i++) { 
+        for (var i = 0; i < drawSize; i++) { 
           var currentMatchDate = div.child("draw").child("m"+i).child("date").val();
           var currentMatchLocation = div.child("draw").child("m"+i).child("location").val();
           if (currentMatchDate == date && (currentMatchLocation == location || (location == "" && currentMatchLocation == null))) {
@@ -1011,8 +1009,7 @@
         divisionDiv.appendChild(divisionName);
 
         var roundName = document.createElement("div");
-        // CHANGE TO drawSize LATER
-        roundName.innerHTML = getRoundName(match.matchNumber, 64);
+        roundName.innerHTML = getRoundName(match.matchNumber, match.drawSize);
         divisionDiv.appendChild(roundName);
 
         var playersDiv = document.createElement("div");
