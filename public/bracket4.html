@@ -231,15 +231,16 @@
       var playerOptionElements = [];
       divRef.once("value").then(ss => {
         var playersList = ss.child("players").val();
-
-        matchIds.forEach(id => {
-          playersList.forEach(player => {
-            var optionElement = document.createElement("option");
-            optionElement.textContent = formatPlayerNameDraw(player);
-            optionElement.setAttribute("value", player);
-            document.getElementById(id).appendChild(optionElement);
+        if (playersList != null) {
+          matchIds.forEach(id => {
+            playersList.forEach(player => {
+              var optionElement = document.createElement("option");
+              optionElement.textContent = formatPlayerNameDraw(player);
+              optionElement.setAttribute("value", player);
+              document.getElementById(id).appendChild(optionElement);
+            })
           })
-        })
+        }
         fullMatchIds.forEach(id => {
           document.getElementById(id+"a").value = ss.child("draw").child(id).child(id+"a").val();
           document.getElementById(id+"b").value = ss.child("draw").child(id).child(id+"b").val();
@@ -408,10 +409,12 @@
 
         var winner = ss.child("draw").child(matchId).child("winner").val();
 
-        if (winner == p1) {
+        document.getElementById("p1").checked = false;
+        document.getElementById("p2").checked = false;
+        if (winner != null && winner != "" && winner == p1) {
           document.getElementById("p1").checked = true;
         }
-        if (winner == p2) {
+        if (winner != null && winner != "" && winner == p2) {
           document.getElementById("p2").checked = true;
         }
       });

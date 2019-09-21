@@ -567,10 +567,12 @@
 
         var winner = ss.child("draw").child(matchId).child("winner").val();
 
-        if (winner == p1) {
+        document.getElementById("p1").checked = false;
+        document.getElementById("p2").checked = false;
+        if (winner != null && winner != "" && winner == p1) {
           document.getElementById("p1").checked = true;
         }
-        if (winner == p2) {
+        if (winner != null && winner != "" && winner == p2) {
           document.getElementById("p2").checked = true;
         }
       });
