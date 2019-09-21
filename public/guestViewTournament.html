@@ -242,8 +242,7 @@
       ss.forEach(div => {
         var drawSize = parseInt(div.child("drawSize").val());
 
-        /*** 64 TEMPORARY, CHANGE TO drawSize LATER ***/
-        for (var i = 0; i < 64; i++) { 
+        for (var i = 0; i < drawSize; i++) { 
           var currentMatchDate = div.child("draw").child("m"+i).child("date").val();
           var currentMatchLocation = div.child("draw").child("m"+i).child("location").val();
           if (currentMatchDate != null && currentMatchDate != "") {
@@ -294,8 +293,7 @@
       ss.forEach(div => {
         var drawSize = parseInt(div.child("drawSize").val());
 
-        /*** 64 TEMPORARY, CHANGE TO drawSize LATER ***/
-        for (var i = 0; i < 64; i++) { 
+        for (var i = 0; i < drawSize; i++) { 
           var currentMatchDate = div.child("draw").child("m"+i).child("date").val();
           var currentMatchLocation = div.child("draw").child("m"+i).child("location").val();
           if (currentMatchDate == date && (currentMatchLocation == location || (location == "" && currentMatchLocation == null))) {
@@ -348,14 +346,13 @@
         timeDiv.appendChild(courtNumber);
 
         var divisionDiv = document.createElement("div");
-        divisionDiv.setAttribute("class", "col-2 verticalCenter");
+        divisionDiv.setAttribute("class", "col-3 verticalCenter");
         var divisionName = document.createElement("div");
         divisionName.innerHTML = match.division;
         divisionDiv.appendChild(divisionName);
 
         var roundName = document.createElement("div");
-        // CHANGE TO drawSize LATER
-        roundName.innerHTML = getRoundName(match.matchNumber, 64);
+        roundName.innerHTML = getRoundName(match.matchNumber, match.drawSize);
         divisionDiv.appendChild(roundName);
 
         var playersDiv = document.createElement("div");
@@ -396,7 +393,7 @@
 
         var scoreList = match.score.split(" ");
         var scoreDiv = document.createElement("div");
-        scoreDiv.setAttribute("class", "col-3 verticalCenter");
+        scoreDiv.setAttribute("class", "col-2 verticalCenter");
         var p1ScoreDiv = document.createElement("div");
         var p2ScoreDiv = document.createElement("div");
         p1ScoreDiv.setAttribute("style", "margin-bottom:10px; margin-top: 10px;");

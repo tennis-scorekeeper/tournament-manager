@@ -1007,7 +1007,7 @@
         timeDiv.appendChild(courtNumber);
 
         var divisionDiv = document.createElement("div");
-        divisionDiv.setAttribute("class", "col-2 verticalCenter");
+        divisionDiv.setAttribute("class", "col-3 verticalCenter");
         var divisionName = document.createElement("div");
         divisionName.innerHTML = match.division;
         divisionDiv.appendChild(divisionName);
@@ -1040,6 +1040,7 @@
           }
         }
 
+        console.log(divisionProgressions);
         if (match.p2 != "") {
           p2Div.innerHTML = formatPlayerNameSchedule(match.p2);
         } else {
@@ -1054,7 +1055,7 @@
 
         var scoreList = match.score.split(" ");
         var scoreDiv = document.createElement("div");
-        scoreDiv.setAttribute("class", "col-3 verticalCenter");
+        scoreDiv.setAttribute("class", "col-2 verticalCenter");
         var p1ScoreDiv = document.createElement("div");
         var p2ScoreDiv = document.createElement("div");
         p1ScoreDiv.setAttribute("style", "margin-bottom:10px; margin-top: 10px;");
