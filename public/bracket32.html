@@ -346,9 +346,12 @@
           <button type="button" class="btn btn-secondary" data-dismiss="modal">
             Close
           </button>
-          <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="saveMatch()">
+          <button type="button" class="btn btn-primary" onclick="clearMatchWinner()">
+            Clear
+          </button>
+          <button type="button" class="btn btn-success" data-dismiss="modal" onclick="saveMatch()">
               Save
-            </button>
+          </button>
         </div>
       </div>
     </div>
@@ -878,6 +881,18 @@
       divRef.child("draw").child(matchId).child(winnerMatchPlayerId).set(winner).then(tmp => {
         document.getElementById("savingProgress").textContent = "Saved!"
       });
+    }
+
+    function clearMatchWinner() {
+      document.getElementById("p1").checked = false;
+      document.getElementById("p2").checked = false;
+
+      document.getElementById("p1s1").value = "";
+      document.getElementById("p2s1").value = "";
+      document.getElementById("p1s2").value = "";
+      document.getElementById("p2s2").value = "";
+      document.getElementById("p1s3").value = "";
+      document.getElementById("p2s3").value = "";
     }
 
   </script>
