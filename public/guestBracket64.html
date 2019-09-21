@@ -392,20 +392,20 @@
       var editButtonInc = 152;
 
       for (var i = 0; i < round1LeftMatchIds1.length; i++) {
-        document.getElementById(round1LeftMatchIds1[i]+"a").setAttribute("style", "position:absolute;left:40px;top:"+counter+"px;width:11em;");
+        document.getElementById(round1LeftMatchIds1[i]+"a").setAttribute("style", "position:absolute;left:40px;top:"+counter+"px;width:13em;");
         document.getElementById(round1LeftMatchIds1[i]+"details").setAttribute("style", "position:absolute;left:0px;padding:7px;top:"+(editButtonCounter-15)+"px;width:12em;");
         document.getElementById(round1LeftMatchIds1[i]+"score").setAttribute("style", "position:absolute;left:240px;padding:7px;top:"+(editButtonCounter+8)+"px;width:6em;");
         
 
-        document.getElementById(round1RightMatchIds1[i]+"a").setAttribute("style", "position:absolute;left:2280px;top:"+counter+"px;width:11em;");
+        document.getElementById(round1RightMatchIds1[i]+"a").setAttribute("style", "position:absolute;left:2280px;top:"+counter+"px;width:13em;");
         document.getElementById(round1RightMatchIds1[i]+"details").setAttribute("style", "position:absolute;left:2300px;padding:7px;top:"+(editButtonCounter-15)+"px;width:12em;");
         document.getElementById(round1RightMatchIds1[i]+"score").setAttribute("style", "position:absolute;left:2070px;padding:7px;top:"+(editButtonCounter+8)+"px;width:6em;");
 
         editButtonCounter += editButtonInc;
 
         counter += round1PlayerInc;
-        document.getElementById(round1LeftMatchIds1[i]+"b").setAttribute("style", "position:absolute;left:40px;top:"+counter+"px;width:11em;");
-        document.getElementById(round1RightMatchIds1[i]+"b").setAttribute("style", "position:absolute;left:2280px;top:"+counter+"px;width:11em;");
+        document.getElementById(round1LeftMatchIds1[i]+"b").setAttribute("style", "position:absolute;left:40px;top:"+counter+"px;width:13em;");
+        document.getElementById(round1RightMatchIds1[i]+"b").setAttribute("style", "position:absolute;left:2280px;top:"+counter+"px;width:13em;");
 
         counter += round1MatchInc;
         if (i == 5) {
@@ -415,14 +415,14 @@
       counter = 1325;
       editButtonCounter = 1385;
       for (var i = 0; i < round1LeftMatchIds1.length; i++) {
-        document.getElementById(round1LeftMatchIds2[i]+"a").setAttribute("style", "position:absolute;left:40px;top:"+counter+"px;");
+        document.getElementById(round1LeftMatchIds2[i]+"a").setAttribute("style", "position:absolute;left:40px;top:"+counter+"px;width:13em;");
         document.getElementById(round1LeftMatchIds2[i]+"details").setAttribute("style", "position:absolute;left:0px;padding:7px;top:"+(editButtonCounter-15)+"px;width:12em;");
         document.getElementById(round1LeftMatchIds2[i]+"score").setAttribute("style", "position:absolute;left:240px;padding:7px;top:"+(editButtonCounter+8)+"px;width:6em;");
 
         editButtonCounter += editButtonInc;
 
         counter += round1PlayerInc;
-        document.getElementById(round1LeftMatchIds2[i]+"b").setAttribute("style", "position:absolute;left:40px;top:"+counter+"px;");
+        document.getElementById(round1LeftMatchIds2[i]+"b").setAttribute("style", "position:absolute;left:40px;top:"+counter+"px;width:13em;");
 
         counter += round1MatchInc;
         if (i == 5) {
@@ -433,14 +433,14 @@
       counter = 1323;
       editButtonCounter = 1383;
       for (var i = 0; i < round1LeftMatchIds1.length; i++) {
-        document.getElementById(round1RightMatchIds2[i]+"a").setAttribute("style", "position:absolute;left:2280px;top:"+counter+"px;");
+        document.getElementById(round1RightMatchIds2[i]+"a").setAttribute("style", "position:absolute;left:2280px;top:"+counter+"px;width:13em;");
         document.getElementById(round1RightMatchIds2[i]+"details").setAttribute("style", "position:absolute;left:2300px;padding:7px;top:"+(editButtonCounter-15)+"px;width:12em;");
         document.getElementById(round1RightMatchIds2[i]+"score").setAttribute("style", "position:absolute;left:2070px;padding:7px;top:"+(editButtonCounter+8)+"px;width:6em;");
 
         editButtonCounter += editButtonInc;
 
         counter += round1PlayerInc;
-        document.getElementById(round1RightMatchIds2[i]+"b").setAttribute("style", "position:absolute;left:2280px;top:"+counter+"px;");
+        document.getElementById(round1RightMatchIds2[i]+"b").setAttribute("style", "position:absolute;left:2280px;top:"+counter+"px;width:13em;");
 
         counter += round1MatchInc;
         if (i == 5) {
@@ -637,7 +637,6 @@
         "m56", "m57", "m58","m59","m60", "m61", "m62"];
       divRef.once("value").then(ss => {
         fullMatchIds.forEach(id => {
-          console.log(id);
           document.getElementById(id+"a").textContent = formatPlayerNameDraw(ss.child("draw").child(id).child(id+"a").val());
           document.getElementById(id+"b").textContent = formatPlayerNameDraw(ss.child("draw").child(id).child(id+"b").val());
           var detailString = "";

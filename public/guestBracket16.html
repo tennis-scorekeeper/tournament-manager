@@ -1,0 +1,490 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Welcome to Firebase Hosting</title>
+
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+      integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
+      crossorigin="anonymous"
+    />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
+    <script
+      src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+      integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+      crossorigin="anonymous"
+    ></script>
+    <!-- update the version number as needed -->
+    <script defer src="/__/firebase/6.0.4/firebase-app.js"></script>
+    <!-- include only the Firebase features as you need -->
+    <script defer src="/__/firebase/6.0.4/firebase-auth.js"></script>
+    <script defer src="/__/firebase/6.0.4/firebase-database.js"></script>
+    <!-- initialize the SDK after all desired features are loaded -->
+    <script defer src="/__/firebase/init.js"></script>
+  </head>
+  <body>
+    <div id="bracketNameHolder">
+      <h2 id="drawName"></h2>
+    </div>
+    <p id="savingProgress"></p>
+    <div id="bracket">
+      <img height="2500" width="2500" id="bracket" src="images/16b.png">
+
+      <p id="round1Left">Round of 16</p>
+      <p id="round2Left">Quarterfinals</p>
+      <p id="round3Left">Semifinals</p>
+      <p id="round4Left">Finals</p>
+ 
+      <span id="m0a"></span>
+      <span id="m0b"></span>
+      <p id="m0details" class="matchDetailsLeft"></p>
+      <p id="m0score" class="matchScore"></p>
+
+      <span id="m1a"></span>
+      <span id="m1b"></span>
+      <p id="m1details" class="matchDetailsLeft"></p>
+      <p id="m1score" class="matchScore"></p>
+
+      <span id="m2a"></span>
+      <span id="m2b"></span>
+      <p id="m2details" class="matchDetailsLeft"></p>
+      <p id="m2score" class="matchScore"></p>
+
+      <span id="m3a"></span>
+      <span id="m3b"></span>  
+      <p id="m3details" class="matchDetailsLeft"></p>
+      <p id="m3score" class="matchScore"></p>
+
+      <span id="m4a"></span>
+      <span id="m4b"></span>
+      <p id="m4details" class="matchDetailsLeft"></p>
+      <p id="m4score" class="matchScore"></p>
+
+      <span id="m5a"></span>
+      <span id="m5b"></span>
+      <p id="m5details" class="matchDetailsLeft"></p>
+      <p id="m5score" class="matchScore"></p>
+
+      <span id="m6a"></span>
+      <span id="m6b"></span>
+      <p id="m6details" class="matchDetailsLeft"></p>
+      <p id="m6score" class="matchScore"></p>
+
+      <span id="m7a"></span>
+      <span id="m7b"></span>
+      <p id="m7details" class="matchDetailsLeft"></p>
+      <p id="m7score" class="matchScore"></p>
+
+      <span id="m8a"></span>
+      <span id="m8b"></span>
+      <p id="m8details" class="matchDetailsLeft"></p>
+      <p id="m8score" class="matchScore"></p>
+
+      <span id="m9a"></span>
+      <span id="m9b"></span>
+      <p id="m9details" class="matchDetailsLeft"></p>
+      <p id="m9score" class="matchScore"></p>
+
+      <span id="m10a"></span>
+      <span id="m10b"></span>
+      <p id="m10details" class="matchDetailsLeft"></p>
+      <p id="m10score" class="matchScore"></p>
+
+      <span id="m11a"></span>
+      <span id="m11b"></span>
+      <p id="m11details" class="matchDetailsLeft"></p>
+      <p id="m11score" class="matchScore"></p>
+
+      <span id="m12a"></span>
+      <span id="m12b"></span>
+      <p id="m12details" class="matchDetailsLeft"></p>
+      <p id="m12score" class="matchScore"></p>
+
+      <span id="m13a"></span>
+      <span id="m13b"></span>
+      <p id="m13details" class="matchDetailsLeft"></p>
+      <p id="m13score" class="matchScore"></p>
+
+      <span id="m14a"></span>
+      <span id="m14b"></span>
+      <p id="m14details" class="matchDetailsLeft"></p>
+      <p id="m14score" class="matchScore"></p>
+
+      <span id="winner"></span>
+    </div>
+  </body>
+
+  <script type="text/javascript" src="js/util.js"></script>
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      loadDraw();
+    });
+
+    function loadDraw() {
+      var url = window.location.href.substring(
+        window.location.href.indexOf("?")
+      );
+      var params = new URLSearchParams(url);
+      var tournamentId = params.get("tournamentId");
+      var divName = params.get("div");
+      document.getElementById("drawName").textContent = divName;
+
+      var rootRef = firebase.database().ref();
+      var tournamentsRef = rootRef.child("tournaments");
+      var tournamentRef = tournamentsRef.child(tournamentId);
+      var divRef = tournamentRef.child("divisions").child(divName);
+
+      var round1LeftMatchIds1 = 
+        ["m0", "m1", "m2","m3","m4", "m5", "m6", "m7"];
+      var round1MatchInc = 74;
+      var round1PlayerInc = 78;
+      var counter = 57;
+
+      var editButtonCounter = 117;
+      var editButtonInc = 152;
+
+      for (var i = 0; i < round1LeftMatchIds1.length; i++) {
+        document.getElementById(round1LeftMatchIds1[i]+"a").setAttribute("style", "position:absolute;left:10px;top:"+counter+"px;width:13em;");
+        document.getElementById(round1LeftMatchIds1[i]+"details").setAttribute("style", "position:absolute;left:0px;padding:7px;top:"+(editButtonCounter-15)+"px;width:12em;");
+        document.getElementById(round1LeftMatchIds1[i]+"score").setAttribute("style", "position:absolute;left:240px;padding:7px;top:"+(editButtonCounter+8)+"px;width:6em;");
+        
+        editButtonCounter += editButtonInc;
+        counter += round1PlayerInc;
+        document.getElementById(round1LeftMatchIds1[i]+"b").setAttribute("style", "position:absolute;left:10px;top:"+counter+"px;width:13em;");
+
+        counter += round1MatchInc;
+        if (i == 5) {
+          counter += 3;
+        }
+      }
+
+      var round2LeftMatchIds1 = 
+        ["m8", "m9", "m10","m11"];
+
+      var topCounter = 100;
+      var editTopCounter = 190;
+
+      var playerInc = 155;
+      var matchInc = 150;
+      var editInc = 305;
+
+      for (var i = 0; i < round2LeftMatchIds1.length; i++) {
+        document.getElementById(round2LeftMatchIds1[i]+"a").setAttribute("style", "position:absolute;left:248px;top:"+topCounter+"px;width:11em;");
+        document.getElementById(round2LeftMatchIds1[i]+"details").setAttribute("style", "position:absolute;left:205px;padding:7px;top:"+(editTopCounter-15)+"px;width:12em;");
+        document.getElementById(round2LeftMatchIds1[i]+"score").setAttribute("style", "position:absolute;left:440px;padding:7px;top:"+(editTopCounter+8)+"px;width:6em;");
+
+        editTopCounter += editInc;
+
+        topCounter += playerInc;
+        document.getElementById(round2LeftMatchIds1[i]+"b").setAttribute("style", "position:absolute;left:248px;top:"+topCounter+"px;width:11em;");
+
+        topCounter += matchInc;
+        if (i == 5) {
+          counter += 3;
+        }
+      }
+
+      var round3LeftMatchIds1 = 
+        ["m12", "m13"];
+
+      var topCounter = 175;
+      var editTopCounter = 347;
+
+      var playerInc = 305;
+      var matchInc = 308;
+      var editInc = 616;
+
+      for (var i = 0; i < round3LeftMatchIds1.length; i++) {
+        document.getElementById(round3LeftMatchIds1[i]+"a").setAttribute("style", "position:absolute;left:448px;top:"+topCounter+"px;width:11em;");
+        document.getElementById(round3LeftMatchIds1[i]+"details").setAttribute("style", "position:absolute;left:405px;padding:7px;top:"+(editTopCounter-15)+"px;width:12em;");
+        document.getElementById(round3LeftMatchIds1[i]+"score").setAttribute("style", "position:absolute;left:640px;padding:7px;top:"+(editTopCounter+8)+"px;width:6em;");
+
+        editTopCounter += editInc;
+
+        topCounter += playerInc;
+        document.getElementById(round3LeftMatchIds1[i]+"b").setAttribute("style", "position:absolute;left:448px;top:"+topCounter+"px;width:11em;");
+
+        topCounter += matchInc;
+        if (i == 5) {
+          counter += 3;
+        }
+      }
+
+      var round4LeftMatchIds1 = 
+        ["m14"];
+
+      var topCounter = 330;
+      var editTopCounter = 650;
+
+      var playerInc = 613;
+      var matchInc = 308;
+      var editInc = 616;
+
+      for (var i = 0; i < round4LeftMatchIds1.length; i++) {
+        document.getElementById(round4LeftMatchIds1[i]+"a").setAttribute("style", "position:absolute;left:648px;top:"+topCounter+"px;width:11em;");
+        document.getElementById(round4LeftMatchIds1[i]+"details").setAttribute("style", "position:absolute;left:585px;padding:7px;top:"+(editTopCounter-15)+"px;width:12em;");
+        document.getElementById(round4LeftMatchIds1[i]+"score").setAttribute("style", "position:absolute;left:815px;padding:7px;top:"+(editTopCounter+8)+"px;width:6em;");
+
+        editTopCounter += editInc;
+
+        topCounter += playerInc;
+        document.getElementById(round4LeftMatchIds1[i]+"b").setAttribute("style", "position:absolute;left:648px;top:"+topCounter+"px;width:11em;");
+
+        topCounter += matchInc;
+        if (i == 5) {
+          counter += 3;
+        }
+      }
+
+      document.getElementById("m14a").setAttribute("style", "position:absolute;left:650px;top:"+328+"px;width:11em;");
+      document.getElementById("m14b").setAttribute("style", "position:absolute;left:650px;top:"+945+"px;width:11em;");
+      document.getElementById("m14details").setAttribute("style", "position:absolute;left:585px;padding:7px;top:"+637+"px;width:12em;");
+      document.getElementById("m14score").setAttribute("style", "position:absolute;left:985px;padding:7px;top:"+1310+"px;width:6em;");
+
+      document.getElementById("winner").setAttribute("style", "position:absolute;left:823px;top:"+633+"px;width:11em;");
+    
+      var fullMatchIds = 
+        ["m0", "m1", "m2","m3","m4", "m5", "m6", "m7"];
+
+        var fullMatchIds2 = 
+        ["m8", "m9", "m10","m11","m12", "m13", "m14"];
+
+      var playerOptionElements = [];
+      divRef.once("value").then(ss => {
+        fullMatchIds.forEach(id => {
+          document.getElementById(id+"a").textContent = formatPlayerNameDraw(ss.child("draw").child(id).child(id+"a").val());
+          document.getElementById(id+"b").textContent = formatPlayerNameDraw(ss.child("draw").child(id).child(id+"b").val());
+          var detailString = "";
+          var date = ss.child("draw").child(id).child("date").val();
+          var time = ss.child("draw").child(id).child("matchTime").val()
+          var location = ss.child("draw").child(id).child("location").val();
+
+          if (date != null && date != "") {
+            detailString += date.substring(date.indexOf("-")+1) + " ";
+          }
+          if (time != null && time != "") {
+            detailString += time + " ";
+          }
+          if (location != null && location != "") {
+            detailString += location.substring(location.indexOf(" - ") + 3);
+          }
+          document.getElementById(id+"details").textContent = detailString;
+
+          var score = ss.child("draw").child(id).child("score").val();
+          var scoreString = "";
+          if (score != null) {
+            score.split(" ").forEach(set => {
+              if (set.length == 3) {
+                scoreString += set + " ";
+              }
+            });
+          }
+          document.getElementById(id+"score").textContent = scoreString;
+        })
+        fullMatchIds2.forEach(id => {
+          document.getElementById(id+"a").textContent = formatPlayerNameDrawShorten(ss.child("draw").child(id).child(id+"a").val());
+          document.getElementById(id+"b").textContent = formatPlayerNameDrawShorten(ss.child("draw").child(id).child(id+"b").val());
+          var detailString = "";
+          var date = ss.child("draw").child(id).child("date").val();
+          var time = ss.child("draw").child(id).child("matchTime").val()
+          var courtNumber = ss.child("draw").child(id).child("courtNumber").val();
+          var location = ss.child("draw").child(id).child("location").val();
+
+          if (date != null && date != "") {
+            detailString += date.substring(date.indexOf("-")+1) + " ";
+          }
+          if (time != null && time != "") {
+            detailString += time + " ";
+          }
+          if (location != null && location != "") {
+            detailString += location.substring(location.indexOf(" - ") + 3);
+          }
+          document.getElementById(id+"details").textContent = detailString;
+
+          var score = ss.child("draw").child(id).child("score").val();
+          var scoreString = "";
+          if (score != null) {
+            score.split(" ").forEach(set => {
+              if (set.length == 3) {
+                scoreString += set + " ";
+              }
+            });
+          }
+          document.getElementById(id+"score").textContent = scoreString;
+        })
+        document.getElementById("winner").textContent = formatPlayerNameDrawShorten(ss.child("draw").child("winne").val().winner);
+      })
+    }
+  </script>
+
+  <style>
+    #bracketNameHolder {
+      margin-top:10px;
+      text-align:center;
+    }
+
+    #bracket {
+      position: absolute;
+      top:50px;
+    }
+
+    #savingProgress {
+      position: absolute;
+      top: 25px;
+      left: 90px;
+    }
+
+    .editMatch {
+      background-color: #cfe2f3;
+      border: 1px solid black;
+    }
+
+    #editMatchDateHolder {
+      text-align: right;
+    }
+
+    .scoreInput {
+      width: 2em;
+      height: 2.2em;
+      font-size:20px;
+      margin-top: 15px;
+    }
+
+    .matchWinner {
+      margin-top: 20px;
+      font-size: 20px;
+    }
+
+    #matchCourtNumber {
+      margin-top: 20px;
+      width: 3em;
+      margin-right: 50px;
+    }
+
+    #matchTime {
+      margin-top: 20px;
+      width: 7em;
+    }
+
+    .matchDetailsLeft {
+      width: 10em;
+      text-align: right;
+      padding-right: 7px;
+    }
+
+    .matchDetailsRight {
+      width: 10em;
+    }
+
+    .matchDetailsCenter {
+      width: 10em;
+      text-align: center;
+    }
+
+    .matchScore {
+      width: 6em;
+    }
+
+    .matchScoreCenter {
+      width: 6em;
+      text-align: center;
+    }
+
+    #winner {
+      position: absolute;
+      left: 825px;
+      top: 650px;
+    }
+
+    #round1Left {
+      position: absolute;
+      left: 85px;
+      top: 15px;
+      width: 7em;
+      font-weight: bold;
+    }
+
+    #round2Left {
+      position: absolute;
+      left: 290px;
+      top: 15px;
+      width: 7em;
+      font-weight: bold;
+    }
+
+    #round3Left {
+      position: absolute;
+      left: 495px;
+      top: 15px;
+      width: 7em;
+      font-weight: bold;
+    }
+
+    #round4Left {
+      position: absolute;
+      left: 675px;
+      top: 15px;
+      width: 7em;
+      font-weight: bold;
+    }
+
+    #round5Left {
+      position: absolute;
+      left: 850px;
+      top: 15px;
+      width: 7em;
+      font-weight: bold;
+    }
+
+    #round6 {
+      position: absolute;
+      left: 1190px;
+      top: 15px;
+      width: 7em;
+      font-weight: bold;
+    }
+
+    #round1Right {
+      position: absolute;
+      left: 2330px;
+      top: 15px;
+      width: 7em;
+      font-weight: bold;
+    }
+
+    #round2Right {
+      position: absolute;
+      left: 2120px;
+      top: 15px;
+      width: 7em;
+      font-weight: bold;
+    }
+
+    #round3Right {
+      position: absolute;
+      left: 1920px;
+      top: 15px;
+      width: 7em;
+      font-weight: bold;
+    }
+
+    #round4Right {
+      position: absolute;
+      left: 1725px;
+      top: 15px;
+      width: 7em;
+      font-weight: bold;
+    }
+
+    #round5Right {
+      position: absolute;
+      left: 1540px;
+      top: 15px;
+      width: 7em;
+      font-weight: bold;
+    }
+  </style>
+</html>
