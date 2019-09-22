@@ -92,9 +92,9 @@ function formatPlayerNameDrawEdit(name) {
     }
     if (parts.length == 2) {
         if (doubles) {
-            return doubles1 + "/" + doubles2 + ", " + parts[1];
+            return doubles1 + "/" + doubles2;
         } else {
-            return parts[0] + ", " + parts[1];
+            return parts[0];
         }
     }
     if (parts.length != 3) {
@@ -102,9 +102,9 @@ function formatPlayerNameDrawEdit(name) {
     }
     var result = "";
     if (doubles) {
-        result = doubles1 + "/" + doubles2 + ", " + parts[1];
+        result = doubles1 + "/" + doubles2;
     } else {
-        result = parts[0] + ", " + parts[1];
+        result = parts[0];
     }
     if (parts.length == 3) {
         result += " (" + parts[2] + ")";

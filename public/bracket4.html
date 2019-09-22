@@ -93,19 +93,20 @@
           </div>
           <div class="row">
             <div class="col-8">
-              
               <input id="p1" type="radio" name="matchWinner">
               <label id="p1Label" class="matchWinner" for="p1">Player 1</label><br>
+              <label id="p1LabelTeam" class="editPlayerTeam" for="p1">Player 1</label><br>
               <input id="p2" type="radio" name="matchWinner">
               <label id="p2Label" class="matchWinner" for="p2">Player 2</label><br>
+              <label id="p2LabelTeam" class="editPlayerTeam" for="p1">Player 2</label>
             </div>
             <div class="col-4">
-              <div>
+              <div style="margin-top: 10px;">
                 <input id="p1s1" class="scoreInput" type="number"/>
                 <input id="p1s2" class="scoreInput" type="number"/>
                 <input id="p1s3" class="scoreInput" type="number"/>
               </div>
-              <div>
+              <div style="margin-top: 35px;">
                   <input id="p2s1" class="scoreInput" type="number"/>
                   <input id="p2s2" class="scoreInput" type="number"/>
                   <input id="p2s3" class="scoreInput" type="number"/>
@@ -360,7 +361,6 @@
       var tournamentRef = tournamentsRef.child(tournamentId);
       var divRef = tournamentRef.child("divisions").child(divName);
       var matchNumber = parseInt(matchId.substring(1));
-      document.getElementById("editMatchModalLabel").textContent = matchId;
 
       if (matchNumber < 32) {
         document.getElementById("p1Label").textContent = document.getElementById(matchId+"a").value
@@ -383,7 +383,9 @@
         }
 
         document.getElementById("p1Label").textContent = formatPlayerNameDrawEdit(p1);
+        document.getElementById("p1LabelTeam").textContent = p1.split(",")[1].trim(" ");
         document.getElementById("p2Label").textContent = formatPlayerNameDrawEdit(p2);
+        document.getElementById("p2LabelTeam").textContent = p2.split(",")[1].trim(" ");
         document.getElementById("matchCourtNumber").value = courtNumber;
         document.getElementById("matchTime").value = time;
         document.getElementById("editMatchDate").value = date;
