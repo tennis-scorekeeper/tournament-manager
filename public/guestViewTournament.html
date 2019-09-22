@@ -36,7 +36,6 @@
       <h1 id="title"></h1>
       <h4 class="onlyPrint" id="scheduleDate"></h4>
       <h4 class="doNotPrint" id="hostedBy"></h4>
-      <p class="doNotPrint" id="divisionSelectError"></p>
     </div>
   </div>
   <div class="row justify-content-end doNotPrint">
@@ -45,6 +44,7 @@
       <select id="divisionSelect" onchange="divisionSelectChange()">
         <option value="0">Choose a division</option>
       </select>
+      <span class="doNotPrint" id="divisionSelectError"></span>
     </div>
   </div>
 
@@ -131,6 +131,7 @@
 
   function divisionSelectChange() {
     closeTab();
+    document.getElementById("divisionSelectError").innerHTML = "";
   }
 
   function closeTab() {
@@ -141,7 +142,7 @@
 
   function openPlayersTab() {
     if (document.getElementById("divisionSelect").value == '0') {
-      document.getElementById("divisionSelectError").innerHTML = "Please select a division first!";
+      document.getElementById("divisionSelectError").innerHTML = "Please select a division";
     } else {
       closeTab();
       $("#tabContent").load("guestPlayersTabContent.html");
@@ -323,13 +324,15 @@
         var row = document.createElement("div");
         row.setAttribute("class", "row matchRow");
 
-        var cellNumberDiv = document.createElement("div");
-        cellNumberDiv.setAttribute("class", "col-1 verticalCenter justify-content-end");
-        cellNumberDiv.innerHTML = counter;
-        counter += 1;
-
         var timeDiv = document.createElement("div");
         timeDiv.setAttribute("class", "col-2 verticalCenter");
+
+        var cellNumberDiv = document.createElement("div");
+        cellNumberDiv.innerHTML = "Match " + counter;
+        counter += 1;
+
+        var timeHolderDiv = document.createElement("div");
+        timeHolderDiv.setAttribute("class", "verticalCenter courtLabel");
 
         var time = document.createElement("p");
         time.innerHTML = convertTo12Hour(match.matchTime);
@@ -341,9 +344,12 @@
         courtNumber.innerHTML = match.courtNumber;
         courtNumber.setAttribute("class", "courtNumber"); 
 
-        timeDiv.appendChild(time);
-        timeDiv.appendChild(courtLabel);
-        timeDiv.appendChild(courtNumber);
+        timeHolderDiv.appendChild(cellNumberDiv);
+        timeHolderDiv.appendChild(time);
+        timeHolderDiv.appendChild(courtLabel);
+        timeHolderDiv.appendChild(courtNumber);
+        
+        timeDiv.appendChild(timeHolderDiv);
 
         var divisionDiv = document.createElement("div");
         divisionDiv.setAttribute("class", "col-3 verticalCenter");
@@ -444,7 +450,6 @@
         scoreDiv.appendChild(p1ScoreDiv);
         scoreDiv.appendChild(p2ScoreDiv);
         
-        row.appendChild(cellNumberDiv);
         row.appendChild(timeDiv);
         row.appendChild(divisionDiv);
         row.appendChild(playersDiv);
@@ -622,7 +627,7 @@
   }
 
   .matchTime {
-    margin-top: 8px;
+    margin-top: 10px;
   }
 
   .courtNumber {
@@ -656,6 +661,11 @@
     border-top: black 1px solid; 
     margin-top: 40px; 
     padding-top: 20px;
+  }
+
+  #divisionSelectError {
+    margin-left: 10px;
+    color: red;
   }
 </style>
 
