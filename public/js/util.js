@@ -3,11 +3,18 @@ function formatPlayerNameSchedule(name) {
         return "";
     }
     var parts = name.split(",");
-    var result = parts[0] + " (" + parts[1] + ")";
+    var result = parts[0];
     if (parts.length == 3) {
         result += " [" + parts[2] + "]";
     }
     return result;
+}
+
+function getPlayerTeam(name) {
+    if (name == null) {
+        return "";
+    }
+    return name.split(",")[1];
 }
 
 function formatPlayerNameDraw(name) {

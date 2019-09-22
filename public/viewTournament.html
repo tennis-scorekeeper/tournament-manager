@@ -1019,19 +1019,26 @@
         var playersDiv = document.createElement("div");
         playersDiv.setAttribute("class", "col-4 verticalCenter");
         var p1Div = document.createElement("div");
+        var p1TeamDiv = document.createElement("div");
         var p2Div = document.createElement("div");
+        var p2TeamDiv = document.createElement("div");
         if (match.p1 != null && match.p1.split(",").length == 3) {
-          p1Div.setAttribute("style", "margin-bottom:10px; margin-top: 5px; font-weight: bold;");  
+          p1Div.setAttribute("style",  "margin-top: 5px; font-weight: bold;");
+          p1TeamDiv.setAttribute("style", "margin-bottom:10px; font-weight: bold;");
         } else {
-          p1Div.setAttribute("style", "margin-bottom:10px; margin-top: 5px;");
+          p1Div.setAttribute("style",  "margin-top: 5px;");
+          p1TeamDiv.setAttribute("style", "margin-bottom:10px;");
         }
         if (match.p2 != null && match.p2.split(",").length == 3) {
-          p2Div.setAttribute("style", "margin-bottom:10px; margin-top: 5px; font-weight: bold;");
+          p2Div.setAttribute("style",  "margin-top: 5px; font-weight: bold;");
+          p2TeamDiv.setAttribute("style", "margin-bottom:5px; font-weight: bold;");
         } else {
-          p2Div.setAttribute("style", "margin-top:10px; margin-bottom: 5px;");
+          p2Div.setAttribute("style",  "margin-top: 5px;");
+          p2TeamDiv.setAttribute("style", "margin-bottom:5px;");
         }
         if (match.p1 != "") {
           p1Div.innerHTML = formatPlayerNameSchedule(match.p1);
+          p1TeamDiv.innerHTML = getPlayerTeam(match.p1);
         } else {
           if (divisionProgressions[match.division] != null) {
             if (divisionProgressions[match.division][match.matchNumber + "a"] != null) {
@@ -1042,6 +1049,7 @@
 
         if (match.p2 != "") {
           p2Div.innerHTML = formatPlayerNameSchedule(match.p2);
+          p2TeamDiv.innerHTML = getPlayerTeam(match.p2);
         } else {
           if (divisionProgressions[match.division] != null) {
             if (divisionProgressions[match.division][match.matchNumber + "b"] != null) {
@@ -1050,7 +1058,9 @@
           }
         }
         playersDiv.appendChild(p1Div);
+        playersDiv.appendChild(p1TeamDiv);
         playersDiv.appendChild(p2Div);
+        playersDiv.appendChild(p2TeamDiv);
 
         var scoreList = match.score.split(" ");
         var scoreDiv = document.createElement("div");

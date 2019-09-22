@@ -707,14 +707,8 @@
       var tournamentRef = tournamentsRef.child(tournamentId);
       var divRef = tournamentRef.child("divisions").child(divName);
       var matchNumber = parseInt(matchId.substring(1));
+      document.getElementById("editMatchModalLabel").textContent = "Match " + matchNumber;
 
-      if (matchNumber < 32) {
-        document.getElementById("p1Label").textContent = document.getElementById(matchId+"a").value
-        document.getElementById("p2Label").textContent = document.getElementById(matchId+"b").value
-      } else {
-        document.getElementById("p1Label").textContent = document.getElementById(matchId+"a").textContent
-        document.getElementById("p2Label").textContent = document.getElementById(matchId+"b").textContent
-      }
       divRef.once("value").then(ss => {
         var p1 = ss.child("draw").child(matchId).child(matchId+"a").val();
         var p2 = ss.child("draw").child(matchId).child(matchId+"b").val();
@@ -728,10 +722,20 @@
           score = ss.child("draw").child(matchId).child("score").val().split(" ");
         }
 
+        document.getElementById("p1").value = p1;
         document.getElementById("p1Label").textContent = formatPlayerNameDrawEdit(p1);
-        document.getElementById("p1LabelTeam").textContent = p1.split(",")[1].trim(" ");
+        if (p1 == null || p1 == "") {
+          document.getElementById("p1LabelTeam").textContent = "";
+        } else {
+          document.getElementById("p1LabelTeam").textContent = p1.split(",")[1].trim(" ");
+        }
+        document.getElementById("p2").value = p2;
         document.getElementById("p2Label").textContent = formatPlayerNameDrawEdit(p2);
-        document.getElementById("p2LabelTeam").textContent = p2.split(",")[1].trim(" ");
+        if (p2 == null || p2 == "") {
+          document.getElementById("p2LabelTeam").textContent = "";
+        } else {
+          document.getElementById("p2LabelTeam").textContent = p2.split(",")[1].trim(" ");
+        }
         document.getElementById("matchCourtNumber").value = courtNumber;
         document.getElementById("matchTime").value = time;
         document.getElementById("editMatchDate").value = date;
@@ -785,13 +789,13 @@
       var tournamentsRef = rootRef.child("tournaments");
       var divRef = tournamentsRef.child(tournamentId).child("divisions").child(divName);
 
-      var matchId = document.getElementById("editMatchModalLabel").textContent;
+      var matchId = "m" + document.getElementById("editMatchModalLabel").textContent.split(" ")[1];
       var winner = "";
       if (document.getElementById("p1").checked) {
-        winner = formatDrawNameToDBFormat(document.getElementById("p1Label").textContent);
+        winner = document.getElementById("p1").value;
       }
       if (document.getElementById("p2").checked) {
-        winner = formatDrawNameToDBFormat(document.getElementById("p2Label").textContent);
+        winner = document.getElementById("p2").value;
       }
 
       var score = document.getElementById("p1s1").value + "-" + document.getElementById("p2s1").value + " " 
@@ -1027,6 +1031,11 @@
       top: 15px;
       width: 7em;
       font-weight: bold;
+    }
+
+    .editPlayerTeam {
+      margin-left: 20px;
+      font-size: 16px;
     }
   </style>
 </html>
