@@ -297,6 +297,34 @@
       </div>
     </div>
   </div>
+
+  <div class="modal fade" id="deleteDivisionModal" tabindex="-1" role="dialog" aria-labelledby="deleteDivisionModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="deleteTournamentModalLabel">
+            Delete Division
+          </h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <h6>Are you sure you want to delete the following division:</h6>
+          <h6 id="deleteDivisionName"></h6>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">
+            Close
+          </button>
+          <button type="button" class="btn btn-danger" data-dismiss="modal" onclick="deleteDivision()">
+            Delete
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
 </body>
 
 <script type="text/javascript" src="js/util.js"></script>
@@ -644,8 +672,12 @@
           var divElement = document.createElement("p");
           divElement.textContent = div.key.replace(",", ".");
           divElement.setAttribute("class", "currentUmpire");
+          divElement.setAttribute("data-dismiss","modal");
+          divElement.setAttribute("data-toggle","modal");
+          divElement.setAttribute("data-target","#deleteDivisionModal");
           divElement.addEventListener("click", function () {
-            deleteDivision(div.key);
+            document.getElementById("deleteDivisionName").textContent = div.key;
+            //deleteDivision(div.key);
           });
           document
             .getElementById("currentDivisionsList")
@@ -659,7 +691,8 @@
       });
   }
 
-  function deleteDivision(division) {
+  function deleteDivision() {
+    var division = document.getElementById("deleteDivisionName").textContent;
     var url = window.location.href.substring(
       window.location.href.indexOf("?")
     );

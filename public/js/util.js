@@ -54,16 +54,22 @@ function formatPlayerNameDraw(name) {
     }
     if (result.length >= 26 && !doubles) {
         var maxTeamName = 21 - lastName.length;
+        if (parts.length == 3) {
+            maxTeamName -= 3;
+        }
         if (parts[1].length > maxTeamName) {
-            result = lastName + ", " + parts[1].substring(0,maxTeamName-3) + "...";
+            result = lastName + ", " + parts[1].substring(0,maxTeamName-3) + "..";
             if (parts.length == 3) {
                 result += " (" + parts[2] + ")";
             }
         }
     } else if (doubles && result.length >= 26) {
         var maxTeamName = 20 - doubles1.length - doubles2.length;
+        if (parts.length == 3) {
+            maxTeamName -= 3;
+        }
         if (parts[1].length > maxTeamName) {
-            result = doubles1 + "/" + doubles2 + ", " + parts[1].substring(0,maxTeamName-3) + "...";
+            result = doubles1 + "/" + doubles2 + ", " + parts[1].substring(0,maxTeamName-3) + "..";
             if (parts.length == 3) {
                 result += " (" + parts[2] + ")";
             }
