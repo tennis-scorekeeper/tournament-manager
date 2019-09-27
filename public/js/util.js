@@ -231,7 +231,7 @@ var drawProgressions = {
 }
 
 function flipScore(score) {
-    if (score == null) {
+    if (score == null || score.trim() == "") {
         return "";
     }
     var result = "";
