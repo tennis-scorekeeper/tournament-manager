@@ -229,3 +229,17 @@ var drawProgressions = {
 
     4: ["2a","2b"]
 }
+
+function flipScore(score) {
+    if (score == null) {
+        return "";
+    }
+    var result = "";
+    var sets = score.split(" ");
+    sets.forEach(set => {
+        if (set.split("-").length == 2) {
+            result += set.split("-")[1] + "-" + set.split("-")[0] + " "
+        }
+    });
+    return result.trim(" ");
+}

@@ -152,6 +152,7 @@
               "<p style='color:red'>" + errorMessage + "</p>";
           })
           .then(function(user) {
+            firebase.auth().currentUser.sendEmailVerification();
             firebase
               .database()
               .ref()
