@@ -985,6 +985,7 @@
     
     tournamentRef.once("value").then(ss => {
       var matches = [];
+      var divisionProgressions = {};
       ss.forEach(div => {
         var drawSize = parseInt(div.child("drawSize").val());
 
@@ -1000,6 +1001,17 @@
             tmpMatch.drawSize = drawSize;
             matches.push(tmpMatch);
           }
+
+          if (divisionProgressions[div.key] == null) {
+            divisionProgressions[div.key] = {};
+          }
+          var p1 = div.child("draw").child("m"+i).child("m"+i+"a").val();
+          var p2 = div.child("draw").child("m"+i).child("m"+i+"b").val();
+          if (p1 != null && p1 != "" && p2 != null && p2 != "") {
+            divisionProgressions[div.key][drawProgressions[drawSize][i]] = 
+            getLastNameOrDoublesNames(p1) + " or " + getLastNameOrDoublesNames(p2);
+          }
+          
         }
       });
       matches = matches.sort((a, b) => (a.matchTime >= b.matchTime) ? 1 : -1);
@@ -1008,12 +1020,8 @@
 
       var counter = 1;
 
-      var divisionProgressions = {};
       matches.forEach(match => {
-        if (divisionProgressions[match.division] == null) {
-          divisionProgressions[match.division] = {};
-        }
-        divisionProgressions[match.division][drawProgressions[match.drawSize][match.matchNumber]] = "Winner of Match " + counter;
+        
 
         var row = document.createElement("div");
         row.setAttribute("class", "row matchRow");

@@ -89,6 +89,23 @@ function getlastName(name) {
     return name.substring(lastSpace).trim(" ");
 }
 
+function getLastNameOrDoublesNames(fullName) {
+    if (fullName == null) {
+        return "";
+    }
+    var parts = fullName.split(",");
+    var doubles1 = "";
+    var doubles2 = "";
+    var lastName = getlastName(parts[0]);
+    if (parts[0].includes("/")) {
+        var doublesSplit = parts[0].split("/");
+        doubles1 = getlastName(doublesSplit[0]);
+        doubles2 = getlastName(doublesSplit[1]);
+        return doubles1 + "/" + doubles2;
+    }
+    return lastName;
+}
+
 function formatPlayerNameDrawEdit(name) {
     if (name == null) {
         return "";
