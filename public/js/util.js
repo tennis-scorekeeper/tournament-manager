@@ -70,6 +70,9 @@ function formatPlayerNameDraw(name) {
         }
         if (parts[1].length > maxTeamName) {
             result = doubles1 + "/" + doubles2 + ", " + parts[1].substring(0,maxTeamName-3) + "..";
+            if (result.length >= 22) {
+                result = result.substring(0, result.indexOf(","));
+            }
             if (parts.length == 3) {
                 result += " (" + parts[2] + ")";
             }
@@ -188,6 +191,9 @@ function formatPlayerNameDrawShorten(name) {
     var result = "";
     if (doubles) {
         result += doubles1 + "/" + doubles2;
+        if (result.length > 20) {
+            result = result.substring(0, 18) + "..";
+        }
     } else {
         result += getlastName(parts[0]);
     }

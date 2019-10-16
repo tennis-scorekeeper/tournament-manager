@@ -1023,7 +1023,9 @@
           }
           document.getElementById(id+"score").textContent = scoreString;
         })
-        document.getElementById("winner").textContent = ss.child("draw").child("winne").val().winner;
+        if (ss.child("draw").child("winne").val() != null) {
+          document.getElementById("winner").textContent = formatPlayerNameDrawShorten(ss.child("draw").child("winne").val().winner);
+        }
       })
 
       tournamentRef.once("value").then(tss => {
@@ -1094,14 +1096,14 @@
 
         document.getElementById("p1").value = p1;
         document.getElementById("p1Label").textContent = formatPlayerNameDrawEdit(p1);
-        if (p1 == null || p1 == "") {
+        if (p1 == null || p1 == "" || p1.split(",").length == 1) {
           document.getElementById("p1LabelTeam").textContent = "";
         } else {
           document.getElementById("p1LabelTeam").textContent = p1.split(",")[1].trim(" ");
         }
         document.getElementById("p2").value = p2;
         document.getElementById("p2Label").textContent = formatPlayerNameDrawEdit(p2);
-        if (p2 == null || p2 == "") {
+        if (p2 == null || p2 == "" || p2.split(",").length == 1) {
           document.getElementById("p2LabelTeam").textContent = "";
         } else {
           document.getElementById("p2LabelTeam").textContent = p2.split(",")[1].trim(" ");
