@@ -989,7 +989,7 @@
       ss.forEach(div => {
         var drawSize = parseInt(div.child("drawSize").val());
 
-        for (var i = 0; i < drawSize; i++) { 
+        for (var i = 0; i < drawSize - 1; i++) { 
           var currentMatchDate = div.child("draw").child("m"+i).child("date").val();
           var currentMatchLocation = div.child("draw").child("m"+i).child("location").val();
           if (currentMatchDate == date && (currentMatchLocation == location || (location == "" && currentMatchLocation == null))) {
@@ -1008,8 +1008,10 @@
           var p1 = div.child("draw").child("m"+i).child("m"+i+"a").val();
           var p2 = div.child("draw").child("m"+i).child("m"+i+"b").val();
           if (p1 != null && p1 != "" && p2 != null && p2 != "") {
-            divisionProgressions[div.key][drawProgressions[drawSize][i]] = 
-            getLastNameOrDoublesNames(p1) + " or " + getLastNameOrDoublesNames(p2);
+            if (drawProgressions[drawSize] != null) {
+              divisionProgressions[div.key][drawProgressions[drawSize][i]] = 
+                  getLastNameOrDoublesNames(p1) + " or " + getLastNameOrDoublesNames(p2);
+            }
           }
           
         }
