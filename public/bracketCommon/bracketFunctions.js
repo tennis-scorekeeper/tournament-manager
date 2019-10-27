@@ -1,4 +1,21 @@
 var matchProgressions = {
+  128: ["m64a","m64b","m65a","m65b","m66a","m66b","m67a","m67b",
+  "m68a","m68b","m69a","m69b","m70a","m70b",
+  "m71a","m71b","m72a","m72b","m73a","m73b","m74a","m74b",
+  "m75a","m75b","m76a","m76b","m77a","m77b","m78a","m78b",
+  "m79a","m79b","m80a","m80b","m81a","m81b","m82a","m82b",
+  "m83a","m83b","m84a","m84b","m85a","m85b","m86a","m86b",
+  "m87a","m87b","m88a","m88b","m89a","m89b","m90a","m90b",
+  "m91a","m91b","m92a","m92b","m93a","m93b","m94a","m94b",
+  "m95a","m95b","m96a","m96b","m97a","m97b","m98a","m98b",
+  "m99a","m99b","m100a","m100b","m101a","m101b","m102a","m102b",
+  "m103a","m103b","m104a","m104b","m105a","m105b","m106a","m106b",
+  "m107a","m107b","m108a","m108b","m109a","m109b","m110a","m110b",
+  "m111a","m111b","m112a","m112b","m113a","m113b","m114a","m114b",
+  "m115a","m115b","m116a","m116b","m117a","m117b","m118a","m118b",
+  "m119a","m119b","m120a","m120b","m121a","m121b","m122a","m122b",
+  "m123a","m123b","m124a","m125a","m124b","m125b","m126a","m126b","winner"],
+
   64: ["m32a","m32b","m33a","m33b","m34a","m34b","m35a","m35b",
   "m36a","m36b","m37a","m37b","m38a","m38b","m39a","m39b",
   "m40a","m40b","m41a","m41b","m42a","m42b","m43a","m43b",
@@ -65,6 +82,7 @@ function saveMatch(drawSize) {
   })
 
   var matchProgressionList = matchProgressions[drawSize];
+  console.log(matchProgressionList[parseInt(matchId.substring(1))]);
   document.getElementById(matchProgressionList[parseInt(matchId.substring(1))]).textContent = formatPlayerNameDrawShorten(winner);
 
   var detailString = "";
