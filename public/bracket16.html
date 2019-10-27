@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Welcome to Firebase Hosting</title>
+    <title>Draw</title>
 
     <link
       rel="stylesheet"
@@ -37,80 +37,80 @@
       <p id="round2Left">Quarterfinals</p>
       <p id="round3Left">Semifinals</p>
       <p id="round4Left">Finals</p>
-      <select id="m0a" onchange="saveDraw2('m0', 'm0a')">
+      <select id="m0a" onchange="saveDraw(16, 'm0', 'm0a')">
           <option></option><option>Bye</option>
       </select>
-      <select id="m0b" onchange="saveDraw2('m0', 'm0b')">
+      <select id="m0b" onchange="saveDraw(16, 'm0', 'm0b')">
           <option></option><option>Bye</option>
       </select>
       <button id="m0" class="editMatch" onclick="editMatch('m0')" data-toggle="modal" data-target="#editMatchModal"></button>
       <p id="m0details" class="matchDetailsLeft"></p>
       <p id="m0score" class="matchScore"></p>
 
-      <select id="m1a" onchange="saveDraw2('m1', 'm1a')">
+      <select id="m1a" onchange="saveDraw(16, 'm1', 'm1a')">
           <option></option><option>Bye</option>
       </select>
-      <select id="m1b" onchange="saveDraw2('m1', 'm1b')">
+      <select id="m1b" onchange="saveDraw(16, 'm1', 'm1b')">
           <option></option><option>Bye</option>
       </select>
       <button id="m1" class="editMatch" onclick="editMatch('m1')" data-toggle="modal" data-target="#editMatchModal"></button>
       <p id="m1details" class="matchDetailsLeft"></p>
       <p id="m1score" class="matchScore"></p>
 
-      <select id="m2a" onchange="saveDraw2('m2', 'm2a')">
+      <select id="m2a" onchange="saveDraw(16, 'm2', 'm2a')">
           <option></option><option>Bye</option>
       </select>
-      <select id="m2b" onchange="saveDraw2('m2', 'm2b')">
+      <select id="m2b" onchange="saveDraw(16, 'm2', 'm2b')">
           <option></option><option>Bye</option>
       </select>
       <button id="m2" class="editMatch" onclick="editMatch('m2')" data-toggle="modal" data-target="#editMatchModal"></button>
       <p id="m2details" class="matchDetailsLeft"></p>
       <p id="m2score" class="matchScore"></p>
 
-      <select id="m3a" onchange="saveDraw2('m3', 'm3a')">
+      <select id="m3a" onchange="saveDraw(16, 'm3', 'm3a')">
           <option></option><option>Bye</option>
       </select>
-      <select id="m3b" onchange="saveDraw2('m3', 'm3b')">
+      <select id="m3b" onchange="saveDraw(16, 'm3', 'm3b')">
           <option></option><option>Bye</option>
       </select>
       <button id="m3" class="editMatch" onclick="editMatch('m3')" data-toggle="modal" data-target="#editMatchModal"></button>
       <p id="m3details" class="matchDetailsLeft"></p>
       <p id="m3score" class="matchScore"></p>
 
-      <select id="m4a" onchange="saveDraw2('m4', 'm4a')">
+      <select id="m4a" onchange="saveDraw(16, 'm4', 'm4a')">
           <option></option><option>Bye</option>
       </select>
-      <select id="m4b" onchange="saveDraw2('m4', 'm4b')">
+      <select id="m4b" onchange="saveDraw(16, 'm4', 'm4b')">
           <option></option><option>Bye</option>
       </select>
       <button id="m4" class="editMatch" onclick="editMatch('m4')" data-toggle="modal" data-target="#editMatchModal"></button>
       <p id="m4details" class="matchDetailsLeft"></p>
       <p id="m4score" class="matchScore"></p>
 
-      <select id="m5a" onchange="saveDraw2('m5', 'm5a')">
+      <select id="m5a" onchange="saveDraw(16, 'm5', 'm5a')">
           <option></option><option>Bye</option>
       </select>
-      <select id="m5b" onchange="saveDraw2('m5', 'm5b')">
+      <select id="m5b" onchange="saveDraw(16, 'm5', 'm5b')">
           <option></option><option>Bye</option>
       </select>
       <button id="m5" class="editMatch" onclick="editMatch('m5')" data-toggle="modal" data-target="#editMatchModal"></button>
       <p id="m5details" class="matchDetailsLeft"></p>
       <p id="m5score" class="matchScore"></p>
 
-      <select id="m6a" onchange="saveDraw2('m6', 'm6a')">
+      <select id="m6a" onchange="saveDraw(16, 'm6', 'm6a')">
           <option></option><option>Bye</option>
       </select>
-      <select id="m6b" onchange="saveDraw2('m6', 'm6b')">
+      <select id="m6b" onchange="saveDraw(16, 'm6', 'm6b')">
           <option></option><option>Bye</option>
       </select>
       <button id="m6" class="editMatch" onclick="editMatch('m6')" data-toggle="modal" data-target="#editMatchModal"></button>
       <p id="m6details" class="matchDetailsLeft"></p>
       <p id="m6score" class="matchScore"></p>
 
-      <select id="m7a" onchange="saveDraw2('m7', 'm7a')">
+      <select id="m7a" onchange="saveDraw(16, 'm7', 'm7a')">
           <option></option><option>Bye</option>
       </select>
-      <select id="m7b" onchange="saveDraw2('m7', 'm7b')">
+      <select id="m7b" onchange="saveDraw(16, 'm7', 'm7b')">
           <option></option><option>Bye</option>
       </select>
       <button id="m7" class="editMatch" onclick="editMatch('m7')" data-toggle="modal" data-target="#editMatchModal"></button>
@@ -221,7 +221,7 @@
           <button type="button" class="btn btn-primary" onclick="clearMatchWinner()">
             Clear
           </button>
-          <button type="button" class="btn btn-success" data-dismiss="modal" onclick="saveMatch()">
+          <button type="button" class="btn btn-success" data-dismiss="modal" onclick="saveMatch(16)">
               Save
           </button>
         </div>
@@ -230,6 +230,7 @@
   </div>
   </body>
 
+  <script type="text/javascript" src="bracketCommon/bracketFunctions.js"></script>
   <script type="text/javascript" src="js/util.js"></script>
   <script>
     document.addEventListener("DOMContentLoaded", function () {
@@ -258,6 +259,7 @@
       var tournamentId = params.get("tournamentId");
       var divName = params.get("div");
       document.getElementById("drawName").textContent = divName;
+      window.document.title = divName + " Draw";
 
       var rootRef = firebase.database().ref();
       var tournamentsRef = rootRef.child("tournaments");
@@ -412,7 +414,7 @@
             detailString += date.substring(date.indexOf("-")+1) + " ";
           }
           if (time != null && time != "") {
-            detailString += time + " ";
+            detailString += convertTimeTo12Hour(time) + " ";
           }
           if (location != null && location != "") {
             detailString += location.substring(location.indexOf(" - ") + 3);
@@ -446,7 +448,7 @@
             detailString += date.substring(date.indexOf("-")+1) + " ";
           }
           if (time != null && time != "") {
-            detailString += time + " ";
+            detailString += convertTimeTo12Hour(time) + " ";
           }
           if (location != null && location != "") {
             detailString += location.substring(location.indexOf(" - ") + 3);
@@ -482,209 +484,6 @@
       
       })
     }
-
-    function saveDraw2(matchId, matchPlayerId) {
-      document.getElementById("savingProgress").textContent = "Saving..."
-      var url = window.location.href.substring(
-        window.location.href.indexOf("?")
-      );
-      var params = new URLSearchParams(url);
-      var tournamentId = params.get("tournamentId");
-      var divName = params.get("div");
-      document.getElementById("drawName").textContent = divName;
-
-      var rootRef = firebase.database().ref();
-      var tournamentsRef = rootRef.child("tournaments");
-      var divRef = tournamentsRef.child(tournamentId).child("divisions").child(divName);
-      var matchNumber = parseInt(matchId.substring(1));
-
-      if (matchNumber < 32) {
-        divRef.child("draw").child(matchId).child(matchPlayerId).set(document.getElementById(matchPlayerId).value).then(tmp => {
-          document.getElementById("savingProgress").textContent = "Saved!"
-        });
-      } else {
-        divRef.child("draw").child(matchId).child(matchPlayerId).set(document.getElementById(matchPlayerId).textContent).then(tmp => {
-          document.getElementById("savingProgress").textContent = "Saved!"
-        });
-      }
-    }
-
-    function editMatch(matchId) {
-      var url = window.location.href.substring(
-        window.location.href.indexOf("?")
-      );
-      var params = new URLSearchParams(url);
-      var tournamentId = params.get("tournamentId");
-      var divName = params.get("div");
-      document.getElementById("drawName").textContent = divName;
-
-      var rootRef = firebase.database().ref();
-      var tournamentsRef = rootRef.child("tournaments");
-      var tournamentRef = tournamentsRef.child(tournamentId);
-      var divRef = tournamentRef.child("divisions").child(divName);
-      var matchNumber = parseInt(matchId.substring(1));
-      document.getElementById("editMatchModalLabel").textContent = "Match " + matchNumber;
-
-      divRef.once("value").then(ss => {
-        var p1 = ss.child("draw").child(matchId).child(matchId+"a").val();
-        var p2 = ss.child("draw").child(matchId).child(matchId+"b").val();
-        var date = ss.child("draw").child(matchId).child("date").val();
-        var time = ss.child("draw").child(matchId).child("matchTime").val()
-        var courtNumber = ss.child("draw").child(matchId).child("courtNumber").val();
-        var location = ss.child("draw").child(matchId).child("location").val();
-
-        var score = ["-","-","-"];
-        if (ss.child("draw").child(matchId).child("score").val() != null) {
-          score = ss.child("draw").child(matchId).child("score").val().split(" ");
-        }
-
-        document.getElementById("p1").value = p1;
-        document.getElementById("p1Label").textContent = formatPlayerNameDrawEdit(p1);
-        if (p1 == null || p1 == "" || p1.split(",").length == 1) {
-          document.getElementById("p1LabelTeam").textContent = "";
-        } else {
-          document.getElementById("p1LabelTeam").textContent = p1.split(",")[1].trim(" ");
-        }
-        document.getElementById("p2").value = p2;
-        document.getElementById("p2Label").textContent = formatPlayerNameDrawEdit(p2);
-        if (p2 == null || p2 == "" || p2.split(",").length == 1) {
-          document.getElementById("p2LabelTeam").textContent = "";
-        } else {
-          document.getElementById("p2LabelTeam").textContent = p2.split(",")[1].trim(" ");
-        }
-        document.getElementById("matchCourtNumber").value = courtNumber;
-        document.getElementById("matchTime").value = time;
-        document.getElementById("editMatchDate").value = date;
-        document.getElementById("editMatchLocationSelect").value = location;
-        
-        if (score[0].length == 3) {
-          document.getElementById("p1s1").value = score[0][0];
-          document.getElementById("p2s1").value = score[0][2];
-        } else {
-          document.getElementById("p1s1").value = "";
-          document.getElementById("p2s1").value = "";
-        }
-        if (score[1].length == 3) {
-          document.getElementById("p1s2").value = score[1][0];
-          document.getElementById("p2s2").value = score[1][2];
-        } else {
-          document.getElementById("p1s2").value = "";
-          document.getElementById("p2s2").value = "";
-        }
-        if (score[2].length == 3) {
-          document.getElementById("p1s3").value = score[2][0];
-          document.getElementById("p2s3").value = score[2][2];
-        } else {
-          document.getElementById("p1s3").value = "";
-          document.getElementById("p2s3").value = "";
-        }
-
-        var winner = ss.child("draw").child(matchId).child("winner").val();
-
-        document.getElementById("p1").checked = false;
-        document.getElementById("p2").checked = false;
-        if (winner != null && winner != "" && winner == p1) {
-          document.getElementById("p1").checked = true;
-        }
-        if (winner != null && winner != "" && winner == p2) {
-          document.getElementById("p2").checked = true;
-        }
-      });
-    }
-
-    function saveMatch() {
-      var url = window.location.href.substring(
-        window.location.href.indexOf("?")
-      );
-      var params = new URLSearchParams(url);
-      var tournamentId = params.get("tournamentId");
-      var divName = params.get("div");
-      document.getElementById("drawName").textContent = divName;
-
-      var rootRef = firebase.database().ref();
-      var tournamentsRef = rootRef.child("tournaments");
-      var divRef = tournamentsRef.child(tournamentId).child("divisions").child(divName);
-
-      var matchId = "m" + document.getElementById("editMatchModalLabel").textContent.split(" ")[1];
-      var winner = "";
-      var displayScore = "";
-      if (document.getElementById("p1").checked) {
-        winner = document.getElementById("p1").value;
-        displayScore = document.getElementById("p1s1").value + "-" + document.getElementById("p2s1").value + " " 
-        + document.getElementById("p1s2").value + "-" + document.getElementById("p2s2").value + " "
-        + document.getElementById("p1s3").value + "-" + document.getElementById("p2s3").value;
-      }
-      if (document.getElementById("p2").checked) {
-        winner = document.getElementById("p2").value;
-        displayScore = document.getElementById("p2s1").value + "-" + document.getElementById("p1s1").value + " " 
-        + document.getElementById("p2s2").value + "-" + document.getElementById("p1s2").value + " "
-        + document.getElementById("p2s3").value + "-" + document.getElementById("p1s3").value;
-      }
-
-      var score = document.getElementById("p1s1").value + "-" + document.getElementById("p2s1").value + " " 
-        + document.getElementById("p1s2").value + "-" + document.getElementById("p2s2").value + " "
-        + document.getElementById("p1s3").value + "-" + document.getElementById("p2s3").value;
-
-
-      divRef.child("draw").child(matchId).update({
-        "winner": winner,
-        "score": score,
-        "date": document.getElementById("editMatchDate").value,
-        "courtNumber": document.getElementById("matchCourtNumber").value,
-        "matchTime": document.getElementById("matchTime").value,
-        "location": document.getElementById("editMatchLocationSelect").value
-      })
-
-      var matchProgressionList = 
-        ["m8a","m8b","m9a","m9b","m10a","m10b","m11a","m11b",
-        "m12a","m12b","m13a","m13b","m14a","m14b","winner"];
-      document.getElementById(matchProgressionList[parseInt(matchId.substring(1))]).textContent = formatPlayerNameDrawShorten(winner);
-
-      var detailString = "";
-      var date = document.getElementById("editMatchDate").value;
-      var time = document.getElementById("matchTime").value;
-      var courtNumber = document.getElementById("matchCourtNumber").value;
-      var location = document.getElementById("editMatchLocationSelect").value;
-
-      if (date != null && date != "") {
-        detailString += date.substring(date.indexOf("-")+1) + " ";
-      }
-      if (time != null && time != "") {
-        detailString += time + " ";
-      }
-      if (location != null && location != "") {
-        detailString += location.substring(location.indexOf(" - ") + 3);
-      }
-      
-      var scoreString = "";
-      displayScore.split(" ").forEach(set => {
-        if (set.length == 3) {
-          scoreString += set + " ";
-        }
-      });
-      document.getElementById(matchId+"score").textContent = scoreString;
-      document.getElementById(matchId+"details").textContent = detailString;
-
-      var winnerMatchPlayerId = matchProgressionList[parseInt(matchId.substring(1))];
-      var matchId = winnerMatchPlayerId.substring(0, winnerMatchPlayerId.length - 1);
-      
-      divRef.child("draw").child(matchId).child(winnerMatchPlayerId).set(winner).then(tmp => {
-        document.getElementById("savingProgress").textContent = "Saved!"
-      });
-    }
-
-    function clearMatchWinner() {
-      document.getElementById("p1").checked = false;
-      document.getElementById("p2").checked = false;
-
-      document.getElementById("p1s1").value = "";
-      document.getElementById("p2s1").value = "";
-      document.getElementById("p1s2").value = "";
-      document.getElementById("p2s2").value = "";
-      document.getElementById("p1s3").value = "";
-      document.getElementById("p2s3").value = "";
-    }
-
   </script>
 
   <style>

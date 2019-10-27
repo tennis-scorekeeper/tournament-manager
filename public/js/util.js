@@ -266,3 +266,41 @@ function flipScore(score) {
     });
     return result.trim(" ");
 }
+
+function convertTimeTo12Hour(time) {
+    if (time == null || time.trim() == "") {
+        return "";
+    }
+    var hour = parseInt(time.split(":")[0]);
+    var minutes = parseInt(time.split(":")[1]);
+    if (minutes < 10) {
+        minutes = "0" + minutes;
+    }
+
+    var result = "";
+    if (hour == 0) {
+        result = "12:" + minutes + " AM";
+    } 
+    else if (hour == 12) {
+        result = hour + ":" + minutes + " PM";
+    }
+    else if (hour > 12) {
+        result = hour-12 + ":" + minutes + " PM";
+    }
+    else {
+        result = hour + ":" + minutes + " AM";
+    }
+    return result;
+}
+
+function getDayOfTheWeek(date) {
+    if (date == null || date == "") {
+        return "";
+    }
+    var tmp = new Date(date);
+    tmp.setDate(tmp.getDate()+1);
+    var options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+    var tmpString = tmp.toLocaleDateString("en-US", options);
+    var dayMapping = {"Saturday":"Sa", "Sunday":"Su", "Monday":"M", "Tuesday":"T", "Wednesday":"W", "Thursday":"Th", "Friday":"F"};
+    return dayMapping[tmpString.substring(0, tmpString.indexOf(","))];
+}

@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Welcome to Firebase Hosting</title>
+    <title>Draw</title>
 
     <link
       rel="stylesheet"
@@ -131,6 +131,7 @@
       var tournamentId = params.get("tournamentId");
       var divName = params.get("div");
       document.getElementById("drawName").textContent = divName;
+      window.document.title = divName + " Draw";
 
       var rootRef = firebase.database().ref();
       var tournamentsRef = rootRef.child("tournaments");
@@ -266,7 +267,7 @@
             detailString += date.substring(date.indexOf("-")+1) + " ";
           }
           if (time != null && time != "") {
-            detailString += time + " ";
+            detailString += convertTimeTo12Hour(time) + " ";
           }
           if (location != null && location != "") {
             detailString += location.substring(location.indexOf(" - ") + 3);
@@ -297,7 +298,7 @@
             detailString += date.substring(date.indexOf("-")+1) + " ";
           }
           if (time != null && time != "") {
-            detailString += time + " ";
+            detailString += convertTimeTo12Hour(time) + " ";
           }
           if (location != null && location != "") {
             detailString += location.substring(location.indexOf(" - ") + 3);

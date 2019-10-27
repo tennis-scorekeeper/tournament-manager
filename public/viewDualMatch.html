@@ -4,7 +4,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Welcome to Firebase Hosting</title>
+  <title>Dual Match</title>
 
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
     integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous" />
@@ -237,7 +237,9 @@
               dualMatchGender = tss.child(dualMatchId).val().gender;
               dualMatchAdmin = tss.child(dualMatchId).val().admin;
 
-              document.getElementById("title").textContent = dualMatchTeam1 + " vs. " + dualMatchTeam2 + " (" + dualMatchGender + ")";
+              var title = dualMatchTeam1 + " vs. " + dualMatchTeam2 + " (" + dualMatchGender + ")";
+              document.getElementById("title").textContent = title;
+              window.document.title = title;
               userRef.once("value").then(uss => {
                 document.getElementById("hostedBy").textContent = "Hosted By: " + uss.child(dualMatchAdmin).val().name;
               });

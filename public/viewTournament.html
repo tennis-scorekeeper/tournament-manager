@@ -4,7 +4,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Welcome to Firebase Hosting</title>
+  <title>Tournament</title>
 
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
     integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous" />
@@ -361,6 +361,7 @@
               tournamentAdmin = tss.child(tournamentId).val().admin;
 
               document.getElementById("title").textContent = tournamentName;
+              window.document.title = tournamentName;
               userRef.once("value").then(uss => {
                 document.getElementById("hostedBy").textContent = "Hosted By: " + uss.child(tournamentAdmin).val().name;
               });
@@ -1010,7 +1011,7 @@
           if (p1 != null && p1 != "" && p2 != null && p2 != "") {
             if (drawProgressions[drawSize] != null) {
               divisionProgressions[div.key][drawProgressions[drawSize][i]] = 
-                  getLastNameOrDoublesNames(p1) + " or " + getLastNameOrDoublesNames(p2);
+                  getLastNameOrDoublesNames(p1) + " <b>or</b> " + getLastNameOrDoublesNames(p2);
             }
           }
           
@@ -1039,7 +1040,7 @@
         timeHolderDiv.setAttribute("class", "verticalCenter courtLabel");
 
         var time = document.createElement("p");
-        time.innerHTML = convertTo12Hour(match.matchTime);
+        time.innerHTML = convertTimeTo12Hour(match.matchTime);
         time.setAttribute("class", "matchTime");
         var courtLabel = document.createElement("div");
         courtLabel.innerHTML = "Court ";
@@ -1229,35 +1230,6 @@
         document.getElementById("deleteTournamentError").textContent = "Only the tournament admin can delete the tournament.";
       }
     });
-  }
-
-  function convertTo12Hour(time) {
-    if (time == null || time == "") {
-      return "";
-    }
-
-    var split = time.split(":");
-    var pm = false;
-    var hour = parseInt(split[0]);
-    var result;
-    if (hour == 0) {
-      result = "12:";
-    } else if (hour == 12) {
-      result = "12:";
-      pm = true;
-    } else if (hour > 12) {
-      result = (hour-12) + ":";
-      pm = true;
-    } else {
-      result = hour + ":";
-    }
-    result += split[1];
-    if (pm) {
-      result += " PM";
-    } else {
-      result += " AM";
-    }
-    return result;
   }
 
   function printElem() {
