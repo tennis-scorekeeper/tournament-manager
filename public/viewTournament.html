@@ -112,7 +112,7 @@
                 <option value='16'>16</option>
                 <option value='32'>32</option>
                 <option value='64'>64</option>
-                <option disabled value='128'>128</option>
+                <option value='128'>128</option>
               </select>
           </div>
             <div>
@@ -902,6 +902,8 @@
           window.open("bracket16.html?tournamentId="+tournamentId+"&div="+divName, "_blank");
         } else if (drawSize == 32) {
           window.open("bracket32.html?tournamentId="+tournamentId+"&div="+divName, "_blank");
+        } else if (drawSize == 128) {
+          window.open("bracket128.html?tournamentId="+tournamentId+"&div="+divName, "_blank");
         } else {
           window.open("bracket64.html?tournamentId="+tournamentId+"&div="+divName, "_blank");
         }
