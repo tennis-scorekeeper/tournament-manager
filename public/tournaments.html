@@ -92,6 +92,13 @@
                   <option value='private'>Private</option>
                 </select>
               </div>
+              <div class="form-group">
+                <label for="tournamentDrawDateFormat">Draw Date Format</label>
+                <select class="form-control" id="tournamentDrawDateFormat">
+                  <option value='Date'>Date</option>
+                  <option value='Day of week'>Day of week</option>
+                </select>
+              </div>
             </form>
           </div>
           <div class="modal-footer">
@@ -271,6 +278,7 @@
       .value;
     var tournamentEndDate = document.getElementById("tournamentEndDate")
       .value;
+    var tournamentDrawDateFormat = document.getElementById("tournamentDrawDateFormat").value;
     var tournamentPrivacy = document.getElementById("tournamentPrivacy").value;
     var startTmpDate = new Date(tournamentStartDate);
     var endTmpDate = new Date(tournamentEndDate);
@@ -293,7 +301,8 @@
       name: tournamentName,
       startDate: tournamentStartDate,
       endDate: tournamentEndDate,
-      privacy: tournamentPrivacy
+      privacy: tournamentPrivacy,
+      drawDateFormat: tournamentDrawDateFormat
     });
     var tournamentId = result.path.pieces_[1];
     userRef

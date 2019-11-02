@@ -182,7 +182,8 @@
         ["m4", "m5", "m6"];
 
       var playerOptionElements = [];
-      divRef.once("value").then(ss => {
+      tournamentRef.once("value").then(tss => {
+        var ss = tss.child("divisions").child(divName);
         fullMatchIds.forEach(id => {
           document.getElementById(id+"a").textContent = formatPlayerNameDraw(ss.child("draw").child(id).child(id+"a").val());
           document.getElementById(id+"b").textContent = formatPlayerNameDraw(ss.child("draw").child(id).child(id+"b").val());
@@ -192,7 +193,11 @@
           var location = ss.child("draw").child(id).child("location").val();
 
           if (date != null && date != "") {
-            detailString += date.substring(date.indexOf("-")+1) + " ";
+            if (tss.val().drawDateFormat == "Day of week") {
+              detailString += getDayOfTheWeek(date) + " ";
+            } else {
+              detailString += date.substring(date.indexOf("-")+1) + " ";
+            }
           }
           if (time != null && time != "") {
             detailString += convertTimeTo12Hour(time) + " ";
@@ -223,7 +228,11 @@
           var location = ss.child("draw").child(id).child("location").val();
 
           if (date != null && date != "") {
-            detailString += date.substring(date.indexOf("-")+1) + " ";
+            if (tss.val().drawDateFormat == "Day of week") {
+              detailString += getDayOfTheWeek(date) + " ";
+            } else {
+              detailString += date.substring(date.indexOf("-")+1) + " ";
+            }
           }
           if (time != null && time != "") {
             detailString += convertTimeTo12Hour(time) + " ";

@@ -38,7 +38,7 @@ var matchProgressions = {
   4: ["m2a","m2b", "winner"]
 }
 
-function saveMatch(drawSize) {
+async function saveMatch(drawSize) {
   var url = window.location.href.substring(
     window.location.href.indexOf("?")
   );
@@ -49,6 +49,7 @@ function saveMatch(drawSize) {
 
   var rootRef = firebase.database().ref();
   var tournamentsRef = rootRef.child("tournaments");
+  var tournamentRef = tournamentsRef.child(tournamentId);
   var divRef = tournamentsRef.child(tournamentId).child("divisions").child(divName);
 
   var matchId = "m" + document.getElementById("editMatchModalLabel").textContent.split(" ")[1];
@@ -71,6 +72,12 @@ function saveMatch(drawSize) {
     + document.getElementById("p1s2").value + "-" + document.getElementById("p2s2").value + " "
     + document.getElementById("p1s3").value + "-" + document.getElementById("p2s3").value;
 
+  var dayOfWeek = false;
+  await tournamentRef.once("value").then(tss => {
+    if (tss.val().drawDateFormat == "Day of week") {
+      dayOfWeek = true;
+    }
+  })
 
   divRef.child("draw").child(matchId).update({
     "winner": winner,
@@ -82,17 +89,19 @@ function saveMatch(drawSize) {
   })
 
   var matchProgressionList = matchProgressions[drawSize];
-  console.log(matchProgressionList[parseInt(matchId.substring(1))]);
   document.getElementById(matchProgressionList[parseInt(matchId.substring(1))]).textContent = formatPlayerNameDrawShorten(winner);
 
   var detailString = "";
   var date = document.getElementById("editMatchDate").value;
   var time = document.getElementById("matchTime").value;
-  var courtNumber = document.getElementById("matchCourtNumber").value;
   var location = document.getElementById("editMatchLocationSelect").value;
 
   if (date != null && date != "") {
-    detailString += getDayOfTheWeek(date) + " " + date.substring(date.indexOf("-")+1) + " ";
+    if (dayOfWeek) {
+      detailString += getDayOfTheWeek(date) + " ";
+    } else {
+      detailString += date.substring(date.indexOf("-")+1) + " ";
+    }
   }
   if (time != null && time != "") {
     detailString += convertTimeTo12Hour(time) + " ";

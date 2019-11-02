@@ -251,6 +251,13 @@
                 <option value='private'>Private</option>
               </select>
             </div>
+            <div class="form-group">
+              <label for="tournamentDrawDateFormat">Draw Date Format</label>
+              <select class="form-control" id="tournamentDrawDateFormat">
+                <option value='Date'>Date</option>
+                <option value='Day of week'>Day of week</option>
+              </select>
+            </div>
           </form>
           <button type="button" class="btn btn-danger"  data-dismiss="modal" data-toggle="modal"
           data-target="#deleteTournamentModal">
@@ -722,6 +729,7 @@
       document.getElementById("newTournamentStartDate").value = tss.val().startDate;
       document.getElementById("newTournamentEndDate").value = tss.val().endDate;
       document.getElementById("tournamentPrivacy").value = tss.val().privacy;
+      document.getElementById("tournamentDrawDateFormat").value = tss.val().drawDateFormat;
     });
   }
 
@@ -739,6 +747,7 @@
     var startDate = document.getElementById("newTournamentStartDate").value;
     var endDate = document.getElementById("newTournamentEndDate").value;
     var privacy = document.getElementById("tournamentPrivacy").value;
+    var drawDateFormat = document.getElementById("tournamentDrawDateFormat").value;
     var startTmpDate = new Date(startDate);
     var endTmpDate = new Date(endDate);
 
@@ -756,7 +765,8 @@
         name: name, 
         startDate: startDate,
         endDate: endDate,
-        privacy: privacy
+        privacy: privacy,
+        drawDateFormat: drawDateFormat
       }).then(t => {
         window.location.reload();
       });

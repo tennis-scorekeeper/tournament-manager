@@ -236,7 +236,8 @@
         ["m0a", "m0b", "m1a", "m1b"];
 
       var playerOptionElements = [];
-      divRef.once("value").then(ss => {
+      tournamentRef.once("value").then(tss => {
+        var ss = tss.child("divisions").child(divName);
         var playersList = ss.child("players").val();
         if (playersList != null) {
           matchIds.forEach(id => {
@@ -257,7 +258,11 @@
           var location = ss.child("draw").child(id).child("location").val();
 
           if (date != null && date != "") {
-            detailString += date.substring(date.indexOf("-")+1) + " ";
+            if (tss.val().drawDateFormat == "Day of week") {
+              detailString += getDayOfTheWeek(date) + " ";
+            } else {
+              detailString += date.substring(date.indexOf("-")+1) + " ";
+            }
           }
           if (time != null && time != "") {
             detailString += convertTimeTo12Hour(time) + " ";
@@ -291,7 +296,11 @@
           var location = ss.child("draw").child(id).child("location").val();
 
           if (date != null && date != "") {
-            detailString += date.substring(date.indexOf("-")+1) + " ";
+            if (tss.val().drawDateFormat == "Day of week") {
+              detailString += getDayOfTheWeek(date) + " ";
+            } else {
+              detailString += date.substring(date.indexOf("-")+1) + " ";
+            }
           }
           if (time != null && time != "") {
             detailString += convertTimeTo12Hour(time) + " ";
