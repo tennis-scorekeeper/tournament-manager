@@ -267,6 +267,34 @@ var drawProgressions = {
     4: ["2a","2b"]
 }
 
+function formatScoreLoadDraw(score, tiebreakScores, flip) {
+    if (score == null) {
+        score = "";
+    }
+    if (tiebreakScores == null || tiebreakScores.trim() == "") {
+        tiebreakScores = "(-),(-),(-)";
+    }
+    if (flip) {
+        score = flipScore(score);
+        tiebreakScores = flipTiebreakScores(tiebreakScores);
+    }
+
+    var result = "";
+    var sets = score.split(" ");
+    var tiebreakSets = tiebreakScores.split(",");
+
+    for (var i = 0; i < sets.length; i++) {
+        if (sets[i].length >= 3) {
+            if (tiebreakSets[i].length > 3) {
+                result += sets[i] + tiebreakSets[i] + " ";
+            } else {
+                result += sets[i] + " ";
+            }
+        }
+    }
+    return result.trim(" ");
+}
+
 function flipScore(score) {
     if (score == null || score.trim() == "") {
         return "";
@@ -275,10 +303,26 @@ function flipScore(score) {
     var sets = score.split(" ");
     sets.forEach(set => {
         if (set.split("-").length == 2) {
-            result += set.split("-")[1] + "-" + set.split("-")[0] + " "
+            result += set.split("-")[1] + "-" + set.split("-")[0] + " ";
         }
     });
     return result.trim(" ");
+}
+
+function flipTiebreakScores(tiebreakScores) {
+    if (tiebreakScores == null || tiebreakScores.trim() == "") {
+        return "(-),(-),(-)";
+    }
+    var result = "";
+    tiebreakScores = tiebreakScores.replace(/\(/g, "");
+    tiebreakScores = tiebreakScores.replace(/\)/g, "");
+    var sets =  tiebreakScores.split(",");
+    sets.forEach(set => {
+        if (set.split("-").length == 2) {
+            result += "(" + set.split("-")[1] + "-" + set.split("-")[0] + "),";
+        }
+    })
+    return result.trim(",");
 }
 
 function convertTimeTo12Hour(time) {

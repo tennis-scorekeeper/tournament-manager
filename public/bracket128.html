@@ -1133,6 +1133,49 @@
       </div>
     </div>
   </div>
+
+  <div class="modal fade" id="tiebreakModal" tabindex="-1" role="dialog" aria-labelledby="tiebreakModalLabel"
+  aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="tiebreakModalLabel">
+            Enter tiebreak scores
+          </h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="row">
+            <div class="col-8">
+              <label id="p1LabelTiebreak" class="matchWinner" for="p1">Player 1</label><br>
+              <label id="p1LabelTeamTiebreak" class="editPlayerTeam" for="p1">Player 1</label><br>
+              <label id="p2LabelTiebreak" class="matchWinner" for="p2">Player 2</label><br>
+              <label id="p2LabelTeamTiebreak" class="editPlayerTeam" for="p1">Player 2</label>
+            </div>
+            <div class="col-4">
+              <div style="margin-top: 10px;">
+                <input id="p1s1t" disabled class="scoreInput" type="number"/>
+                <input id="p1s2t" disabled class="scoreInput" type="number"/>
+                <input id="p1s3t" disabled class="scoreInput" type="number"/>
+              </div>
+              <div style="margin-top: 35px;">
+                  <input id="p2s1t" disabled class="scoreInput" type="number"/>
+                  <input id="p2s2t" disabled class="scoreInput" type="number"/>
+                  <input id="p2s3t" disabled class="scoreInput" type="number"/>
+                </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-success" data-dismiss="modal" onclick="saveTiebreakScores(128)">
+              Save
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
   </body>
 
   <script type="text/javascript" src="js/util.js"></script>
@@ -1201,22 +1244,22 @@
         document.getElementById(round1LeftMatchIds1[i]+"a").setAttribute("style", "position:absolute;left:10px;top:"+counter+"px;");
         document.getElementById(round1LeftMatchIds1[i]).setAttribute("style", "position:absolute;left:190px;padding:7px;top:"+editButtonCounter+"px;");
         document.getElementById(round1LeftMatchIds1[i]+"details").setAttribute("style", "position:absolute;left:0px;padding:7px;top:"+(editButtonCounter-15)+"px;width:12em;");
-        document.getElementById(round1LeftMatchIds1[i]+"score").setAttribute("style", "position:absolute;left:240px;padding:7px;top:"+(editButtonCounter+8)+"px;width:7em;");
+        document.getElementById(round1LeftMatchIds1[i]+"score").setAttribute("style", "position:absolute;left:240px;padding:7px;top:"+(editButtonCounter+8)+"px;width:13em;");
         
         document.getElementById(round1LeftMatchIds3[i]+"a").setAttribute("style", "position:absolute;left:10px;top:"+counter2+"px;");
         document.getElementById(round1LeftMatchIds3[i]).setAttribute("style", "position:absolute;left:190px;padding:7px;top:"+editButtonCounter2+"px;");
         document.getElementById(round1LeftMatchIds3[i]+"details").setAttribute("style", "position:absolute;left:0px;padding:7px;top:"+(editButtonCounter2-15)+"px;width:12em;");
-        document.getElementById(round1LeftMatchIds3[i]+"score").setAttribute("style", "position:absolute;left:240px;padding:7px;top:"+(editButtonCounter2+8)+"px;width:7em;");
+        document.getElementById(round1LeftMatchIds3[i]+"score").setAttribute("style", "position:absolute;left:240px;padding:7px;top:"+(editButtonCounter2+8)+"px;width:13em;");
 
         document.getElementById(round1RightMatchIds1[i]+"a").setAttribute("style", "position:absolute;left:2280px;top:"+counter+"px;");
         document.getElementById(round1RightMatchIds1[i]).setAttribute("style", "position:absolute;left:2280px;padding:7px;top:"+editButtonCounter+"px;");
         document.getElementById(round1RightMatchIds1[i]+"details").setAttribute("style", "position:absolute;left:2300px;padding:7px;top:"+(editButtonCounter-15)+"px;width:12em;");
-        document.getElementById(round1RightMatchIds1[i]+"score").setAttribute("style", "position:absolute;left:2070px;padding:7px;top:"+(editButtonCounter+8)+"px;width:7em;");
+        document.getElementById(round1RightMatchIds1[i]+"score").setAttribute("style", "position:absolute;left:2070px;padding:7px;top:"+(editButtonCounter+8)+"px;width:13em;");
 
         document.getElementById(round1RightMatchIds3[i]+"a").setAttribute("style", "position:absolute;left:2280px;top:"+counter2+"px;");
         document.getElementById(round1RightMatchIds3[i]).setAttribute("style", "position:absolute;left:2280px;padding:7px;top:"+editButtonCounter2+"px;");
         document.getElementById(round1RightMatchIds3[i]+"details").setAttribute("style", "position:absolute;left:2300px;padding:7px;top:"+(editButtonCounter2-15)+"px;width:12em;");
-        document.getElementById(round1RightMatchIds3[i]+"score").setAttribute("style", "position:absolute;left:2070px;padding:7px;top:"+(editButtonCounter2+8)+"px;width:7em;");
+        document.getElementById(round1RightMatchIds3[i]+"score").setAttribute("style", "position:absolute;left:2070px;padding:7px;top:"+(editButtonCounter2+8)+"px;width:13em;");
 
         editButtonCounter += editButtonInc;
         editButtonCounter2 += editButtonInc;
@@ -1243,12 +1286,12 @@
         document.getElementById(round1LeftMatchIds2[i]+"a").setAttribute("style", "position:absolute;left:10px;top:"+counter+"px;");
         document.getElementById(round1LeftMatchIds2[i]).setAttribute("style", "position:absolute;left:190px;padding:7px;top:"+editButtonCounter+"px;");
         document.getElementById(round1LeftMatchIds2[i]+"details").setAttribute("style", "position:absolute;left:0px;padding:7px;top:"+(editButtonCounter-15)+"px;width:12em;");
-        document.getElementById(round1LeftMatchIds2[i]+"score").setAttribute("style", "position:absolute;left:240px;padding:7px;top:"+(editButtonCounter+8)+"px;width:7em;");
+        document.getElementById(round1LeftMatchIds2[i]+"score").setAttribute("style", "position:absolute;left:240px;padding:7px;top:"+(editButtonCounter+8)+"px;width:13em;");
 
         document.getElementById(round1LeftMatchIds4[i]+"a").setAttribute("style", "position:absolute;left:10px;top:"+counter2+"px;");
         document.getElementById(round1LeftMatchIds4[i]).setAttribute("style", "position:absolute;left:190px;padding:7px;top:"+editButtonCounter2+"px;");
         document.getElementById(round1LeftMatchIds4[i]+"details").setAttribute("style", "position:absolute;left:0px;padding:7px;top:"+(editButtonCounter2-15)+"px;width:12em;");
-        document.getElementById(round1LeftMatchIds4[i]+"score").setAttribute("style", "position:absolute;left:240px;padding:7px;top:"+(editButtonCounter2+8)+"px;width:7em;");
+        document.getElementById(round1LeftMatchIds4[i]+"score").setAttribute("style", "position:absolute;left:240px;padding:7px;top:"+(editButtonCounter2+8)+"px;width:13em;");
 
         editButtonCounter += editButtonInc;
         editButtonCounter2 += editButtonInc;
@@ -1274,12 +1317,12 @@
         document.getElementById(round1RightMatchIds2[i]+"a").setAttribute("style", "position:absolute;left:2280px;top:"+counter+"px;");
         document.getElementById(round1RightMatchIds2[i]).setAttribute("style", "position:absolute;left:2280px;padding:7px;top:"+editButtonCounter+"px;");
         document.getElementById(round1RightMatchIds2[i]+"details").setAttribute("style", "position:absolute;left:2300px;padding:7px;top:"+(editButtonCounter-15)+"px;width:12em;");
-        document.getElementById(round1RightMatchIds2[i]+"score").setAttribute("style", "position:absolute;left:2070px;padding:7px;top:"+(editButtonCounter+8)+"px;width:7em;");
+        document.getElementById(round1RightMatchIds2[i]+"score").setAttribute("style", "position:absolute;left:2070px;padding:7px;top:"+(editButtonCounter+8)+"px;width:13em;");
 
         document.getElementById(round1RightMatchIds4[i]+"a").setAttribute("style", "position:absolute;left:2280px;top:"+counter2+"px;");
         document.getElementById(round1RightMatchIds4[i]).setAttribute("style", "position:absolute;left:2280px;padding:7px;top:"+editButtonCounter2+"px;");
         document.getElementById(round1RightMatchIds4[i]+"details").setAttribute("style", "position:absolute;left:2300px;padding:7px;top:"+(editButtonCounter2-15)+"px;width:12em;");
-        document.getElementById(round1RightMatchIds4[i]+"score").setAttribute("style", "position:absolute;left:2070px;padding:7px;top:"+(editButtonCounter2+8)+"px;width:7em;");
+        document.getElementById(round1RightMatchIds4[i]+"score").setAttribute("style", "position:absolute;left:2070px;padding:7px;top:"+(editButtonCounter2+8)+"px;width:13em;");
 
         editButtonCounter += editButtonInc;
         editButtonCounter2 += editButtonInc;
@@ -1333,42 +1376,42 @@
         document.getElementById(round2LeftMatchIds1[i]+"a").setAttribute("style", "position:absolute;left:248px;top:"+topCounter+"px;width:11em;");
         document.getElementById(round2LeftMatchIds1[i]).setAttribute("style", "position:absolute;left:400px;padding:7px;top:"+editTopCounter+"px;");
         document.getElementById(round2LeftMatchIds1[i]+"details").setAttribute("style", "position:absolute;left:205px;padding:7px;top:"+(editTopCounter-15)+"px;width:12em;");
-        document.getElementById(round2LeftMatchIds1[i]+"score").setAttribute("style", "position:absolute;left:440px;padding:7px;top:"+(editTopCounter+8)+"px;width:7em;");
+        document.getElementById(round2LeftMatchIds1[i]+"score").setAttribute("style", "position:absolute;left:440px;padding:7px;top:"+(editTopCounter+8)+"px;width:13em;");
         
         document.getElementById(round2LeftMatchIds2[i]+"a").setAttribute("style", "position:absolute;left:248px;top:"+botCounter+"px;width:11em;");
         document.getElementById(round2LeftMatchIds2[i]).setAttribute("style", "position:absolute;left:400px;padding:7px;top:"+editBotCounter+"px;");
         document.getElementById(round2LeftMatchIds2[i]+"details").setAttribute("style", "position:absolute;left:205px;padding:7px;top:"+(editBotCounter-15)+"px;width:12em;");
-        document.getElementById(round2LeftMatchIds2[i]+"score").setAttribute("style", "position:absolute;left:440px;padding:7px;top:"+(editBotCounter+8)+"px;width:7em;");
+        document.getElementById(round2LeftMatchIds2[i]+"score").setAttribute("style", "position:absolute;left:440px;padding:7px;top:"+(editBotCounter+8)+"px;width:13em;");
 
         document.getElementById(round2LeftMatchIds3[i]+"a").setAttribute("style", "position:absolute;left:248px;top:"+topCounter2+"px;width:11em;");
         document.getElementById(round2LeftMatchIds3[i]).setAttribute("style", "position:absolute;left:400px;padding:7px;top:"+editTopCounter2+"px;");
         document.getElementById(round2LeftMatchIds3[i]+"details").setAttribute("style", "position:absolute;left:205px;padding:7px;top:"+(editTopCounter2-15)+"px;width:12em;");
-        document.getElementById(round2LeftMatchIds3[i]+"score").setAttribute("style", "position:absolute;left:440px;padding:7px;top:"+(editTopCounter2+8)+"px;width:7em;");
+        document.getElementById(round2LeftMatchIds3[i]+"score").setAttribute("style", "position:absolute;left:440px;padding:7px;top:"+(editTopCounter2+8)+"px;width:13em;");
         
         document.getElementById(round2LeftMatchIds4[i]+"a").setAttribute("style", "position:absolute;left:248px;top:"+botCounter2+"px;width:11em;");
         document.getElementById(round2LeftMatchIds4[i]).setAttribute("style", "position:absolute;left:400px;padding:7px;top:"+editBotCounter2+"px;");
         document.getElementById(round2LeftMatchIds4[i]+"details").setAttribute("style", "position:absolute;left:205px;padding:7px;top:"+(editBotCounter2-15)+"px;width:12em;");
-        document.getElementById(round2LeftMatchIds4[i]+"score").setAttribute("style", "position:absolute;left:440px;padding:7px;top:"+(editBotCounter2+8)+"px;width:7em;");
+        document.getElementById(round2LeftMatchIds4[i]+"score").setAttribute("style", "position:absolute;left:440px;padding:7px;top:"+(editBotCounter2+8)+"px;width:13em;");
         
         document.getElementById(round2RightMatchIds1[i]+"a").setAttribute("style", "position:absolute;left:2077px;top:"+topCounter+"px;width:11em;");
         document.getElementById(round2RightMatchIds1[i]).setAttribute("style", "position:absolute;left:2080px;padding:7px;top:"+editTopCounter+"px;");
         document.getElementById(round2RightMatchIds1[i]+"details").setAttribute("style", "position:absolute;left:2100px;padding:7px;top:"+(editTopCounter-15)+"px;width:12em;");
-        document.getElementById(round2RightMatchIds1[i]+"score").setAttribute("style", "position:absolute;left:1875px;padding:7px;top:"+(editTopCounter+8)+"px;width:7em;");
+        document.getElementById(round2RightMatchIds1[i]+"score").setAttribute("style", "position:absolute;left:1875px;padding:7px;top:"+(editTopCounter+8)+"px;width:13em;");
 
         document.getElementById(round2RightMatchIds2[i]+"a").setAttribute("style", "position:absolute;left:2077px;top:"+botCounter+"px;width:11em;");
         document.getElementById(round2RightMatchIds2[i]).setAttribute("style", "position:absolute;left:2080px;padding:7px;top:"+editBotCounter+"px;");
         document.getElementById(round2RightMatchIds2[i]+"details").setAttribute("style", "position:absolute;left:2100px ;padding:7px;top:"+(editBotCounter-15)+"px;width:12em;");
-        document.getElementById(round2RightMatchIds2[i]+"score").setAttribute("style", "position:absolute;left:1875px;padding:7px;top:"+(editBotCounter+8)+"px;width:7em;");
+        document.getElementById(round2RightMatchIds2[i]+"score").setAttribute("style", "position:absolute;left:1875px;padding:7px;top:"+(editBotCounter+8)+"px;width:13em;");
 
         document.getElementById(round2RightMatchIds3[i]+"a").setAttribute("style", "position:absolute;left:2077px;top:"+topCounter2+"px;width:11em;");
         document.getElementById(round2RightMatchIds3[i]).setAttribute("style", "position:absolute;left:2080px;padding:7px;top:"+editTopCounter2+"px;");
         document.getElementById(round2RightMatchIds3[i]+"details").setAttribute("style", "position:absolute;left:2100px;padding:7px;top:"+(editTopCounter2-15)+"px;width:12em;");
-        document.getElementById(round2RightMatchIds3[i]+"score").setAttribute("style", "position:absolute;left:1875px;padding:7px;top:"+(editTopCounter2+8)+"px;width:7em;");
+        document.getElementById(round2RightMatchIds3[i]+"score").setAttribute("style", "position:absolute;left:1875px;padding:7px;top:"+(editTopCounter2+8)+"px;width:13em;");
 
         document.getElementById(round2RightMatchIds4[i]+"a").setAttribute("style", "position:absolute;left:2077px;top:"+botCounter2+"px;width:11em;");
         document.getElementById(round2RightMatchIds4[i]).setAttribute("style", "position:absolute;left:2080px;padding:7px;top:"+editBotCounter2+"px;");
         document.getElementById(round2RightMatchIds4[i]+"details").setAttribute("style", "position:absolute;left:2100px ;padding:7px;top:"+(editBotCounter2-15)+"px;width:12em;");
-        document.getElementById(round2RightMatchIds4[i]+"score").setAttribute("style", "position:absolute;left:1875px;padding:7px;top:"+(editBotCounter2+8)+"px;width:7em;");
+        document.getElementById(round2RightMatchIds4[i]+"score").setAttribute("style", "position:absolute;left:1875px;padding:7px;top:"+(editBotCounter2+8)+"px;width:13em;");
 
         editTopCounter += editInc;
         editBotCounter += editInc;
@@ -1435,42 +1478,42 @@
         document.getElementById(round3LeftMatchIds1[i]+"a").setAttribute("style", "position:absolute;left:448px;top:"+topCounter+"px;width:11em;");
         document.getElementById(round3LeftMatchIds1[i]).setAttribute("style", "position:absolute;left:600px;padding:7px;top:"+editTopCounter+"px;");
         document.getElementById(round3LeftMatchIds1[i]+"details").setAttribute("style", "position:absolute;left:405px;padding:7px;top:"+(editTopCounter-15)+"px;width:12em;");
-        document.getElementById(round3LeftMatchIds1[i]+"score").setAttribute("style", "position:absolute;left:640px;padding:7px;top:"+(editTopCounter+8)+"px;width:7em;");
+        document.getElementById(round3LeftMatchIds1[i]+"score").setAttribute("style", "position:absolute;left:640px;padding:7px;top:"+(editTopCounter+8)+"px;width:13em;");
         
         document.getElementById(round3LeftMatchIds2[i]+"a").setAttribute("style", "position:absolute;left:448px;top:"+botCounter+"px;width:11em;");
         document.getElementById(round3LeftMatchIds2[i]).setAttribute("style", "position:absolute;left:600px;padding:7px;top:"+editBotCounter+"px;");
         document.getElementById(round3LeftMatchIds2[i]+"details").setAttribute("style", "position:absolute;left:405px;padding:7px;top:"+(editBotCounter-15)+"px;width:12em;");
-        document.getElementById(round3LeftMatchIds2[i]+"score").setAttribute("style", "position:absolute;left:640px;padding:7px;top:"+(editBotCounter+8)+"px;width:7em;");
+        document.getElementById(round3LeftMatchIds2[i]+"score").setAttribute("style", "position:absolute;left:640px;padding:7px;top:"+(editBotCounter+8)+"px;width:13em;");
 
         document.getElementById(round3LeftMatchIds3[i]+"a").setAttribute("style", "position:absolute;left:448px;top:"+topCounter2+"px;width:11em;");
         document.getElementById(round3LeftMatchIds3[i]).setAttribute("style", "position:absolute;left:600px;padding:7px;top:"+editTopCounter2+"px;");
         document.getElementById(round3LeftMatchIds3[i]+"details").setAttribute("style", "position:absolute;left:405px;padding:7px;top:"+(editTopCounter2-15)+"px;width:12em;");
-        document.getElementById(round3LeftMatchIds3[i]+"score").setAttribute("style", "position:absolute;left:640px;padding:7px;top:"+(editTopCounter2+8)+"px;width:7em;");
+        document.getElementById(round3LeftMatchIds3[i]+"score").setAttribute("style", "position:absolute;left:640px;padding:7px;top:"+(editTopCounter2+8)+"px;width:13em;");
         
         document.getElementById(round3LeftMatchIds4[i]+"a").setAttribute("style", "position:absolute;left:448px;top:"+botCounter2+"px;width:11em;");
         document.getElementById(round3LeftMatchIds4[i]).setAttribute("style", "position:absolute;left:600px;padding:7px;top:"+editBotCounter2+"px;");
         document.getElementById(round3LeftMatchIds4[i]+"details").setAttribute("style", "position:absolute;left:405px;padding:7px;top:"+(editBotCounter2-15)+"px;width:12em;");
-        document.getElementById(round3LeftMatchIds4[i]+"score").setAttribute("style", "position:absolute;left:640px;padding:7px;top:"+(editBotCounter2+8)+"px;width:7em;");
+        document.getElementById(round3LeftMatchIds4[i]+"score").setAttribute("style", "position:absolute;left:640px;padding:7px;top:"+(editBotCounter2+8)+"px;width:13em;");
         
         document.getElementById(round3RightMatchIds1[i]+"a").setAttribute("style", "position:absolute;left:1883px;top:"+topCounter+"px;width:11em;");
         document.getElementById(round3RightMatchIds1[i]).setAttribute("style", "position:absolute;left:1883px;padding:7px;top:"+editTopCounter+"px;");
         document.getElementById(round3RightMatchIds1[i]+"details").setAttribute("style", "position:absolute;left:1903px;padding:7px;top:"+(editTopCounter-15)+"px;width:12em;");
-        document.getElementById(round3RightMatchIds1[i]+"score").setAttribute("style", "position:absolute;left:1700px;padding:7px;top:"+(editTopCounter+8)+"px;width:7em;");
+        document.getElementById(round3RightMatchIds1[i]+"score").setAttribute("style", "position:absolute;left:1700px;padding:7px;top:"+(editTopCounter+8)+"px;width:13em;");
 
         document.getElementById(round3RightMatchIds2[i]+"a").setAttribute("style", "position:absolute;left:1883px;top:"+botCounter+"px;width:11em;");
         document.getElementById(round3RightMatchIds2[i]).setAttribute("style", "position:absolute;left:1883px;padding:7px;top:"+editBotCounter+"px;");
         document.getElementById(round3RightMatchIds2[i]+"details").setAttribute("style", "position:absolute;left:1903px ;padding:7px;top:"+(editBotCounter-15)+"px;width:12em;");
-        document.getElementById(round3RightMatchIds2[i]+"score").setAttribute("style", "position:absolute;left:1700px;padding:7px;top:"+(editBotCounter+8)+"px;width:7em;");
+        document.getElementById(round3RightMatchIds2[i]+"score").setAttribute("style", "position:absolute;left:1700px;padding:7px;top:"+(editBotCounter+8)+"px;width:13em;");
 
         document.getElementById(round3RightMatchIds3[i]+"a").setAttribute("style", "position:absolute;left:1883px;top:"+topCounter2+"px;width:11em;");
         document.getElementById(round3RightMatchIds3[i]).setAttribute("style", "position:absolute;left:1883px;padding:7px;top:"+editTopCounter2+"px;");
         document.getElementById(round3RightMatchIds3[i]+"details").setAttribute("style", "position:absolute;left:1903px ;padding:7px;top:"+(editTopCounter2-15)+"px;width:12em;");
-        document.getElementById(round3RightMatchIds3[i]+"score").setAttribute("style", "position:absolute;left:1700px;padding:7px;top:"+(editTopCounter2+8)+"px;width:7em;");
+        document.getElementById(round3RightMatchIds3[i]+"score").setAttribute("style", "position:absolute;left:1700px;padding:7px;top:"+(editTopCounter2+8)+"px;width:13em;");
 
         document.getElementById(round3RightMatchIds4[i]+"a").setAttribute("style", "position:absolute;left:1883px;top:"+botCounter2+"px;width:11em;");
         document.getElementById(round3RightMatchIds4[i]).setAttribute("style", "position:absolute;left:1883px;padding:7px;top:"+editBotCounter2+"px;");
         document.getElementById(round3RightMatchIds4[i]+"details").setAttribute("style", "position:absolute;left:1903px ;padding:7px;top:"+(editBotCounter2-15)+"px;width:12em;");
-        document.getElementById(round3RightMatchIds4[i]+"score").setAttribute("style", "position:absolute;left:1700px;padding:7px;top:"+(editBotCounter2+8)+"px;width:7em;");
+        document.getElementById(round3RightMatchIds4[i]+"score").setAttribute("style", "position:absolute;left:1700px;padding:7px;top:"+(editBotCounter2+8)+"px;width:13em;");
 
         editTopCounter += editInc;
         editBotCounter += editInc;
@@ -1537,42 +1580,42 @@
         document.getElementById(round4LeftMatchIds1[i]+"a").setAttribute("style", "position:absolute;left:648px;top:"+topCounter+"px;width:11em;");
         document.getElementById(round4LeftMatchIds1[i]).setAttribute("style", "position:absolute;left:780px;padding:7px;top:"+editTopCounter+"px;");
         document.getElementById(round4LeftMatchIds1[i]+"details").setAttribute("style", "position:absolute;left:585px;padding:7px;top:"+(editTopCounter-15)+"px;width:12em;");
-        document.getElementById(round4LeftMatchIds1[i]+"score").setAttribute("style", "position:absolute;left:815px;padding:7px;top:"+(editTopCounter+8)+"px;width:7em;");
+        document.getElementById(round4LeftMatchIds1[i]+"score").setAttribute("style", "position:absolute;left:815px;padding:7px;top:"+(editTopCounter+8)+"px;width:13em;");
         
         document.getElementById(round4LeftMatchIds2[i]+"a").setAttribute("style", "position:absolute;left:648px;top:"+botCounter+"px;width:11em;");
         document.getElementById(round4LeftMatchIds2[i]).setAttribute("style", "position:absolute;left:780px;padding:7px;top:"+editBotCounter+"px;");
         document.getElementById(round4LeftMatchIds2[i]+"details").setAttribute("style", "position:absolute;left:585px;padding:7px;top:"+(editBotCounter-15)+"px;width:12em;");
-        document.getElementById(round4LeftMatchIds2[i]+"score").setAttribute("style", "position:absolute;left:815px;padding:7px;top:"+(editBotCounter+8)+"px;width:7em;");
+        document.getElementById(round4LeftMatchIds2[i]+"score").setAttribute("style", "position:absolute;left:815px;padding:7px;top:"+(editBotCounter+8)+"px;width:13em;");
 
         document.getElementById(round4LeftMatchIds3[i]+"a").setAttribute("style", "position:absolute;left:648px;top:"+topCounter2+"px;width:11em;");
         document.getElementById(round4LeftMatchIds3[i]).setAttribute("style", "position:absolute;left:780px;padding:7px;top:"+editTopCounter2+"px;");
         document.getElementById(round4LeftMatchIds3[i]+"details").setAttribute("style", "position:absolute;left:585px;padding:7px;top:"+(editTopCounter2-15)+"px;width:12em;");
-        document.getElementById(round4LeftMatchIds3[i]+"score").setAttribute("style", "position:absolute;left:815px;padding:7px;top:"+(editTopCounter2+8)+"px;width:7em;");
+        document.getElementById(round4LeftMatchIds3[i]+"score").setAttribute("style", "position:absolute;left:815px;padding:7px;top:"+(editTopCounter2+8)+"px;width:13em;");
         
         document.getElementById(round4LeftMatchIds4[i]+"a").setAttribute("style", "position:absolute;left:648px;top:"+botCounter2+"px;width:11em;");
         document.getElementById(round4LeftMatchIds4[i]).setAttribute("style", "position:absolute;left:780px;padding:7px;top:"+editBotCounter2+"px;");
         document.getElementById(round4LeftMatchIds4[i]+"details").setAttribute("style", "position:absolute;left:585px;padding:7px;top:"+(editBotCounter2-15)+"px;width:12em;");
-        document.getElementById(round4LeftMatchIds4[i]+"score").setAttribute("style", "position:absolute;left:815px;padding:7px;top:"+(editBotCounter2+8)+"px;width:7em;");
+        document.getElementById(round4LeftMatchIds4[i]+"score").setAttribute("style", "position:absolute;left:815px;padding:7px;top:"+(editBotCounter2+8)+"px;width:13em;");
         
         document.getElementById(round4RightMatchIds1[i]+"a").setAttribute("style", "position:absolute;left:1708px;top:"+topCounter+"px;width:11em;");
         document.getElementById(round4RightMatchIds1[i]).setAttribute("style", "position:absolute;left:1703px;padding:7px;top:"+editTopCounter+"px;");
         document.getElementById(round4RightMatchIds1[i]+"details").setAttribute("style", "position:absolute;left:1723px;padding:7px;top:"+(editTopCounter-15)+"px;width:12em;");
-        document.getElementById(round4RightMatchIds1[i]+"score").setAttribute("style", "position:absolute;left:1526px;padding:7px;top:"+(editTopCounter+8)+"px;width:7em;");
+        document.getElementById(round4RightMatchIds1[i]+"score").setAttribute("style", "position:absolute;left:1526px;padding:7px;top:"+(editTopCounter+8)+"px;width:13em;");
 
         document.getElementById(round4RightMatchIds2[i]+"a").setAttribute("style", "position:absolute;left:1708px;top:"+botCounter+"px;width:11em;");
         document.getElementById(round4RightMatchIds2[i]).setAttribute("style", "position:absolute;left:1703px;padding:7px;top:"+editBotCounter+"px;");
         document.getElementById(round4RightMatchIds2[i]+"details").setAttribute("style", "position:absolute;left:1723px ;padding:7px;top:"+(editBotCounter-15)+"px;width:12em;");
-        document.getElementById(round4RightMatchIds2[i]+"score").setAttribute("style", "position:absolute;left:1526px;padding:7px;top:"+(editBotCounter+8)+"px;width:7em;");
+        document.getElementById(round4RightMatchIds2[i]+"score").setAttribute("style", "position:absolute;left:1526px;padding:7px;top:"+(editBotCounter+8)+"px;width:13em;");
 
         document.getElementById(round4RightMatchIds3[i]+"a").setAttribute("style", "position:absolute;left:1708px;top:"+topCounter2+"px;width:11em;");
         document.getElementById(round4RightMatchIds3[i]).setAttribute("style", "position:absolute;left:1703px;padding:7px;top:"+editTopCounter2+"px;");
         document.getElementById(round4RightMatchIds3[i]+"details").setAttribute("style", "position:absolute;left:1723px;padding:7px;top:"+(editTopCounter2-15)+"px;width:12em;");
-        document.getElementById(round4RightMatchIds3[i]+"score").setAttribute("style", "position:absolute;left:1526px;padding:7px;top:"+(editTopCounter2+8)+"px;width:7em;");
+        document.getElementById(round4RightMatchIds3[i]+"score").setAttribute("style", "position:absolute;left:1526px;padding:7px;top:"+(editTopCounter2+8)+"px;width:13em;");
 
         document.getElementById(round4RightMatchIds4[i]+"a").setAttribute("style", "position:absolute;left:1708px;top:"+botCounter2+"px;width:11em;");
         document.getElementById(round4RightMatchIds4[i]).setAttribute("style", "position:absolute;left:1703px;padding:7px;top:"+editBotCounter2+"px;");
         document.getElementById(round4RightMatchIds4[i]+"details").setAttribute("style", "position:absolute;left:1723px ;padding:7px;top:"+(editBotCounter2-15)+"px;width:12em;");
-        document.getElementById(round4RightMatchIds4[i]+"score").setAttribute("style", "position:absolute;left:1526px;padding:7px;top:"+(editBotCounter2+8)+"px;width:7em;");
+        document.getElementById(round4RightMatchIds4[i]+"score").setAttribute("style", "position:absolute;left:1526px;padding:7px;top:"+(editBotCounter2+8)+"px;width:13em;");
 
         editTopCounter += editInc;
         editBotCounter += editInc;
@@ -1607,43 +1650,43 @@
       document.getElementById("m120b").setAttribute("style", "position:absolute;left:823px;top:"+1933+"px;width:11em;");
       document.getElementById("m120").setAttribute("style", "position:absolute;left:945px;padding:7px;top:"+1280+"px;");
       document.getElementById("m120details").setAttribute("style", "position:absolute;left:750px;padding:7px;top:"+1265+"px;width:12em;");
-      document.getElementById("m120score").setAttribute("style", "position:absolute;left:985px;padding:7px;top:"+1288+"px;width:7em;");
+      document.getElementById("m120score").setAttribute("style", "position:absolute;left:985px;padding:7px;top:"+1288+"px;width:13em;");
 
       document.getElementById("m121a").setAttribute("style", "position:absolute;left:823px;top:"+3183+"px;width:11em;");
       document.getElementById("m121b").setAttribute("style", "position:absolute;left:823px;top:"+4483+"px;width:11em;");
       document.getElementById("m121").setAttribute("style", "position:absolute;left:945px;padding:7px;top:"+3830+"px;");
       document.getElementById("m121details").setAttribute("style", "position:absolute;left:750px;padding:7px;top:"+3815+"px;width:12em;");
-      document.getElementById("m121score").setAttribute("style", "position:absolute;left:985px;padding:7px;top:"+3838+"px;width:7em;");
+      document.getElementById("m121score").setAttribute("style", "position:absolute;left:985px;padding:7px;top:"+3838+"px;width:13em;");
 
       document.getElementById("m122a").setAttribute("style", "position:absolute;left:1534px;top:"+633+"px;width:11em;");
       document.getElementById("m122b").setAttribute("style", "position:absolute;left:1534px;top:"+1933+"px;width:11em;");
       document.getElementById("m122").setAttribute("style", "position:absolute;left:1534px;padding:7px;top:"+1280+"px;");
       document.getElementById("m122details").setAttribute("style", "position:absolute;left:1554px;padding:7px;top:"+1265+"px;width:12em;");
-      document.getElementById("m122score").setAttribute("style", "position:absolute;left:1364px;padding:7px;top:"+1288+"px;width:7em;");
+      document.getElementById("m122score").setAttribute("style", "position:absolute;left:1364px;padding:7px;top:"+1288+"px;width:13em;");
 
       document.getElementById("m123a").setAttribute("style", "position:absolute;left:1534px;top:"+3183+"px;width:11em;");
       document.getElementById("m123b").setAttribute("style", "position:absolute;left:1534px;top:"+4483+"px;width:11em;");
       document.getElementById("m123").setAttribute("style", "position:absolute;left:1534px;padding:7px;top:"+3830+"px;");
       document.getElementById("m123details").setAttribute("style", "position:absolute;left:1554px;padding:7px;top:"+3815+"px;width:12em;");
-      document.getElementById("m123score").setAttribute("style", "position:absolute;left:1364px;padding:7px;top:"+3838+"px;width:7em;");
+      document.getElementById("m123score").setAttribute("style", "position:absolute;left:1364px;padding:7px;top:"+3838+"px;width:13em;");
 
       document.getElementById("m124a").setAttribute("style", "position:absolute;left:993px;top:"+1262+"px;width:11em;");
       document.getElementById("m124b").setAttribute("style", "position:absolute;left:1373px;top:"+1262+"px;width:11em;");
       document.getElementById("m124").setAttribute("style", "position:absolute;left:1240px;padding:7px;top:"+1280+"px;");
       document.getElementById("m124details").setAttribute("style", "position:absolute;left:1155px;padding:7px;top:"+1242+"px;width:12em;");
-      document.getElementById("m124score").setAttribute("style", "position:absolute;left:1200px;padding:7px;top:"+1292+"px;width:7em;");
+      document.getElementById("m124score").setAttribute("style", "position:absolute;left:1200px;padding:7px;top:"+1292+"px;width:13em;");
 
       document.getElementById("m125a").setAttribute("style", "position:absolute;left:993px;top:"+3812+"px;width:11em;");
       document.getElementById("m125b").setAttribute("style", "position:absolute;left:1373px;top:"+3812+"px;width:11em;");
       document.getElementById("m125").setAttribute("style", "position:absolute;left:1240px;padding:7px;top:"+3830+"px;");
       document.getElementById("m125details").setAttribute("style", "position:absolute;left:1155px;padding:7px;top:"+3792+"px;width:12em;");
-      document.getElementById("m125score").setAttribute("style", "position:absolute;left:1200px;padding:7px;top:"+3842+"px;width:7em;");
+      document.getElementById("m125score").setAttribute("style", "position:absolute;left:1200px;padding:7px;top:"+3842+"px;width:13em;");
 
       document.getElementById("m126a").setAttribute("style", "position:absolute;left:1160px;top:"+2315+"px;width:11em;");
       document.getElementById("m126b").setAttribute("style", "position:absolute;left:1160px;top:"+2800+"px;width:11em;");
       document.getElementById("m126").setAttribute("style", "position:absolute;left:1240px;padding:7px;top:"+2570+"px;");
       document.getElementById("m126details").setAttribute("style", "position:absolute;left:1150px;padding:7px;top:"+2585+"px;width:12em;");
-      document.getElementById("m126score").setAttribute("style", "position:absolute;left:1190px;padding:7px;top:"+2530+"px;width:7em;");
+      document.getElementById("m126score").setAttribute("style", "position:absolute;left:1190px;padding:7px;top:"+2530+"px;width:13em;");
 
       document.getElementById("winner").setAttribute("style", "position:absolute;left:1195px;padding:7px;top:"+2500+"px;width:7em;");
     
@@ -1689,15 +1732,16 @@
       tournamentRef.once("value").then(tss => {
         var ss = tss.child("divisions").child(divName);
         var playersList = ss.child("players").val();
-
-        matchIds.forEach(id => {
-          playersList.forEach(player => {
-            var optionElement = document.createElement("option");
-            optionElement.textContent = formatPlayerNameDraw(player);
-            optionElement.setAttribute("value", player);
-            document.getElementById(id).appendChild(optionElement);
+        if (playersList != null) {
+          matchIds.forEach(id => {
+            playersList.forEach(player => {
+              var optionElement = document.createElement("option");
+              optionElement.textContent = formatPlayerNameDraw(player);
+              optionElement.setAttribute("value", player);
+              document.getElementById(id).appendChild(optionElement);
+            })
           })
-        })
+        }
         fullMatchIds.forEach(id => {
           document.getElementById(id+"a").value = ss.child("draw").child(id).child(id+"a").val();
           document.getElementById(id+"b").value = ss.child("draw").child(id).child(id+"b").val();
@@ -1720,20 +1764,14 @@
             detailString += location.substring(location.indexOf(" - ") + 3);
           }
           document.getElementById(id+"details").textContent = detailString;
-          var score = ss.child("draw").child(id).child("score").val();
+          var flip = false;
           if (ss.child("draw").child(id).child("winner").val() == ss.child("draw").child(id).child(id+"b").val()) {
-            score = flipScore(score);
+            flip = true;
           }
 
-          var scoreString = "";
-          if (score != null) {
-            score.split(" ").forEach(set => {
-              if (set.length == 3) {
-                scoreString += set + " ";
-              }
-            });
-          }
-          document.getElementById(id+"score").textContent = scoreString;
+          var score = formatScoreLoadDraw(ss.child("draw").child(id).child("score").val(), ss.child("draw").child(id).child("tiebreakScores").val(), flip);
+
+          document.getElementById(id+"score").textContent = score;
         })
         fullMatchIds2.forEach(id => {
           document.getElementById(id+"a").textContent = formatPlayerNameDrawShorten(ss.child("draw").child(id).child(id+"a").val());
@@ -1759,19 +1797,14 @@
           }
           document.getElementById(id+"details").textContent = detailString;
 
-          var score = ss.child("draw").child(id).child("score").val();
+          var flip = false;
           if (ss.child("draw").child(id).child("winner").val() == ss.child("draw").child(id).child(id+"b").val()) {
-            score = flipScore(score);
+            flip = true;
           }
-          var scoreString = "";
-          if (score != null) {
-            score.split(" ").forEach(set => {
-              if (set.length == 3) {
-                scoreString += set + " ";
-              }
-            });
-          }
-          document.getElementById(id+"score").textContent = scoreString;
+
+          var score = formatScoreLoadDraw(ss.child("draw").child(id).child("score").val(), ss.child("draw").child(id).child("tiebreakScores").val(), flip);
+
+          document.getElementById(id+"score").textContent = score;
         })
         if (ss.child("draw").child("winne").val() != null) {
           document.getElementById("winner").textContent = formatPlayerNameDrawShorten(ss.child("draw").child("winne").val().winner);

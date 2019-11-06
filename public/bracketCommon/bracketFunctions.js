@@ -73,10 +73,12 @@ async function saveMatch(drawSize) {
     + document.getElementById("p1s3").value + "-" + document.getElementById("p2s3").value;
 
   var dayOfWeek = false;
+  var tiebreakScores = "";
   await tournamentRef.once("value").then(tss => {
     if (tss.val().drawDateFormat == "Day of week") {
       dayOfWeek = true;
     }
+    tiebreakScores = tss.child("divisions").child(divName).child("draw").child(matchId).val().tiebreakScores;
   })
 
   divRef.child("draw").child(matchId).update({
@@ -120,6 +122,196 @@ async function saveMatch(drawSize) {
   document.getElementById(matchId+"details").textContent = detailString;
 
   var winnerMatchPlayerId = matchProgressionList[parseInt(matchId.substring(1))];
+  var nextMatchId = winnerMatchPlayerId.substring(0, winnerMatchPlayerId.length - 1);
+  
+  divRef.child("draw").child(nextMatchId).child(winnerMatchPlayerId).set(winner).then(tmp => {
+    document.getElementById("savingProgress").textContent = "Saved!"
+  });
+
+  if (tiebreakScores == null || tiebreakScores.trim() == "") {
+    tiebreakScores = "(-),(-),(-)";
+  }
+
+  tiebreakScores = tiebreakScores.replace(/\(/g, "");
+  tiebreakScores = tiebreakScores.replace(/\)/g, "");
+  var tiebreakScoresSplit = tiebreakScores.split(",");
+
+  var tiebreak = false;
+  if (document.getElementById("p1s1").value - document.getElementById("p2s1").value == 1 || 
+        document.getElementById("p1s1").value - document.getElementById("p2s1").value == -1) {
+    document.getElementById("p1s1t").disabled = false;
+    document.getElementById("p2s1t").disabled = false;
+    tiebreak = true;
+    if (tiebreakScoresSplit[0].split("-").length == 2) {
+      document.getElementById("p1s1t").value = tiebreakScoresSplit[0].split("-")[0];
+      document.getElementById("p2s1t").value = tiebreakScoresSplit[0].split("-")[1];
+    }
+  } else {
+    document.getElementById("p1s1t").disabled = true;
+    document.getElementById("p2s1t").disabled = true;
+    document.getElementById("p1s1t").value = "";
+    document.getElementById("p2s1t").value = "";
+  }
+
+  if (document.getElementById("p1s2").value - document.getElementById("p2s2").value == 1 || 
+        document.getElementById("p1s2").value - document.getElementById("p2s2").value == -1) {
+    document.getElementById("p1s2t").disabled = false;
+    document.getElementById("p2s2t").disabled = false;
+    tiebreak = true;
+    if (tiebreakScoresSplit[1].split("-").length == 2) {
+      document.getElementById("p1s2t").value = tiebreakScoresSplit[1].split("-")[0];
+      document.getElementById("p2s2t").value = tiebreakScoresSplit[1].split("-")[1];
+    }
+  } else {
+    document.getElementById("p1s2t").disabled = true;
+    document.getElementById("p2s2t").disabled = true;
+    document.getElementById("p1s2t").value = "";
+    document.getElementById("p2s2t").value = "";
+  }
+
+  if (document.getElementById("p1s3").value - document.getElementById("p2s3").value == 1 || 
+        document.getElementById("p1s3").value - document.getElementById("p2s3").value == -1) {
+    document.getElementById("p1s3t").disabled = false;
+    document.getElementById("p2s3t").disabled = false;
+    tiebreak = true;
+    if (tiebreakScoresSplit[2].split("-").length == 2) {
+      document.getElementById("p1s3t").value = tiebreakScoresSplit[2].split("-")[0];
+      document.getElementById("p2s3t").value = tiebreakScoresSplit[2].split("-")[1];
+    }
+  } else {
+    document.getElementById("p1s3t").disabled = true;
+    document.getElementById("p2s3t").disabled = true;
+    document.getElementById("p1s3t").value = "";
+    document.getElementById("p2s3t").value = "";
+  }
+
+  if (tiebreak) {
+    $("#tiebreakModal").modal("toggle");
+  } else {
+    await divRef.child("draw").child(matchId).update({
+      "tiebreakScores": "(-),(-),(-)"
+    });
+  }
+}
+
+async function saveTiebreakScores(drawSize) {
+  var url = window.location.href.substring(
+    window.location.href.indexOf("?")
+  );
+  var params = new URLSearchParams(url);
+  var tournamentId = params.get("tournamentId");
+  var divName = params.get("div");
+  document.getElementById("drawName").textContent = divName;
+
+  var rootRef = firebase.database().ref();
+  var tournamentsRef = rootRef.child("tournaments");
+  var tournamentRef = tournamentsRef.child(tournamentId);
+  var divRef = tournamentsRef.child(tournamentId).child("divisions").child(divName);
+
+  var matchId = "m" + document.getElementById("tiebreakModalLabel").textContent.split(" ")[1];
+  var winner = "";
+
+
+  var displayScore = "";
+  if (document.getElementById("p1").checked) {
+    winner = document.getElementById("p1").value;
+
+    var tiebreakScoresDisplay = "(" + document.getElementById("p1s1t").value + "-" + document.getElementById("p2s1t").value + "),"
+    + "(" + document.getElementById("p1s2t").value + "-" + document.getElementById("p2s2t").value + "),"
+    + "(" + document.getElementById("p1s3t").value + "-" + document.getElementById("p2s3t").value + ")"
+
+    var tiebreakDisplay = new Array(3);
+    var tiebreakScoresSplit = tiebreakScoresDisplay.split(",");
+    for (var i = 0; i < tiebreakScoresSplit.length; i++) {
+      if (tiebreakScoresSplit[i].length != 3) {
+        tiebreakDisplay[i] = tiebreakScoresSplit[i];
+      } else {
+        tiebreakDisplay[i] = "";
+      }
+    }
+    displayScore = document.getElementById("p1s1").value + "-" + document.getElementById("p2s1").value + tiebreakDisplay[0] + " " 
+    + document.getElementById("p1s2").value + "-" + document.getElementById("p2s2").value + tiebreakDisplay[1] + " "
+    + document.getElementById("p1s3").value + "-" + document.getElementById("p2s3").value + tiebreakDisplay[2];
+  }
+  if (document.getElementById("p2").checked) {
+    winner = document.getElementById("p2").value;
+
+    var tiebreakScoresDisplay = "(" + document.getElementById("p2s1t").value + "-" + document.getElementById("p1s1t").value + "),"
+    + "(" + document.getElementById("p2s2t").value + "-" + document.getElementById("p1s2t").value + "),"
+    + "(" + document.getElementById("p2s3t").value + "-" + document.getElementById("p1s3t").value + ")"
+
+    var tiebreakDisplay = new Array(3);
+    var tiebreakScoresSplit = tiebreakScoresDisplay.split(",");
+    for (var i = 0; i < tiebreakScoresSplit.length; i++) {
+      if (tiebreakScoresSplit[i].length != 3) {
+        tiebreakDisplay[i] = tiebreakScoresSplit[i];
+      } else {
+        tiebreakDisplay[i] = "";
+      }
+    }
+
+    displayScore = document.getElementById("p2s1").value + "-" + document.getElementById("p1s1").value + tiebreakDisplay[0] + " " 
+    + document.getElementById("p2s2").value + "-" + document.getElementById("p1s2").value + tiebreakDisplay[1] + " "
+    + document.getElementById("p2s3").value + "-" + document.getElementById("p1s3").value + tiebreakDisplay[2];
+  }
+
+  var score = document.getElementById("p1s1").value + "-" + document.getElementById("p2s1").value + " " 
+    + document.getElementById("p1s2").value + "-" + document.getElementById("p2s2").value + " "
+    + document.getElementById("p1s3").value + "-" + document.getElementById("p2s3").value;
+
+  var tiebreakScores = "(" + document.getElementById("p1s1t").value + "-" + document.getElementById("p2s1t").value + "),"
+    + "(" + document.getElementById("p1s2t").value + "-" + document.getElementById("p2s2t").value + "),"
+    + "(" + document.getElementById("p1s3t").value + "-" + document.getElementById("p2s3t").value + ")"
+
+  var dayOfWeek = false;
+  await tournamentRef.once("value").then(tss => {
+    if (tss.val().drawDateFormat == "Day of week") {
+      dayOfWeek = true;
+    }
+  })
+
+  divRef.child("draw").child(matchId).update({
+    "winner": winner,
+    "score": score,
+    "date": document.getElementById("editMatchDate").value,
+    "courtNumber": document.getElementById("matchCourtNumber").value,
+    "matchTime": document.getElementById("matchTime").value,
+    "location": document.getElementById("editMatchLocationSelect").value,
+    "tiebreakScores": tiebreakScores
+  })
+
+  var matchProgressionList = matchProgressions[drawSize];
+  document.getElementById(matchProgressionList[parseInt(matchId.substring(1))]).textContent = formatPlayerNameDrawShorten(winner);
+
+  var detailString = "";
+  var date = document.getElementById("editMatchDate").value;
+  var time = document.getElementById("matchTime").value;
+  var location = document.getElementById("editMatchLocationSelect").value;
+
+  if (date != null && date != "") {
+    if (dayOfWeek) {
+      detailString += getDayOfTheWeek(date) + " ";
+    } else {
+      detailString += date.substring(date.indexOf("-")+1) + " ";
+    }
+  }
+  if (time != null && time != "") {
+    detailString += convertTimeTo12Hour(time) + " ";
+  }
+  if (location != null && location != "") {
+    detailString += location.substring(location.indexOf(" - ") + 3);
+  }
+  
+  var scoreString = "";
+  displayScore.split(" ").forEach(set => {
+    if (set.length >= 3) {
+      scoreString += set + " ";
+    }
+  });
+  document.getElementById(matchId+"score").textContent = scoreString;
+  document.getElementById(matchId+"details").textContent = detailString;
+
+  var winnerMatchPlayerId = matchProgressionList[parseInt(matchId.substring(1))];
   var matchId = winnerMatchPlayerId.substring(0, winnerMatchPlayerId.length - 1);
   
   divRef.child("draw").child(matchId).child(winnerMatchPlayerId).set(winner).then(tmp => {
@@ -142,6 +334,7 @@ function editMatch(matchId) {
   var divRef = tournamentRef.child("divisions").child(divName);
   var matchNumber = parseInt(matchId.substring(1));
   document.getElementById("editMatchModalLabel").textContent = "Match " + matchNumber;
+  document.getElementById("tiebreakModalLabel").textContent = "Match " + matchNumber + " Tiebreak scores";
 
   divRef.once("value").then(ss => {
     var p1 = ss.child("draw").child(matchId).child(matchId+"a").val();
@@ -158,17 +351,23 @@ function editMatch(matchId) {
 
     document.getElementById("p1").value = p1;
     document.getElementById("p1Label").textContent = formatPlayerNameDrawEdit(p1);
+    document.getElementById("p1LabelTiebreak").textContent = formatPlayerNameDrawEdit(p1);
     if (p1 == null || p1 == "" || p1.split(",").length == 1) {
       document.getElementById("p1LabelTeam").textContent = "";
+      document.getElementById("p1LabelTeamTiebreak").textContent = "";
     } else {
       document.getElementById("p1LabelTeam").textContent = p1.split(",")[1].trim(" ");
+      document.getElementById("p1LabelTeamTiebreak").textContent = p1.split(",")[1].trim(" ");
     }
     document.getElementById("p2").value = p2;
     document.getElementById("p2Label").textContent = formatPlayerNameDrawEdit(p2);
+    document.getElementById("p2LabelTiebreak").textContent = formatPlayerNameDrawEdit(p2);
     if (p2 == null || p2 == "" || p2.split(",").length == 1) {
       document.getElementById("p2LabelTeam").textContent = "";
+      document.getElementById("p2LabelTeamTiebreak").textContent = "";
     } else {
       document.getElementById("p2LabelTeam").textContent = p2.split(",")[1].trim(" ");
+      document.getElementById("p2LabelTeamTiebreak").textContent = p2.split(",")[1].trim(" ");
     }
     document.getElementById("matchCourtNumber").value = courtNumber;
     document.getElementById("matchTime").value = time;

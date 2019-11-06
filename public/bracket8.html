@@ -169,6 +169,49 @@
       </div>
     </div>
   </div>
+
+  <div class="modal fade" id="tiebreakModal" tabindex="-1" role="dialog" aria-labelledby="tiebreakModalLabel"
+  aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="tiebreakModalLabel">
+            Enter tiebreak scores
+          </h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="row">
+            <div class="col-8">
+              <label id="p1LabelTiebreak" class="matchWinner" for="p1">Player 1</label><br>
+              <label id="p1LabelTeamTiebreak" class="editPlayerTeam" for="p1">Player 1</label><br>
+              <label id="p2LabelTiebreak" class="matchWinner" for="p2">Player 2</label><br>
+              <label id="p2LabelTeamTiebreak" class="editPlayerTeam" for="p1">Player 2</label>
+            </div>
+            <div class="col-4">
+              <div style="margin-top: 10px;">
+                <input id="p1s1t" disabled class="scoreInput" type="number"/>
+                <input id="p1s2t" disabled class="scoreInput" type="number"/>
+                <input id="p1s3t" disabled class="scoreInput" type="number"/>
+              </div>
+              <div style="margin-top: 35px;">
+                  <input id="p2s1t" disabled class="scoreInput" type="number"/>
+                  <input id="p2s2t" disabled class="scoreInput" type="number"/>
+                  <input id="p2s3t" disabled class="scoreInput" type="number"/>
+                </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-success" data-dismiss="modal" onclick="saveTiebreakScores(8)">
+              Save
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
   </body>
 
   <script type="text/javascript" src="bracketCommon/bracketFunctions.js"></script>
@@ -220,7 +263,7 @@
         document.getElementById(round1LeftMatchIds1[i]+"a").setAttribute("style", "position:absolute;left:10px;top:"+counter+"px;");
         document.getElementById(round1LeftMatchIds1[i]).setAttribute("style", "position:absolute;left:190px;padding:7px;top:"+editButtonCounter+"px;");
         document.getElementById(round1LeftMatchIds1[i]+"details").setAttribute("style", "position:absolute;left:0px;padding:7px;top:"+(editButtonCounter-15)+"px;width:12em;");
-        document.getElementById(round1LeftMatchIds1[i]+"score").setAttribute("style", "position:absolute;left:240px;padding:7px;top:"+(editButtonCounter+8)+"px;width:7em;");
+        document.getElementById(round1LeftMatchIds1[i]+"score").setAttribute("style", "position:absolute;left:240px;padding:7px;top:"+(editButtonCounter+8)+"px;width:13em;");
         
         editButtonCounter += editButtonInc;
         counter += round1PlayerInc;
@@ -246,7 +289,7 @@
         document.getElementById(round2LeftMatchIds1[i]+"a").setAttribute("style", "position:absolute;left:248px;top:"+topCounter+"px;width:11em;");
         document.getElementById(round2LeftMatchIds1[i]).setAttribute("style", "position:absolute;left:400px;padding:7px;top:"+editTopCounter+"px;");
         document.getElementById(round2LeftMatchIds1[i]+"details").setAttribute("style", "position:absolute;left:205px;padding:7px;top:"+(editTopCounter-15)+"px;width:12em;");
-        document.getElementById(round2LeftMatchIds1[i]+"score").setAttribute("style", "position:absolute;left:440px;padding:7px;top:"+(editTopCounter+8)+"px;width:7em;");
+        document.getElementById(round2LeftMatchIds1[i]+"score").setAttribute("style", "position:absolute;left:440px;padding:7px;top:"+(editTopCounter+8)+"px;width:13em;");
 
         editTopCounter += editInc;
 
@@ -273,7 +316,7 @@
         document.getElementById(round3LeftMatchIds1[i]+"a").setAttribute("style", "position:absolute;left:448px;top:"+topCounter+"px;width:11em;");
         document.getElementById(round3LeftMatchIds1[i]).setAttribute("style", "position:absolute;left:600px;padding:7px;top:"+editTopCounter+"px;");
         document.getElementById(round3LeftMatchIds1[i]+"details").setAttribute("style", "position:absolute;left:405px;padding:7px;top:"+(editTopCounter-15)+"px;width:12em;");
-        document.getElementById(round3LeftMatchIds1[i]+"score").setAttribute("style", "position:absolute;left:640px;padding:7px;top:"+(editTopCounter+8)+"px;width:7em;");
+        document.getElementById(round3LeftMatchIds1[i]+"score").setAttribute("style", "position:absolute;left:640px;padding:7px;top:"+(editTopCounter+8)+"px;width:13em;");
 
         editTopCounter += editInc;
 
@@ -333,19 +376,14 @@
           }
           document.getElementById(id+"details").textContent = detailString;
 
-          var score = ss.child("draw").child(id).child("score").val();
+          var flip = false;
           if (ss.child("draw").child(id).child("winner").val() == ss.child("draw").child(id).child(id+"b").val()) {
-            score = flipScore(score);
+            flip = true;
           }
-          var scoreString = "";
-          if (score != null) {
-            score.split(" ").forEach(set => {
-              if (set.length == 3) {
-                scoreString += set + " ";
-              }
-            });
-          }
-          document.getElementById(id+"score").textContent = scoreString;
+
+          var score = formatScoreLoadDraw(ss.child("draw").child(id).child("score").val(), ss.child("draw").child(id).child("tiebreakScores").val(), flip);
+
+          document.getElementById(id+"score").textContent = score;
         })
         fullMatchIds2.forEach(id => {
           document.getElementById(id+"a").textContent = formatPlayerNameDrawShorten(ss.child("draw").child(id).child(id+"a").val());
@@ -371,19 +409,14 @@
           }
           document.getElementById(id+"details").textContent = detailString;
 
-          var score = ss.child("draw").child(id).child("score").val();
+          var flip = false;
           if (ss.child("draw").child(id).child("winner").val() == ss.child("draw").child(id).child(id+"b").val()) {
-            score = flipScore(score);
+            flip = true;
           }
-          var scoreString = "";
-          if (score != null) {
-            score.split(" ").forEach(set => {
-              if (set.length == 3) {
-                scoreString += set + " ";
-              }
-            });
-          }
-          document.getElementById(id+"score").textContent = scoreString;
+
+          var score = formatScoreLoadDraw(ss.child("draw").child(id).child("score").val(), ss.child("draw").child(id).child("tiebreakScores").val(), flip);
+
+          document.getElementById(id+"score").textContent = score;
         })
         if (ss.child("draw").child("winne").val() != null) {
           document.getElementById("winner").textContent = formatPlayerNameDrawShorten(ss.child("draw").child("winne").val().winner);
