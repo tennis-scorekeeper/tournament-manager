@@ -39,6 +39,7 @@
       <h4 class="onlyPrint" id="scheduleDate"></h4>
       <h4 class="onlyPrint" id="scheduleLocation"></h4>
       <h4 class="doNotPrint" id="hostedBy"></h4>
+      <h4 id="date"></h4>
       <p class="doNotPrint" id="divisionSelectError"></p>
     </div>
   </div>
@@ -59,16 +60,18 @@
     <div class="row justify-content-center">
       <div class="col-sm-3 doNotPrint">
         <div class="displayTab">
-            <h4 class="tabText" id="lineupTab" onclick="openLineupTab()">Line-ups</h4>
+            <h4 class="tabText" id="lineupTab" onclick="openLineupTab('#tabContent')">Line-ups</h4>
         </div>
         <div class="displayTab">
             <h4 class="tabText" id="officialsTab" onclick="openOfficialsTab()">Officials</h4>
         </div>
         <div class="displayTab">
-            <h4 class="tabText" id="printTab" onclick="openPrintLineupTab()">Print Line-up</h4>
+            <h4 class="tabText" id="printTab" onclick="printElem()">Print Line-up</h4>
         </div>
       </div>
-      <div class="col" id="tabContent"></div>
+      <div class="col doNotPrint" id="tabContent"></div>
+      <div class="onlyPrint" id="printContent"></div>
+      <div class="onlyPrint" style="margin-top: 2em" id="printContent2"></div>
     </div>
   </div>
 
@@ -239,6 +242,7 @@
 
               var title = dualMatchTeam1 + " vs. " + dualMatchTeam2 + " (" + dualMatchGender + ")";
               document.getElementById("title").textContent = title;
+              document.getElementById("date").textContent = tss.child(dualMatchId).val().date;
               window.document.title = title;
               userRef.once("value").then(uss => {
                 document.getElementById("hostedBy").textContent = "Hosted By: " + uss.child(dualMatchAdmin).val().name;
@@ -480,9 +484,9 @@
     document.getElementById("officialsTab").setAttribute("class", "tabText");
   }
 
-  function openLineupTab() {
+  function openLineupTab(targetElementId) {
       closeTab();
-      $("#tabContent").load("lineupTabContent.html");
+      $(targetElementId).load("lineupTabContent.html");
       document.getElementById("lineupTab").setAttribute("class", "tabTextSelected");
 
       var url = window.location.href.substring(
@@ -685,6 +689,70 @@
         document.getElementById("deleteTournamentError").textContent = "Only the admin can delete the dual match.";
       }
     })
+  }
+
+  function printElem() {
+    closeTab();
+    document.getElementById("printContent").innerHTML="";
+    $("#printContent").load("lineupTabContent.html");
+    $("#printContent2").load("officialsTabContent.html");
+
+    var url = window.location.href.substring(
+      window.location.href.indexOf("?")
+    );
+    var params = new URLSearchParams(url);
+    var rootRef = firebase.database().ref();
+    var dualMatchesRef = rootRef.child("dualMatches");
+    var dualMatchId = params.get("dualMatchId");
+    var dualMatchRef = dualMatchesRef.child(dualMatchId);
+
+    dualMatchRef.once("value").then(dss => {
+      document.getElementById("team1Name").innerHTML = dss.val().team1;
+      document.getElementById("team2Name").innerHTML = dss.val().team2;
+      if (dss.child("lineup").exists()) {
+        document.getElementById("team1Doubles1").value = dss.child("lineup").val().team1Doubles1;
+        document.getElementById("team2Doubles1").value = dss.child("lineup").val().team2Doubles1;
+        document.getElementById("team1Doubles2").value = dss.child("lineup").val().team1Doubles2;
+        document.getElementById("team2Doubles2").value = dss.child("lineup").val().team2Doubles2;
+        document.getElementById("team1Doubles3").value = dss.child("lineup").val().team1Doubles3;
+        document.getElementById("team2Doubles3").value = dss.child("lineup").val().team2Doubles3;
+        document.getElementById("team1DoublesSub").value = dss.child("lineup").val().team1DoublesSub;
+        document.getElementById("team2DoublesSub").value = dss.child("lineup").val().team2DoublesSub;
+        document.getElementById("team1Singles1").value = dss.child("lineup").val().team1Singles1;
+        document.getElementById("team2Singles1").value = dss.child("lineup").val().team2Singles1;
+        document.getElementById("team1Singles2").value = dss.child("lineup").val().team1Singles2;
+        document.getElementById("team2Singles2").value = dss.child("lineup").val().team2Singles2;
+        document.getElementById("team1Singles3").value = dss.child("lineup").val().team1Singles3;
+        document.getElementById("team2Singles3").value = dss.child("lineup").val().team2Singles3;
+        document.getElementById("team1Singles4").value = dss.child("lineup").val().team1Singles4;
+        document.getElementById("team2Singles4").value = dss.child("lineup").val().team2Singles4;
+        document.getElementById("team1Singles5").value = dss.child("lineup").val().team1Singles5;
+        document.getElementById("team2Singles5").value = dss.child("lineup").val().team2Singles5;
+        document.getElementById("team1Singles6").value = dss.child("lineup").val().team1Singles6;
+        document.getElementById("team2Singles6").value = dss.child("lineup").val().team2Singles6;
+        document.getElementById("team1SinglesSub1").value = dss.child("lineup").val().team1SinglesSub1;
+        document.getElementById("team2SinglesSub1").value = dss.child("lineup").val().team2SinglesSub1;
+        document.getElementById("team1SinglesSub2").value = dss.child("lineup").val().team1SinglesSub2;
+        document.getElementById("team2SinglesSub2").value = dss.child("lineup").val().team2SinglesSub2;
+      }
+      if (dss.child("officials").exists()) {
+        document.getElementById("refereeName").value = dss.child("officials").val().refereeName;
+        document.getElementById("refereeITANumber").value = dss.child("officials").val().refereeITANumber;
+        document.getElementById("offical1").value = dss.child("officials").val().offical1;
+        document.getElementById("offical2").value = dss.child("officials").val().offical2;
+        document.getElementById("offical3").value = dss.child("officials").val().offical3;
+        document.getElementById("offical4").value = dss.child("officials").val().offical4;
+        document.getElementById("offical5").value = dss.child("officials").val().offical5;
+        document.getElementById("offical6").value = dss.child("officials").val().offical6;
+        document.getElementById("offical7").value = dss.child("officials").val().offical7;
+        document.getElementById("offical8").value = dss.child("officials").val().offical8;
+        document.getElementById("offical9").value = dss.child("officials").val().offical9;
+        document.getElementById("offical10").value = dss.child("officials").val().offical10;
+        document.getElementById("offical11").value = dss.child("officials").val().offical11;
+        document.getElementById("offical12").value = dss.child("officials").val().offical12;
+      }
+      window.print();
+    });
   }
 </script>
 
